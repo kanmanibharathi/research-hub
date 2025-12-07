@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Stat Summary — Static</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{ font-family: Arial, Helvetica, sans-serif; background:#f7faf7; margin:0; padding:20px }
+    .card{ max-width:1100px; margin:0 auto; background:white; padding:18px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.06) }
+    .header{display:flex;justify-content:space-between;align-items:center}
+    .btn{background:#168f3d;color:white;padding:8px 12px;border-radius:6px;border:none;cursor:pointer}
+    .btn.secondary{background:#0366d6}
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th,td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}
+    .search{padding:8px;border-radius:6px;border:1px solid #ddd;width:260px}
+    .small{font-size:13px;color:#666}
+    .spark{display:flex;gap:3px;align-items:end;height:28px}
+    .spark div{width:10px;border-radius:3px;background:#223}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div>
+        <h2 style="margin:0">Stat Summary — Static</h2>
+        <div class="small">Open CSV → preview → summary → download. Client-side only.</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <input id="fileInput" type="file" accept=".csv" style="display:none" />
+        <button class="btn" onclick="document.getElementById('fileInput').click()">Select CSV</button>
+        <button class="btn secondary" onclick="pasteCsv()">Paste CSV</button>
+        <button class="btn" id="downloadBtn" onclick="downloadResults()" disabled>Download Results</button>
+      </div>
+    </div>
+
+    <div style="margin-top:16;display:flex;justify-content:space-between;align-items:center">
+      <div class="small" id="info">Rows: 0 Columns: 0</div>
+      <input class="search" id="search" placeholder="Search column or value" />
+    </div>
+
+    <h3>Data Preview</h3>
+    <div style="overflow-x:auto">
+      <table id="dataTable"><thead></thead><tbody></tbody></table>
+    </div>
+    <div class="small" id="previewInfo" style="margin-top:8px">Showing 0 entries</div>
+
+    <h3>Summary Statistics</h3>
+    <div style="overflow-x:auto">
+      <table id="summaryTable">
+        <thead style="background:#0b6a13;color:white">
+          <tr><th>Variable</th><th>Means</th><th>SD</th><th>Max</th><th>Min</th><th>Median</th><th>CV</th><th>Skew</th><th>Kurt</th><th>%NA</th><th>Histogram</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:18" class="small">Client-side processing. Files are not uploaded to a server.</div>
+  </div>
+
+  <!-- Libraries from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+  <script>
+    // helpers
+    function mean(arr){ const v=arr.filter(isFinite); if(!v.length) return NaN; return v.reduce((a,b)=>a+b,0)/v.length }
+    function sd(arr){ const v=arr.filter(isFinite); if(v.length<=1) return 0; const m=mean(v); return Math.sqrt(v.reduce((s,x)=>s+(x-m)*(x-m),0)/(v.length-1)) }
+    function median(arr){ const v=arr.filter(isFinite).sort((a,b)=>a-b); const n=v.length; if(n===0) return NaN; const mid=Math.floor(n/2); return n%2? v[mid] : (v[mid-1]+v[mid])/2 }
+    function minv(arr){ const v=arr.filter(isFinite); return v.length? Math.min(...v): NaN }
+    function maxv(arr){ const v=arr.filter(isFinite); return v.length? Math.max(...v): NaN }
+    function cv(arr){ const m=mean(arr); return m===0? NaN: (sd(arr)/m)*100 }
+    function percentNA(col){ const total=col.length; const na = col.filter(x=> x===null || x===undefined || x==='').length; return (na/total)*100 }
+    function numericColumn(arr){ return arr.map(v=>{ if(v===null||v===undefined||v==='') return NaN; const n=Number(v); return Number.isFinite(n)? n : NaN }) }
+    function round(v,d=2){ return Math.round(v*(10**d))/(10**d) }
+
+    let rawData = [], columns = []
+
+    document.getElementById('fileInput').addEventListener('change', function(e){
+      if(!e.target.files[0]) return
+      Papa.parse(e.target.files[0], { header:true, skipEmptyLines:true, complete: (res)=>{ rawData = res.data; columns = res.meta.fields || []; renderPreview(); computeSummary(); document.getElementById('downloadBtn').disabled=false } })
+    })
+
+    function pasteCsv(){
+      const t = prompt('Paste CSV text here')
+      if(!t) return
+      const res = Papa.parse(t, { header:true, skipEmptyLines:true })
+      rawData = res.data; columns = res.meta.fields || []; renderPreview(); computeSummary(); document.getElementById('downloadBtn').disabled=false
+    }
+
+    function renderPreview(){
+      const thead = document.querySelector('#dataTable thead'); const tbody = document.querySelector('#dataTable tbody')
+      thead.innerHTML=''; tbody.innerHTML=''
+      if(!columns.length) { document.getElementById('info').textContent = 'Rows: 0 Columns: 0'; return }
+      const tr = document.createElement('tr'); columns.forEach(c=>{ const th=document.createElement('th'); th.textContent=c; tr.appendChild(th) }); thead.appendChild(tr)
+      rawData.slice(0,10).forEach(r=>{ const row=document.createElement('tr'); columns.forEach(c=>{ const td=document.createElement('td'); td.textContent = (r[c]===undefined? '' : r[c]); row.appendChild(td) }); tbody.appendChild(row) })
+      document.getElementById('info').textContent = 'Rows: ' + rawData.length + ' Columns: ' + columns.length
+      document.getElementById('previewInfo').textContent = 'Showing 1 to ' + Math.min(10, rawData.length) + ' of ' + rawData.length + ' entries'
+    }
+
+    function computeSummary(){
+      const tbody = document.querySelector('#summaryTable tbody'); tbody.innerHTML=''
+      if(!rawData.length) return
+      columns.forEach(col=>{
+        const colVals = rawData.map(r=> r[col]===undefined? null : r[col])
+        const nums = numericColumn(colVals)
+        const row = document.createElement('tr')
+        const cells = [
+          col,
+          Number.isFinite(mean(nums))? round(mean(nums),2): '',
+          Number.isFinite(sd(nums))? round(sd(nums),2): '',
+          Number.isFinite(maxv(nums))? round(maxv(nums),2): '',
+          Number.isFinite(minv(nums))? round(minv(nums),2): '',
+          Number.isFinite(median(nums))? round(median(nums),2): '',
+          Number.isFinite(cv(nums))? round(cv(nums),2): '',
+          '', // skew not computed here for brevity
+          '', // kurtosis
+          round(percentNA(colVals),2),
+          '' // histogram cell placeholder
+        ]
+        cells.forEach((c, i)=>{
+          const td = document.createElement('td')
+          if(i===10){
+            // sparkline
+            const spark = document.createElement('div'); spark.className='spark'
+            const valid = nums.filter(isFinite)
+            if(valid.length===0){ td.innerHTML = '—' } else {
+              const minv = Math.min(...valid), maxv = Math.max(...valid)
+              const bins = new Array(8).fill(0)
+              valid.forEach(x=>{ const idx = Math.min(7, Math.floor(((x-minv)/(maxv-minv||1))*8)); bins[idx]++ })
+              const maxc = Math.max(...bins)
+              bins.forEach(b=>{ const bar = document.createElement('div'); bar.style.height = (maxc? (b/maxc)*100:0) + '%'; spark.appendChild(bar) })
+              td.appendChild(spark)
+            }
+          } else {
+            td.textContent = c
+          }
+          row.appendChild(td)
+        })
+        tbody.appendChild(row)
+      })
+    }
+
+    function downloadResults(){
+      const wb = XLSX.utils.book_new()
+      const sheet1 = XLSX.utils.json_to_sheet(rawData)
+      XLSX.utils.book_append_sheet(wb, sheet1, 'data')
+      // create summary rows quickly
+      const summary = []
+      columns.forEach(col=>{
+        const colVals = rawData.map(r=> r[col]===undefined? null : r[col])
+        const nums = numericColumn(colVals)
+        summary.push({
+          Variable: col,
+          Mean: Number.isFinite(mean(nums))? round(mean(nums),2): '',
+          SD: Number.isFinite(sd(nums))? round(sd(nums),2): '',
+          Max: Number.isFinite(maxv(nums))? round(maxv(nums),2): '',
+          Min: Number.isFinite(minv(nums))? round(minv(nums),2): '',
+          Median: Number.isFinite(median(nums))? round(median(nums),2): '',
+          CV: Number.isFinite(cv(nums))? round(cv(nums),2): '',
+          PercentNA: round(percentNA(colVals),2)
+        })
+      })
+      const sheet2 = XLSX.utils.json_to_sheet(summary)
+      XLSX.utils.book_append_sheet(wb, sheet2, 'summary')
+      const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'})
+      saveAs(new Blob([wbout],{type:'application/octet-stream'}), 'analysis-results.xlsx')
+    }
+
+    function maxv(arr){ const v=arr.filter(isFinite); return v.length? Math.max(...v): NaN }
+    function minv(arr){ const v=arr.filter(isFinite); return v.length? Math.min(...v): NaN }
+  </script>
+</body>
+</html>
