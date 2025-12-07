@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>One-way ANOVA — static</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#f7faf7;margin:0;padding:20px}
+    .card{max-width:1100px;margin:0 auto;background:#fff;padding:18px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .btn{background:#168f3d;color:#fff;padding:8px 12px;border-radius:6px;border:none;cursor:pointer}
+    table{border-collapse:collapse;width:100%;margin-top:10px}
+    th,td{padding:8px 10px;border:1px solid #eee;text-align:left}
+    .small{font-size:13px;color:#666}
+    input[type=number]{width:80px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>One-way ANOVA (static)</h2>
+    <div style="display:flex;gap:10px;align-items:center">
+      <input id="fileInput" type="file" accept=".csv" style="display:none" />
+      <button class="btn" onclick="document.getElementById('fileInput').click()">Select CSV</button>
+      <button class="btn" onclick="pasteCsv()">Paste CSV</button>
+      <button class="btn" id="downloadBtn" onclick="downloadDoc()" disabled>Download .doc (ANOVA + plot)</button>
+    </div>
+
+    <div style="margin-top:10px;display:flex;gap:12px;align-items:center">
+      <div>
+        <div class="small">Response (numeric)</div>
+        <select id="responseSelect"><option value=''>-- choose --</option></select>
+      </div>
+      <div>
+        <div class="small">Group (factor)</div>
+        <select id="groupSelect"><option value=''>-- choose --</option></select>
+      </div>
+      <div style="margin-left:auto">
+        <div class="small">Plot width / height</div>
+        <input id="pw" type="number" value="800" /> x <input id="ph" type="number" value="350" />
+      </div>
+      <div><button class="btn" onclick="runANOVA()">Run ANOVA</button></div>
+    </div>
+
+    <div id="resultArea" style="margin-top:16px"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jstat@1.9.4/dist/jstat.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+  <script>
+    let rawData = [], columns = []
+    document.getElementById('fileInput').addEventListener('change', function(e){
+      if(!e.target.files[0]) return
+      Papa.parse(e.target.files[0], { header:true, skipEmptyLines:true, complete: (res)=>{ rawData = res.data; columns = res.meta.fields || []; populateSelects(); }})
+    })
+
+    function pasteCsv(){
+      const t = prompt('Paste CSV text here')
+      if(!t) return
+      const res = Papa.parse(t, {header:true, skipEmptyLines:true})
+      rawData = res.data; columns = res.meta.fields || []; populateSelects()
+    }
+
+    function populateSelects(){
+      const r = document.getElementById('responseSelect')
+      const g = document.getElementById('groupSelect')
+      r.innerHTML = '<option value=\"\">-- choose --</option>'
+      g.innerHTML = '<option value=\"\">-- choose --</option>'
+      columns.forEach(c=>{
+        const o1 = document.createElement('option'); o1.value = c; o1.textContent = c; r.appendChild(o1)
+        const o2 = document.createElement('option'); o2.value = c; o2.textContent = c; g.appendChild(o2)
+      })
+    }
+
+    function numericColumn(arr){
+      return arr.map(v=>{ if(v===null||v===undefined||v==='') return NaN; const n=Number(v); return Number.isFinite(n)? n: NaN })
+    }
+    function mean(arr){ const v=arr.filter(isFinite); if(!v.length) return NaN; return v.reduce((a,b)=>a+b,0)/v.length }
+    function sd(arr){ const v=arr.filter(isFinite); if(v.length<=1) return 0; const m=mean(v); return Math.sqrt(v.reduce((s,x)=>s+(x-m)*(x-m),0)/(v.length-1)) }
+    function round(v,d=3){ return typeof v==='number' && isFinite(v) ? Math.round(v*(10**d))/(10**d) : '' }
+
+    function computeANOVA(data, response, group){
+      const groups = {}
+      for(const r of data){
+        const g = r[group] === undefined ? 'NA' : String(r[group])
+        const val = r[response]
+        const num = Number(val)
+        if(!groups[g]) groups[g] = []
+        if(Number.isFinite(num)) groups[g].push(num)
+      }
+      const groupNames = Object.keys(groups)
+      const k = groupNames.length
+      const ni = groupNames.map(g => groups[g].length)
+      const N = ni.reduce((a,b)=>a+b,0)
+      const means = groupNames.map(g => {
+        const arr = groups[g]
+        return arr.length? (arr.reduce((s,x)=>s+x,0)/arr.length): NaN
+      })
+      const overallMean = groupNames.reduce((acc,g,idx)=> acc + (means[idx] * ni[idx] || 0), 0) / N
+      let SSB = 0
+      groupNames.forEach((g, idx) => {
+        SSB += ni[idx] * Math.pow(means[idx] - overallMean, 2)
+      })
+      let SSW = 0
+      groupNames.forEach((g, idx) => {
+        const arr = groups[g]
+        const m = means[idx]
+        for(const x of arr) SSW += Math.pow(x - m, 2)
+      })
+      const SST = SSB + SSW
+      const dfBetween = k - 1
+      const dfWithin = N - k
+      const msBetween = dfBetween? SSB / dfBetween : NaN
+      const msWithin = dfWithin? SSW / dfWithin : NaN
+      const F = (msWithin? msBetween / msWithin : NaN)
+      let pValue = NaN
+      try{
+        pValue = 1 - jStat.centralF.cdf(F, dfBetween, dfWithin)
+      }catch(e){
+        try{ pValue = 1 - jStat.ftest(F, dfBetween, dfWithin) }catch(e){ pValue = NaN }
+      }
+      return {groups, groupNames, ni, N, means, overallMean, SSB, SSW, SST, dfBetween, dfWithin, msBetween, msWithin, F, pValue}
+    }
+
+    function drawBoxplotSVG(groups, width=800, height=350, padding=40){
+      const groupNames = Object.keys(groups)
+      const all = []
+      groupNames.forEach(g=> groups[g].forEach(v=> all.push(v)))
+      const minv = Math.min(...all)
+      const maxv = Math.max(...all)
+      const innerW = width - padding*2
+      const step = innerW / groupNames.length
+      const boxW = Math.min(60, step*0.6)
+      const scale = v => {
+        if(maxv === minv) return padding + innerW/2
+        return padding + (1 - (v - minv)/(maxv - minv)) * (height - padding*2)
+      }
+      let svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}' style='background:#fff'>`
+      svg += `<rect x='0' y='0' width='${width}' height='${height}' fill='white'/>`
+      const ticks = 5
+      for(let t=0;t<=ticks;t++){
+        const val = minv + (t/ticks)*(maxv - minv)
+        const y = scale(val)
+        svg += `<line x1='${padding-6}' x2='${width-padding}' y1='${y}' y2='${y}' stroke='#eee'/>`
+        svg += `<text x='8' y='${y+4}' font-size='11' fill='#333'>${round(val,3)}</text>`
+      }
+      groupNames.forEach((g, idx)=>{
+        const arr = groups[g].slice().sort((a,b)=>a-b)
+        const q1 = arr[Math.floor((arr.length-1)*0.25)]
+        const q2 = arr[Math.floor((arr.length-1)*0.5)]
+        const q3 = arr[Math.floor((arr.length-1)*0.75)]
+        const minNon = arr[0]
+        const maxNon = arr[arr.length-1]
+        const centerX = padding + idx*step + step/2
+        const xLeft = centerX - boxW/2
+        const xRight = centerX + boxW/2
+        svg += `<line x1='${centerX}' x2='${centerX}' y1='${scale(minNon)}' y2='${scale(maxNon)}' stroke='#222' stroke-width='1'/>`
+        svg += `<rect x='${xLeft}' y='${scale(q3)}' width='${boxW}' height='${Math.max(1, scale(q1)-scale(q3))}' fill='#213' opacity='0.12' stroke='#213'/>`
+        svg += `<line x1='${xLeft}' x2='${xRight}' y1='${scale(q2)}' y2='${scale(q2)}' stroke='#213' stroke-width='2'/>`
+        svg += `<line x1='${centerX-12}' x2='${centerX+12}' y1='${scale(minNon)}' y2='${scale(minNon)}' stroke='#222'/>`
+        svg += `<line x1='${centerX-12}' x2='${centerX+12}' y1='${scale(maxNon)}' y2='${scale(maxNon)}' stroke='#222'/>`
+        svg += `<text x='${centerX}' y='${height - padding + 16}' text-anchor='middle' font-size='12' fill='#222'>${g}</text>`
+      })
+      svg += `</svg>`
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg)
+    }
+
+    function runANOVA(){
+      const resp = document.getElementById('responseSelect').value
+      const group = document.getElementById('groupSelect').value
+      if(!resp || !group){ alert('select response and group'); return }
+      const res = computeANOVA(rawData, resp, group)
+      // render results
+      const area = document.getElementById('resultArea'); area.innerHTML = ''
+      let html = '<h3>ANOVA Table</h3>'
+      html += '<table><tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>p-value</th></tr>'
+      html += `<tr><td>Between</td><td>${round(res.SSB,4)}</td><td>${res.dfBetween}</td><td>${round(res.msBetween,4)}</td><td>${round(res.F,4)}</td><td>${round(res.pValue,6)}</td></tr>`
+      html += `<tr><td>Within</td><td>${round(res.SSW,4)}</td><td>${res.dfWithin}</td><td>${round(res.msWithin,4)}</td><td>-</td><td>-</td></tr>`
+      html += `<tr><td>Total</td><td>${round(res.SST,4)}</td><td>${res.N - 1}</td><td>-</td><td>-</td><td>-</td></tr></table>`
+      html += '<h3>Group means</h3>'
+      html += '<table><tr><th>Group</th><th>n</th><th>Mean</th></tr>'
+      res.groupNames.forEach((g, idx)=> html += `<tr><td>${g}</td><td>${res.ni[idx]}</td><td>${round(res.means[idx],4)}</td></tr>`)
+      html += '</table>'
+      const pw = Number(document.getElementById('pw').value) || 800
+      const ph = Number(document.getElementById('ph').value) || 350
+      const svgUri = drawBoxplotSVG(res.groups, pw, ph)
+      html += `<h3>Boxplot</h3><div style="border:1px solid #eee;display:inline-block;padding:6px;background:#fff"><img src="${svgUri}" style="max-width:100%"></div>`
+      area.innerHTML = html
+      window.__lastANOVA = { result: res, svgUri, pw, ph }
+      document.getElementById('downloadBtn').disabled = false
+    }
+
+    function downloadDoc(){
+      const rec = window.__lastANOVA
+      if(!rec) return
+      const img = new Image()
+      img.onload = function(){
+        const canvas = document.createElement('canvas'); canvas.width = rec.pw; canvas.height = rec.ph
+        const ctx = canvas.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0)
+        const pngData = canvas.toDataURL('image/png')
+        const htmlParts = []
+        htmlParts.push('<h2>One-way ANOVA Result</h2>')
+        htmlParts.push('<h3>ANOVA Table</h3>')
+        htmlParts.push('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>p-value</th></tr>')
+        const r = rec.result
+        htmlParts.push(`<tr><td>Between</td><td>${round(r.SSB,4)}</td><td>${r.dfBetween}</td><td>${round(r.msBetween,4)}</td><td>${round(r.F,4)}</td><td>${round(r.pValue,6)}</td></tr>`)
+        htmlParts.push(`<tr><td>Within</td><td>${round(r.SSW,4)}</td><td>${r.dfWithin}</td><td>${round(r.msWithin,4)}</td><td>-</td><td>-</td></tr>`)
+        htmlParts.push(`<tr><td>Total</td><td>${round(r.SST,4)}</td><td>${r.N - 1}</td><td>-</td><td>-</td><td>-</td></tr>`)
+        htmlParts.push('</table>')
+        htmlParts.push('<h3>Group means</h3>')
+        htmlParts.push('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Group</th><th>n</th><th>Mean</th></tr>')
+        r.groupNames.forEach((g,idx)=> htmlParts.push(`<tr><td>${g}</td><td>${r.ni[idx]}</td><td>${round(r.means[idx],4)}</td></tr>`))
+        htmlParts.push('</table>')
+        htmlParts.push('<h3>Boxplot</h3>')
+        htmlParts.push(`<img src="${pngData}" style="max-width:100%;height:auto"/>`)
+        const full = `<!doctype html><html><head><meta charset="utf-8"><title>ANOVA results</title></head><body>${htmlParts.join('')}</body></html>`
+        const blob = new Blob([full], { type: 'application/msword' })
+        saveAs(blob, 'anova-results.doc')
+      }
+      img.src = window.__lastANOVA.svgUri
+    }
+  </script>
+</body>
+</html>
