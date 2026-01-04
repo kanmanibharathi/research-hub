@@ -1,315 +1,884 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <title>Stat Summary — Static (DOC export)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="TemplateMo">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+  <title>Education Event HTML5 Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-edu-meeting.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/lightbox.css">
   <style>
-    body{ font-family: Arial, Helvetica, sans-serif; background:#f7faf7; margin:0; padding:20px }
-    .card{ max-width:1100px; margin:0 auto; background:white; padding:18px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.06) }
-    .header{display:flex;justify-content:space-between;align-items:center}
-    .btn{background:#168f3d;color:white;padding:8px 12px;border-radius:6px;border:none;cursor:pointer}
-    .btn.secondary{background:#0366d6}
-    table{width:100%;border-collapse:collapse;margin-top:14px}
-    th,td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}
-    .search{padding:8px;border-radius:6px;border:1px solid #ddd;width:260px}
-    .small{font-size:13px;color:#666}
-    .spark{display:flex;gap:3px;align-items:end;height:28px}
-    .spark div{width:10px;border-radius:3px;background:#223}
+    .reviews-scroll-container {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+
+    .reviews-track {
+      display: flex;
+      gap: 30px;
+      width: max-content;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .reviews-track.grabbing {
+      cursor: grabbing;
+    }
+
+    .review-item {
+      flex: 0 0 380px;
+      height: 100%;
+    }
+
+    @media (max-width: 767px) {
+      .review-item {
+        flex: 0 0 300px;
+      }
+    }
   </style>
+  <!--
+
+TemplateMo 569 Edu Meeting
+
+https://templatemo.com/tm-569-edu-meeting
+
+-->
 </head>
+
 <body>
-  <div class="card">
-    <div class="header">
-      <div>
-        <h2 style="margin:0">Stat Summary — Static</h2>
-        <div class="small">Open CSV → preview → summary → download. Client-side only.</div>
+
+
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="index.html" class="logo">
+              <img src="assets/images/logo.png" alt="Research Hub Logo">
+              <div class="logo-text">
+                <span class="title">Research Hub</span>
+                <span class="tagline">Where Research Meets Expertise</span>
+              </div>
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="book-slot.html">Book Now</a></li>
+              <li class="has-sub">
+                <a href="javascript:void(0)">Pages</a>
+                <ul class="sub-menu">
+                  <li><a href="events.html">Events</a></li>
+                  <li><a href="products.html">Products</a></li>
+                  <li><a href="courses.html">Courses</a></li>
+                  <li><a href="team.html">Meet Our Team</a></li>
+                  <li><a href="https://www.youtube.com/@Research-Hub" target="_blank"
+                      style="color: #FF0000 !important; font-weight: bold;">YouTube</a></li>
+                </ul>
+              </li>
+              <li class="has-sub">
+                <a href="javascript:void(0)">Statistics</a>
+                <ul class="sub-menu">
+                  <li><a href="lab-calculations.html">Lab Calculations</a></li>
+                  <li><a href="buffer-recipes.html">Buffer Recipes</a></li>
+
+                  <li><a href="https://researchhub.shinyapps.io/onewayanova/" target="_blank">Data Analysis</a></li>
+                </ul>
+              </li>
+              <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
+              <li class="user-profile">
+                <a href="javascript:void(0)" id="user-menu-toggle">
+                  <i class="fa fa-user"></i>
+                </a>
+                <div class="user-dropdown" id="user-dropdown">
+                  <a href="javascript:void(0)" id="show-login">Login</a>
+                  <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                </div>
+              </li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <input id="fileInput" type="file" accept=".csv" style="display:none" />
-        <button class="btn" onclick="document.getElementById('fileInput').click()">Select CSV</button>
-        <button class="btn secondary" onclick="pasteCsv()">Paste CSV</button>
-        <button class="btn" id="downloadBtn" onclick="downloadResults()" disabled>Download XLSX</button>
-        <button class="btn" id="downloadDocBtn" onclick="downloadDoc()" disabled>Download .doc (with histograms)</button>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <!-- ***** Main Banner Area Start ***** -->
+  <section class="section main-banner" id="top" data-section="section1">
+    <video autoplay muted loop id="bg-video">
+      <source src="assets/images/course-video.mp4" type="video/mp4" />
+    </video>
+
+    <div class="video-overlay header-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="caption">
+              <h6>Hello Curious Minds</h6>
+              <h2>About Our Approach</h2>
+              <p>At Research Hub, we believe in empowering scholars, students, and professionals with the skills,
+                knowledge, and confidence to excel in their research journey.<br><br>Instead of simply completing your
+                project, we guide you step-by-step, ensuring that you learn, understand, and can independently apply
+                each concept and technique. Our aim is to make you the expert of your own work.</p>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+  <!-- ***** Main Banner Area End ***** -->
 
-    <div style="margin-top:16;display:flex;justify-content:space-between;align-items:center">
-      <div class="small" id="info">Rows: 0 Columns: 0</div>
-      <input class="search" id="search" placeholder="Search column or value" />
+  <section class="services">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="owl-service-item owl-carousel">
+
+            <div class="item item-pink">
+              <div class="icon">
+                <i class="fa fa-pencil" style="font-size: 32px;"></i>
+              </div>
+              <div class="down-content">
+                <h4>Learn by Doing</h4>
+                <p>We provide hands-on training, demonstrations, and personalized sessions so you understand the how and
+                  why behind every step.</p>
+              </div>
+            </div>
+
+            <div class="item item-dark-green">
+              <div class="icon">
+                <i class="fa fa-graduation-cap" style="font-size: 32px;"></i>
+              </div>
+              <div class="down-content">
+                <h4>End-to-End Guidance</h4>
+                <p>From literature review and methodology design to data analysis, interpretation, and publication, we
+                  guide you throughout your journey.</p>
+              </div>
+            </div>
+
+            <div class="item item-bright-green">
+              <div class="icon">
+                <i class="fa fa-users" style="font-size: 32px;"></i>
+              </div>
+              <div class="down-content">
+                <h4>Tailored Mentorship</h4>
+                <p>Every project and learner is unique; our guidance is fully customized to your subject, needs, and
+                  academic level.</p>
+              </div>
+            </div>
+
+          </div>
+          <div class="main-button-yellow" style="text-align: center; margin-top: 40px;">
+            <a href="book-slot.html">Book Your Slot</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <h3>Data Preview</h3>
-    <div style="overflow-x:auto">
-      <table id="dataTable"><thead></thead><tbody></tbody></table>
+  <section class="upcoming-meetings" id="meetings">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>Services</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/atoz.jpg" alt="A-Z Research Guidance"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Complete Research Support</h4>
+                  <p style="margin-left: 0;">A–Z Research Guidance</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/plag.png" alt="Plagiarism Check & Cleanup"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #d63384; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Plagiarism Check & Cleanup</h4>
+                  <p style="margin-left: 0;">Plagiarism Checking | Removal</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/illus.png" alt="Scientific Illustrations"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Scientific Illustrations</h4>
+                  <p style="margin-left: 0;">Graphical Illustration</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/desig.webp" alt="Creative Design"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #d63384; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Creative Design</h4>
+                  <p style="margin-left: 0;">Graphical Design</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/lay.png" alt="Image Editing & Layout"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Image Editing & Layout</h4>
+                  <p style="margin-left: 0;">Photo Editing and Arrangement</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/precen.jpg" alt="Professional Presentations"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #d63384; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Professional Presentations</h4>
+                  <p style="margin-left: 0;">PowerPoint Presentation</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/Data.webp" alt="Data Analysis & Charts"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Data Analysis & Charts</h4>
+                  <p style="margin-left: 0;">Data Analysis and Visualization</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/writi.png" alt="Academic Writing"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #d63384; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Academic Writing</h4>
+                  <p style="margin-left: 0;">Thesis | Article | Dissertation Writing</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/Prop.png" alt="Project Proposal Drafting"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Project Proposal Drafting</h4>
+                  <p style="margin-left: 0;">Project Proposal</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/formatting.png" alt="Journal-Ready Formatting"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #d63384; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Journal-Ready Formatting</h4>
+                  <p style="margin-left: 0;">Manuscript Formatting</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/stat.png" alt="Statistical data interpretation"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Statistical data interpretation</h4>
+                  <p style="margin-left: 0;">Statistical Analysis</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/biol.png" alt="Biological data analysis"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #d63384; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Biological data analysis</h4>
+                  <p style="margin-left: 0;">Bioinformatics</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content" style="border-radius: 20px; text-align: center;">
+                  <div class="icon-container" style="margin-bottom: 15px;">
+                    <img src="assets/images/comp.webp" alt="Computational research analysis"
+                      style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00a651; display: block; margin: 0 auto;">
+                  </div>
+                  <h4>Computational research analysis</h4>
+                  <p style="margin-left: 0;">In-Silico Analysis</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="calculator-icon-container"
+            style="text-align: right; margin-top: -20px; margin-bottom: 10px; padding-right: 15px;">
+            <a href="lab-calculations.html"
+              style="display: inline-block; width: 40px; height: 40px; line-height: 36px; text-align: center; border: 2px solid #00a651; border-radius: 50%; color: #00a651; transition: all 0.3s;"
+              onmouseover="this.style.backgroundColor='#00a651'; this.style.color='#fff';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00a651';">
+              <i class="fa fa-calculator" style="font-size: 18px;"></i>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="small" id="previewInfo" style="margin-top:8px">Showing 0 entries</div>
+  </section>
 
-    <h3>Summary Statistics</h3>
-    <div style="overflow-x:auto">
-      <table id="summaryTable">
-        <thead style="background:#0b6a13;color:white">
-          <tr><th>Variable</th><th>Means</th><th>SD</th><th>Max</th><th>Min</th><th>Median</th><th>CV</th><th>Skew</th><th>Kurt</th><th>%NA</th><th>Histogram</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+
+
+  <section class="our-clients" id="clients">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>Our clients got Published at</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="owl-clients-item owl-carousel">
+            <div class="item"><img src="assets/images/publi/ACS.png" alt="ACS"></div>
+            <div class="item"><img src="assets/images/publi/CUP.png" alt="CUP"></div>
+            <div class="item"><img src="assets/images/publi/Emerald.png" alt="Emerald"></div>
+            <div class="item"><img src="assets/images/publi/Frontiers.png" alt="Frontiers"></div>
+            <div class="item"><img src="assets/images/publi/IEEE.png" alt="IEEE"></div>
+            <div class="item"><img src="assets/images/publi/MDPI.png" alt="MDPI"></div>
+            <div class="item"><img src="assets/images/publi/OUP.png" alt="OUP"></div>
+            <div class="item"><img src="assets/images/publi/PUP.png" alt="PUP"></div>
+            <div class="item"><img src="assets/images/publi/RSC.png" alt="RSC"></div>
+            <div class="item"><img src="assets/images/publi/Sage.png" alt="Sage"></div>
+            <div class="item"><img src="assets/images/publi/elsevier.png" alt="Elsevier"></div>
+            <div class="item"><img src="assets/images/publi/hindawi.png" alt="Hindawi"></div>
+            <div class="item"><img src="assets/images/publi/plos-one.png" alt="PLOS ONE"></div>
+            <div class="item"><img src="assets/images/publi/springer.png" alt="Springer"></div>
+            <div class="item"><img src="assets/images/publi/taylor_and_francis.png" alt="Taylor & Francis"></div>
+            <div class="item"><img src="assets/images/publi/wiley.png" alt="Wiley"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div style="margin-top:18" class="small">Client-side processing. Files are not uploaded to a server.</div>
+  <section class="our-courses" id="courses">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>Our Popular Courses</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="coming-soon-container">
+            <div class="loader"></div>
+            <h3>Coming Soon</h3>
+            <p>We are preparing high-quality research courses for you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="our-facts" id="reviews">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>What Our Clients Say</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="reviews-scroll-container">
+            <div class="reviews-track" id="reviews-track">
+              <!-- Item 1 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-01.png" alt="Sarah Johnson" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Sarah Johnson</h6>
+                    <span>Medical Researcher</span>
+                  </div>
+                </div>
+                <p>"The research support was exceptional. They helped me clean up plagiarism and format my manuscript
+                  perfectly for publication in a high-impact journal."</p>
+              </div>
+              <!-- Item 2 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-02.png" alt="Dr. Robert Smith" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Dr. Robert Smith</h6>
+                    <span>Assistant Professor</span>
+                  </div>
+                </div>
+                <p>"Excellent data analysis services. The statistical interpretation and bioinformatics support were
+                  crucial for my latest project's success."</p>
+              </div>
+              <!-- Item 3 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-03.png" alt="Maria Garcia" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Maria Garcia</h6>
+                    <span>PhD Candidate</span>
+                  </div>
+                </div>
+                <p>"Their professional presentations and graphical illustrations really helped my thesis defense. I
+                  highly recommend their creative designs!"</p>
+              </div>
+              <!-- Item 4 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-04.png" alt="Dr. James Wilson" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Dr. James Wilson</h6>
+                    <span>Biotechnology Expert</span>
+                  </div>
+                </div>
+                <p>"As a senior researcher, I value precision. Research Hub delivered top-notch results on complex
+                  molecular simulations that exceeded my expectations."</p>
+              </div>
+              <!-- Item 5 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-05.png" alt="Dr. Anya Sharma" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Dr. Anya Sharma</h6>
+                    <span>Clinical Pathologist</span>
+                  </div>
+                </div>
+                <p>"Their hands-on training sessions are a game-changer. I didn't just get my data analyzed; I actually
+                  learned how to perform the tests myself."</p>
+              </div>
+              <!-- Item 6 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-06.png" alt="David Miller" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>David Miller</h6>
+                    <span>Environmental Scientist</span>
+                  </div>
+                </div>
+                <p>"From proposal drafting to final manuscript layout, the end-to-end guidance was seamless. My article
+                  was accepted with minimal revisions."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-us" id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="row">
+            <div class="col-lg-12">
+              <form id="contact" action="" method="post">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2>Let's get in touch</h2>
+                  </div>
+                  <div class="col-lg-4">
+                    <fieldset>
+                      <input name="name" type="text" id="name" placeholder="YOURNAME...*" required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-4">
+                    <fieldset>
+                      <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="YOUR EMAIL..."
+                        required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-4">
+                    <fieldset>
+                      <input name="subject" type="text" id="subject" placeholder="SUBJECT...*" required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-12">
+                    <fieldset>
+                      <textarea name="message" type="text" class="form-control" id="message"
+                        placeholder="YOUR MESSAGE..." required=""></textarea>
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-12">
+                    <fieldset>
+                      <button type="submit" id="form-submit" class="button">SEND MESSAGE NOW</button>
+                    </fieldset>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="right-info">
+            <ul>
+              <li style="display: flex; align-items: center;">
+                <i class="fa fa-phone"
+                  style="color: #007bff; font-size: 24px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3); margin-right: 15px;"></i>
+                <span>+91 8220217467</span>
+              </li>
+              <li style="display: flex; align-items: center;">
+                <i class="fa fa-whatsapp"
+                  style="color: #25d366; font-size: 24px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3); margin-right: 15px;"></i>
+                <span><a href="https://wa.me/918220217467" target="_blank" style="color: #fff;">+91
+                    8220217467</a></span>
+              </li>
+              <li style="display: flex; align-items: center;">
+                <i class="fa fa-envelope"
+                  style="color: #ea4335; font-size: 24px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3); margin-right: 15px;"></i>
+                <span>researchhub.one@gmail.com</span>
+              </li>
+              <li style="display: flex; align-items: center;">
+                <i class="fa fa-map-marker"
+                  style="color: #4285f4; font-size: 24px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3); margin-right: 15px;"></i>
+                <span>Arni, Tamil Nadu, India.</span>
+              </li>
+              <li style="display: flex; align-items: center;">
+                <i class="fa fa-globe"
+                  style="color: #00a651; font-size: 24px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3); margin-right: 15px;"></i>
+                <span><a href="https://www.oneresearchhub.in/" target="_blank"
+                    style="color: #fff;">www.oneresearchhub.in</a></span>
+              </li>
+              <li>
+                <h6>Social Media</h6>
+                <div class="social-links" style="margin-top: 10px; display: flex; gap: 15px; align-items: center;">
+                  <a href="https://www.facebook.com/researchhub.one/" target="_blank"
+                    style="color: #1877F2; font-size: 20px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+                      class="fa fa-facebook"></i></a>
+                  <a href="https://www.instagram.com/research_hub.one/" target="_blank"
+                    style="color: #E4405F; font-size: 20px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+                      class="fa fa-instagram"></i></a>
+                  <a href="https://x.com/researchhub_one/" target="_blank"
+                    style="color: #000; font-size: 20px; display: flex; align-items: center; filter: drop-shadow(-1px -1px 0 #fff) drop-shadow(1px -1px 0 #fff) drop-shadow(-1px 1px 0 #fff) drop-shadow(1px 1px 0 #fff) drop-shadow(2px 4px 6px rgba(0,0,0,0.3));">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 20px; height: 20px; fill: currentColor;">
+                      <path
+                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                      </path>
+                    </svg>
+                  </a>
+                  <a href="https://www.linkedin.com/in/research-hub-231190304/" target="_blank"
+                    style="color: #0077B5; font-size: 20px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+                      class="fa fa-linkedin"></i></a>
+                  <a href="https://www.youtube.com/@Research-Hub" target="_blank"
+                    style="color: #FF0000; font-size: 20px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+                      class="fa fa-youtube-play"></i></a>
+                  <a href="https://whatsapp.com/channel/0029Va5Bt5oBfxo8vScNwJ0h" target="_blank"
+                    style="color: #25D366; font-size: 20px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+                      class="fa fa-whatsapp"></i></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Copyright © 2024 One Research Hub. All Rights Reserved.</p>
+      <div class="footer-social"
+        style="margin-top: 15px; display: flex; justify-content: center; gap: 20px; align-items: center;">
+        <a href="https://www.facebook.com/researchhub.one/" target="_blank"
+          style="color: #1877F2; font-size: 18px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+            class="fa fa-facebook"></i></a>
+        <a href="https://www.instagram.com/research_hub.one/" target="_blank"
+          style="color: #E4405F; font-size: 18px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+            class="fa fa-instagram"></i></a>
+        <a href="https://x.com/researchhub_one/" target="_blank"
+          style="color: #000; font-size: 18px; display: flex; align-items: center; filter: drop-shadow(-1px -1px 0 #fff) drop-shadow(1px -1px 0 #fff) drop-shadow(-1px 1px 0 #fff) drop-shadow(1px 1px 0 #fff) drop-shadow(2px 4px 6px rgba(0,0,0,0.3));">
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="width: 18px; height: 18px; fill: currentColor;">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+            </path>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/research-hub-231190304/" target="_blank"
+          style="color: #0077B5; font-size: 18px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+            class="fa fa-linkedin"></i></a>
+        <a href="https://www.youtube.com/@Research-Hub" target="_blank"
+          style="color: #FF0000; font-size: 18px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+            class="fa fa-youtube-play"></i></a>
+        <a href="https://whatsapp.com/channel/0029Va5Bt5oBfxo8vScNwJ0h" target="_blank"
+          style="color: #25D366; font-size: 18px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0,0,0,0.3);"><i
+            class="fa fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/lightbox.js"></script>
+  <script src="assets/js/tabs.js"></script>
+  <script src="assets/js/video.js"></script>
+  <script src="assets/js/slick-slider.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script src="assets/js/user-auth.js"></script>
+
+  <!-- User Auth Modals -->
+  <div class="auth-modal" id="login-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Login</h2>
+      <form class="auth-form">
+        <input type="email" placeholder="Email Address" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <div class="auth-links">
+        <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+        <p><a href="javascript:void(0)" id="show-forgot"
+            style="font-size: 13px; color: #00a651; display: block; margin-top: 10px;">Forgot Password?</a></p>
+      </div>
+    </div>
   </div>
 
-  <!-- Libraries from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <div class="auth-modal" id="signup-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Sign Up</h2>
+      <form class="auth-form">
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="password" placeholder="Password" required>
+        <input type="password" placeholder="Confirm Password" required>
+        <button type="submit">Create Account</button>
+      </form>
+      <div class="auth-links">
+        <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="forgot-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Reset Password</h2>
+      <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Enter your email and we'll send you instructions to
+        reset your password.</p>
+      <form class="auth-form">
+        <input type="email" placeholder="Email Address" required>
+        <button type="submit">Send Reset Link</button>
+      </form>
+      <div class="auth-links">
+        <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // helpers
-    function mean(arr){ const v=arr.filter(isFinite); if(!v.length) return NaN; return v.reduce((a,b)=>a+b,0)/v.length }
-    function sd(arr){ const v=arr.filter(isFinite); if(v.length<=1) return 0; const m=mean(v); return Math.sqrt(v.reduce((s,x)=>s+(x-m)*(x-m),0)/(v.length-1)) }
-    function median(arr){ const v=arr.filter(isFinite).sort((a,b)=>a-b); const n=v.length; if(n===0) return NaN; const mid=Math.floor(n/2); return n%2? v[mid] : (v[mid-1]+v[mid])/2 }
-    function minv(arr){ const v=arr.filter(isFinite); return v.length? Math.min(...v): NaN }
-    function maxv(arr){ const v=arr.filter(isFinite); return v.length? Math.max(...v): NaN }
-    function cv(arr){ const m=mean(arr); return m===0? NaN: (sd(arr)/m)*100 }
-    function percentNA(col){ const total=col.length; const na = col.filter(x=> x===null || x===undefined || x==='').length; return (na/total)*100 }
-    function numericColumn(arr){ return arr.map(v=>{ if(v===null||v===undefined||v==='') return NaN; const n=Number(v); return Number.isFinite(n)? n : NaN }) }
-    function round(v,d=2){ return Math.round(v*(10**d))/(10**d) }
+    //according to loftblog tut
+    $('.nav li:first').addClass('active');
 
-    // skewness and kurtosis
-    function skewness(arr){
-      const v = arr.filter(isFinite)
-      const n = v.length
-      if(n < 3) return 0
-      const m = mean(v)
-      const s = sd(v)
-      if(s === 0) return 0
-      const sumCubed = v.reduce((acc,x)=> acc + Math.pow((x - m)/s, 3), 0)
-      return (n / ((n-1)*(n-2))) * sumCubed
-    }
-    function kurtosis(arr){
-      const v = arr.filter(isFinite)
-      const n = v.length
-      if(n < 4) return 0
-      const m = mean(v)
-      const s = sd(v)
-      if(s === 0) return 0
-      const sum4 = v.reduce((acc,x)=> acc + Math.pow((x - m)/s, 4), 0)
-      const term1 = (n*(n+1))/((n-1)*(n-2)*(n-3)) * sum4
-      const term2 = (3 * Math.pow(n-1,2)) / ((n-2)*(n-3))
-      return term1 - term2
-    }
+    var showSection = function showSection(section, isAnimate) {
+      var
+        direction = section.replace(/#/, ''),
+        reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+        reqSectionPos = reqSection.offset().top - 40;
 
-    // Draw high-res histogram and return dataURL
-    function drawHistogramDataURL(variable, values, width = 400, height = 120, scale = 2) {
-      const nums = (values || []).filter(isFinite)
-      const cnv = document.createElement('canvas')
-      cnv.width = width * scale
-      cnv.height = height * scale
-      cnv.style.width = width + 'px'
-      cnv.style.height = height + 'px'
-      const ctx = cnv.getContext('2d')
-      ctx.scale(scale, scale)
-      // background
-      ctx.fillStyle = '#fff'
-      ctx.fillRect(0, 0, width, height)
-      // title
-      ctx.fillStyle = '#222'
-      ctx.font = '14px sans-serif'
-      ctx.fillText(variable, 8, 18)
-      if (nums.length) {
-        const bins = 8
-        const minv = Math.min(...nums)
-        const maxv = Math.max(...nums)
-        const counts = new Array(bins).fill(0)
-        nums.forEach(x => {
-          const idx = Math.min(bins - 1, Math.floor(((x - minv) / (maxv - minv || 1)) * bins))
-          counts[idx]++
-        })
-        const maxc = Math.max(...counts)
-        const barW = (width - 20) / bins
-        for (let i = 0; i < bins; i++) {
-          const bh = maxc ? (counts[i] / maxc) * (height - 50) : 0
-          ctx.fillStyle = '#222233'
-          ctx.fillRect(10 + i * barW, height - bh - 20, barW - 6, bh)
-        }
-        ctx.strokeStyle = '#ddd'
-        ctx.beginPath()
-        ctx.moveTo(8, height - 20)
-        ctx.lineTo(width - 8, height - 20)
-        ctx.stroke()
+      if (isAnimate) {
+        $('body, html').animate({
+          scrollTop: reqSectionPos
+        },
+          800);
       } else {
-        ctx.fillStyle = '#999'
-        ctx.fillText('No numeric values', 10, 60)
+        $('body, html').scrollTop(reqSectionPos);
       }
-      return cnv.toDataURL('image/png', 0.95)
-    }
 
-    let rawData = [], columns = []
+    };
 
-    document.getElementById('fileInput').addEventListener('change', function(e){
-      if(!e.target.files[0]) return
-      Papa.parse(e.target.files[0], { header:true, skipEmptyLines:true, complete: (res)=>{ rawData = res.data; columns = res.meta.fields || []; renderPreview(); computeSummary(); document.getElementById('downloadBtn').disabled=false; document.getElementById('downloadDocBtn').disabled=false } })
-    })
+    var checkSection = function checkSection() {
+      $('.section').each(function () {
+        var
+          $this = $(this),
+          topEdge = $this.offset().top - 40,
+          bottomEdge = topEdge + $this.height(),
+          wScroll = $(window).scrollTop();
+        if (topEdge < wScroll && bottomEdge > wScroll) {
+          var
+            currentId = $this.data('section'),
+            reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+          reqLink.closest('li').addClass('active').
+            siblings().removeClass('active');
+        }
+      });
+    };
 
-    function pasteCsv(){
-      const t = prompt('Paste CSV text here')
-      if(!t) return
-      const res = Papa.parse(t, { header:true, skipEmptyLines:true })
-      rawData = res.data; columns = res.meta.fields || []; renderPreview(); computeSummary(); document.getElementById('downloadBtn').disabled=false; document.getElementById('downloadDocBtn').disabled=false
-    }
+    $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function (e) {
+      e.preventDefault();
+      showSection($(this).attr('href'), true);
+    });
 
-    function renderPreview(){
-      const thead = document.querySelector('#dataTable thead'); const tbody = document.querySelector('#dataTable tbody')
-      thead.innerHTML=''; tbody.innerHTML=''
-      if(!columns.length) { document.getElementById('info').textContent = 'Rows: 0 Columns: 0'; return }
-      const tr = document.createElement('tr'); columns.forEach(c=>{ const th=document.createElement('th'); th.textContent=c; tr.appendChild(th) }); thead.appendChild(tr)
-      rawData.slice(0,10).forEach(r=>{ const row=document.createElement('tr'); columns.forEach(c=>{ const td=document.createElement('td'); td.textContent = (r[c]===undefined? '' : r[c]); row.appendChild(td) }); tbody.appendChild(row) })
-      document.getElementById('info').textContent = 'Rows: ' + rawData.length + ' Columns: ' + columns.length
-      document.getElementById('previewInfo').textContent = 'Showing 1 to ' + Math.min(10, rawData.length) + ' of ' + rawData.length + ' entries'
-    }
+    $(window).scroll(function () {
+      checkSection();
+    });
 
-    function computeSummary(){
-      const tbody = document.querySelector('#summaryTable tbody'); tbody.innerHTML=''
-      if(!rawData.length) return
-      columns.forEach(col=>{
-        const colVals = rawData.map(r=> r[col]===undefined? null : r[col])
-        const nums = numericColumn(colVals)
-        const row = document.createElement('tr')
-        const cells = [
-          col,
-          Number.isFinite(mean(nums))? round(mean(nums),2): '',
-          Number.isFinite(sd(nums))? round(sd(nums),2): '',
-          Number.isFinite(maxv(nums))? round(maxv(nums),2): '',
-          Number.isFinite(minv(nums))? round(minv(nums),2): '',
-          Number.isFinite(median(nums))? round(median(nums),2): '',
-          Number.isFinite(cv(nums))? round(cv(nums),2): '',
-          Number.isFinite(skewness(nums))? round(skewness(nums),3): '',
-          Number.isFinite(kurtosis(nums))? round(kurtosis(nums),3): '',
-          round(percentNA(colVals),2),
-          '' // histogram cell placeholder
-        ]
-        cells.forEach((c, i)=>{
-          const td = document.createElement('td')
-          if(i===10){
-            const spark = document.createElement('div'); spark.className='spark'
-            const valid = nums.filter(isFinite)
-            if(valid.length===0){ td.innerHTML = '—' } else {
-              const minv = Math.min(...valid), maxv = Math.max(...valid)
-              const bins = new Array(8).fill(0)
-              valid.forEach(x=>{ const idx = Math.min(7, Math.floor(((x-minv)/(maxv-minv||1))*8)); bins[idx]++ })
-              const maxc = Math.max(...bins)
-              bins.forEach(b=>{ const bar = document.createElement('div'); bar.style.height = (maxc? (b/maxc)*100:0) + '%'; spark.appendChild(bar) })
-              td.appendChild(spark)
-            }
-          } else {
-            td.textContent = c
+    // Infinite Auto-Scroll for Reviews
+    const track = document.getElementById('reviews-track');
+    if (track) {
+      const items = Array.from(track.children);
+      // Clone items for infinite effect
+      items.forEach(item => {
+        const clone = item.cloneNode(true);
+        track.appendChild(clone);
+      });
+
+      let speed = 1.2; // Pixels per frame
+      let offset = 0;
+      let isPaused = false;
+      let isDragging = false;
+      let startX, scrollLeft;
+
+      function step() {
+        if (!isPaused && !isDragging) {
+          offset -= speed;
+          // Check if we've scrolled past the first set of items
+          const itemWidth = items[0].offsetWidth + 30; // item + gap
+          const totalWidth = itemWidth * items.length;
+
+          if (Math.abs(offset) >= totalWidth) {
+            offset = 0;
           }
-          row.appendChild(td)
-        })
-        tbody.appendChild(row)
-      })
+          track.style.transform = `translateX(${offset}px)`;
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+
+      // Interaction listeners
+      track.parentElement.addEventListener('mouseenter', () => isPaused = true);
+      track.parentElement.addEventListener('mouseleave', () => {
+        if (!isDragging) isPaused = false;
+      });
+
+      // Touch/Mobile pause
+      track.parentElement.addEventListener('touchstart', () => isPaused = true);
+      track.parentElement.addEventListener('touchend', () => {
+        if (!isDragging) isPaused = false;
+      });
+
+      // Mouse Wheel Support
+      track.parentElement.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        offset -= e.deltaY * 2;
+        // Boundary check for manual scroll
+        const itemWidth = items[0].offsetWidth + 30;
+        const totalWidth = itemWidth * items.length;
+        if (offset > 0) offset = -totalWidth;
+        if (Math.abs(offset) >= totalWidth) offset = 0;
+        track.style.transform = `translateX(${offset}px)`;
+      });
+
+      // Drag Functionality
+      track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        isPaused = true;
+        track.classList.add('grabbing');
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = offset;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          isPaused = false;
+          track.classList.remove('grabbing');
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        offset = scrollLeft + walk;
+
+        // Infinite boundary check for drag
+        const itemWidth = items[0].offsetWidth + 30;
+        const totalWidth = itemWidth * items.length;
+        if (offset > 0) offset = -totalWidth;
+        if (Math.abs(offset) >= totalWidth) offset = 0;
+
+        track.style.transform = `translateX(${offset}px)`;
+      });
     }
-
-    function downloadResults(){
-      const wb = XLSX.utils.book_new()
-      const sheet1 = XLSX.utils.json_to_sheet(rawData)
-      XLSX.utils.book_append_sheet(wb, sheet1, 'data')
-      const summary = []
-      columns.forEach(col=>{
-        const colVals = rawData.map(r=> r[col]===undefined? null : r[col])
-        const nums = numericColumn(colVals)
-        summary.push({
-          Variable: col,
-          Mean: Number.isFinite(mean(nums))? round(mean(nums),2): '',
-          SD: Number.isFinite(sd(nums))? round(sd(nums),2): '',
-          Max: Number.isFinite(maxv(nums))? round(maxv(nums),2): '',
-          Min: Number.isFinite(minv(nums))? round(minv(nums),2): '',
-          Median: Number.isFinite(median(nums))? round(median(nums),2): '',
-          CV: Number.isFinite(cv(nums))? round(cv(nums),2): '',
-          Skew: Number.isFinite(skewness(nums))? round(skewness(nums),3): '',
-          Kurt: Number.isFinite(kurtosis(nums))? round(kurtosis(nums),3): '',
-          PercentNA: round(percentNA(colVals),2)
-        })
-      })
-      const sheet2 = XLSX.utils.json_to_sheet(summary)
-      XLSX.utils.book_append_sheet(wb, sheet2, 'summary')
-      const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'})
-      saveAs(new Blob([wbout],{type:'application/octet-stream'}), 'analysis-results.xlsx')
-    }
-
-    // Build Word-friendly HTML (with embedded images) and save as .doc
-    async function downloadDoc(){
-      if(!columns.length) { alert('No data'); return }
-      // generate histogram images for each column
-      const histImgs = columns.map(colName=>{
-        const colVals = rawData.map(r=> r[colName]===undefined? null : r[colName])
-        const nums = numericColumn(colVals)
-        return { variable: colName, dataUrl: drawHistogramDataURL(colName, nums, 480, 140, 2) }
-      })
-
-      // table rows
-      const rows = columns.map(colName=>{
-        const srow = (()=> {
-          const colVals = rawData.map(r=> r[colName]===undefined? null : r[colName])
-          const nums = numericColumn(colVals)
-          return {
-            variable: colName,
-            mean: Number.isFinite(mean(nums))? round(mean(nums),2): '',
-            sd: Number.isFinite(sd(nums))? round(sd(nums),2): '',
-            maximum: Number.isFinite(maxv(nums))? round(maxv(nums),2): '',
-            minimum: Number.isFinite(minv(nums))? round(minv(nums),2): '',
-            median: Number.isFinite(median(nums))? round(median(nums),2): '',
-            cv: Number.isFinite(cv(nums))? round(cv(nums),2): '',
-            skew: Number.isFinite(skewness(nums))? round(skewness(nums),3): '',
-            kurt: Number.isFinite(kurtosis(nums))? round(kurtosis(nums),3): '',
-            pctna: round(percentNA(colVals),2)
-          }
-        })()
-        const img = histImgs.find(h=>h.variable===colName)
-        const imgTag = img ? `<img src="${img.dataUrl}" style="max-width:420px;height:auto;border:1px solid #ddd;margin:6px 0;">` : ''
-        return `<tr>
-          <td style="padding:8px;border:1px solid #ddd;"><b>${srow.variable}</b></td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.mean}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.sd}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.maximum}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.minimum}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.median}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.cv}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.skew}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.kurt}</td>
-          <td style="padding:8px;border:1px solid #ddd;text-align:right;">${srow.pctna}</td>
-          <td style="padding:8px;border:1px solid #ddd;vertical-align:top;">${imgTag}</td>
-        </tr>`
-      }).join('')
-
-      const docHtml = `
-        <html>
-          <head><meta charset="utf-8" /><title>Analysis Results</title>
-            <style>
-              body{font-family:Arial,Helvetica,sans-serif;color:#222}
-              table{border-collapse:collapse;width:100%}
-              th{background:#0b6a13;color:#fff;padding:10px;border:1px solid #ddd}
-              td{padding:8px;border:1px solid #ddd}
-            </style>
-          </head>
-          <body>
-            <h1 style="background:#0b6a13;color:#fff;padding:10px;">Summary Statistics</h1>
-            <table>
-              <thead><tr><th>Variable</th><th>Means</th><th>SD</th><th>Max</th><th>Min</th><th>Median</th><th>CV</th><th>Skew</th><th>Kurt</th><th>%NA</th><th>Histogram</th></tr></thead>
-              <tbody>${rows}</tbody>
-            </table>
-            <p style="font-size:11px;color:#666">Generated by Stat Summary Webapp (client-side)</p>
-          </body>
-        </html>
-      `
-
-      const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword' })
-      saveAs(blob, 'analysis-results.doc')
-    }
-
-    function maxv(arr){ const v=arr.filter(isFinite); return v.length? Math.max(...v): NaN }
-    function minv(arr){ const v=arr.filter(isFinite); return v.length? Math.min(...v): NaN }
-
   </script>
 </body>
+
 </html>
