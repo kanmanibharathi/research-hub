@@ -217,6 +217,10 @@ document.addEventListener('DOMContentLoaded', function () {
             profileBtn.innerHTML = `<span style="color: #fff; font-weight: 700; font-size: 18px;">${firstLetter}</span>`;
             profileBtn.classList.add('logged-in');
 
+            // Determine base path for links
+            const isCalcDir = window.location.pathname.includes('/calculators/');
+            const basePath = isCalcDir ? '../' : '';
+
             // Add Newsletter 'N' Icon if Admin
             if (user.isAdmin) {
                 const navItem = profileBtn.parentElement;
@@ -226,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Create the 'N' icon
                 const nIcon = document.createElement('a');
-                nIcon.href = 'admin-newsletter.html';
+                nIcon.href = basePath + 'admin-newsletter.html';
                 nIcon.id = 'admin-n-badge';
                 nIcon.title = 'Newsletter Dashboard';
                 nIcon.innerHTML = 'N';
@@ -255,9 +259,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (userDropdown) {
+            const isCalcDir = window.location.pathname.includes('/calculators/');
+            const basePath = isCalcDir ? '../' : '';
+
             let dropdownContent = ``;
             if (user.isAdmin) {
-                dropdownContent += `<a href="admin-newsletter.html" style="color: #d63384 !important;">Admin Dashboard</a>`;
+                dropdownContent += `<a href="${basePath}admin-newsletter.html" style="color: #d63384 !important;">Admin Dashboard</a>`;
             }
             dropdownContent += `<a href="javascript:void(0)" id="logout-btn">Logout</a>`;
 
