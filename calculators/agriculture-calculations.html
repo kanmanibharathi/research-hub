@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>One Research Hub - Agriculture Calculations</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-edu-meeting.css">
+    <style>
+        .calc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .calc-card:hover {
+            transform: translateY(-5px);
+            border-color: #00a651;
+        }
+
+        .calc-card h4 {
+            color: #00a651;
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-label {
+            color: #ccc;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .calc-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 14px;
+            height: 42px;
+        }
+
+        .calc-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #00a651;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 166, 81, 0.2);
+        }
+
+        .sidebar-nav {
+            position: sticky;
+            top: 170px;
+        }
+
+        .nav-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none !important;
+        }
+
+        .nav-box i {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 166, 81, 0.1);
+            color: #00a651;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .nav-box span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-box:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: rgba(0, 166, 81, 0.3);
+        }
+
+        .nav-box.active {
+            background: rgba(0, 166, 81, 0.15);
+            border-color: #00a651;
+        }
+
+        .nav-box.active i {
+            background: #00a651;
+            color: #fff;
+        }
+
+        .back-to-lab {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            text-decoration: none !important;
+        }
+
+        .back-to-lab:hover {
+            background: #00a651;
+            color: #fff;
+            border-color: #00a651;
+            transform: translateY(-2px);
+        }
+
+        .btn-pink-gradient {
+            background: linear-gradient(135deg, #d63384, #be2a70);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-pink-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        .result-box {
+            background: rgba(0, 166, 81, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #00a651;
+            margin-top: 20px;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #00a651;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .result-val {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        /* Feedback Button */
+        .query-static-btn {
+            display: inline-flex;
+            background: #ced4da;
+            color: #333 !important;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none !important;
+        }
+
+        .query-static-btn:hover {
+            background: #00a651;
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 166, 81, 0.2);
+        }
+
+        @media (max-width: 767px) {
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="../index.html" class="logo">
+                            <img src="../assets/images/logo.png" alt="Research Hub Logo">
+                            <div class="logo-text">
+                                <span class="title">Research Hub</span>
+                                <span class="tagline">Where Research Meets Expertise</span>
+                            </div>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="../events.html">Events</a></li>
+                            <li><a href="../book-slot.html">Book Now</a></li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)" class="active">Statistics</a>
+                                <ul class="sub-menu">
+                                    <li><a href="lab-calculations.html">Lab Calculations</a></li>
+                                    <li><a href="https://researchhub.shinyapps.io/onewayanova/" target="_blank">Data
+                                            Analysis</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="../index.html#contact">Contact Us</a></li>
+                        </ul>
+                        <a class='menu-trigger'><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="meetings-page" id="meetings" style="padding-top: 80px; padding-bottom: 20px; min-height: 100vh;">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-2">
+                    <a href="lab-calculations.html" class="back-to-lab" style="margin-bottom: 0;">
+                        <i class="fa-solid fa-house"></i> <span>BACK</span>
+                    </a>
+                </div>
+                <div class="col-lg-8 text-center">
+                    <div class="section-heading" style="margin-bottom: 0;">
+                        <h2 id="page-title" style="margin-bottom: 0;">Agriculture Calculations</h2>
+                        <p id="page-tagline" style="color: #ccc; margin-top: 5px; margin-bottom: 0;">Specialized tools
+                            for agricultural research and field analysis.</p>
+                    </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="sidebar-nav">
+                        <div class="nav-box active" onclick="switchCalc('npk', this)">
+                            <i class="fa-solid fa-flask"></i> <span>NPK Fertilizer</span>
+                        </div>
+                        <div class="nav-box" onclick="switchCalc('seed', this)">
+                            <i class="fa-solid fa-seedling"></i> <span>Seed Rate</span>
+                        </div>
+                        <div class="nav-box" onclick="switchCalc('water', this)">
+                            <i class="fa-solid fa-droplet"></i> <span>Water Requirement</span>
+                        </div>
+                        <div class="nav-box" onclick="switchCalc('yield', this)">
+                            <i class="fa-solid fa-wheat-awn"></i> <span>Yield Estimator</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <!-- NPK Fertilizer Calculator -->
+                    <div id="npk-calc" class="calc-section">
+                        <div class="calc-card">
+                            <h4>Fertilizer Requirement (NPK)</h4>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Target Nitrogen (N) kg/ha</label>
+                                    <input type="number" id="npk_n_target" class="calc-input" placeholder="e.g. 120">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Fertilizer % N (e.g. Urea=46)</label>
+                                    <input type="number" id="npk_n_perc" class="calc-input" placeholder="e.g. 46">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Area (Hectares)</label>
+                                    <input type="number" id="npk_area" class="calc-input" value="1">
+                                </div>
+                            </div>
+                            <button class="btn-pink-gradient mt-3" onclick="calculateNPK()">Calculate
+                                Fertilizer</button>
+
+                            <div id="npk_result" class="result-box" style="display: none;">
+                                <div class="result-label">Fertilizer Amount Needed</div>
+                                <div id="npk_val" class="result-val">-</div>
+                                <p style="color: #888; font-size: 12px; margin-top: 10px;">Formula: (Target Rate / %
+                                    Content) * 100 * Area</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seed Rate Calculator -->
+                    <div id="seed-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Seed Rate Calculator</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Desired Population (plants/ha)</label>
+                                    <input type="number" id="seed_pop" class="calc-input" placeholder="e.g. 50000">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">1000-Seed Weight (grams)</label>
+                                    <input type="number" id="seed_weight" class="calc-input" placeholder="e.g. 200">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Germination %</label>
+                                    <input type="number" id="seed_germ" class="calc-input" value="95">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Purity %</label>
+                                    <input type="number" id="seed_purity" class="calc-input" value="98">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Expected Establishment %</label>
+                                    <input type="number" id="seed_est" class="calc-input" value="90">
+                                </div>
+                            </div>
+                            <button class="btn-pink-gradient mt-3" onclick="calculateSeedRate()">Calculate Seed
+                                Rate</button>
+
+                            <div id="seed_result" class="result-box" style="display: none;">
+                                <div class="result-label">Recommended Seed Rate (kg/ha)</div>
+                                <div id="seed_val" class="result-val">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Water Requirement -->
+                    <div id="water-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Crop Water Requirement (ETc)</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Reference Evapotranspiration (ETo) mm/day</label>
+                                    <input type="number" id="water_eto" class="calc-input" placeholder="e.g. 5.5">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Crop Coefficient (Kc)</label>
+                                    <input type="number" id="water_kc" class="calc-input" placeholder="e.g. 0.85">
+                                </div>
+                            </div>
+                            <button class="btn-pink-gradient mt-3" onclick="calculateWater()">Calculate ETc</button>
+
+                            <div id="water_result" class="result-box" style="display: none;">
+                                <div class="result-label">Crop Evapotranspiration (ETc)</div>
+                                <div id="water_val" class="result-val">-</div>
+                                <p style="color: #888; font-size: 12px; margin-top: 10px;">ETc = ETo × Kc (mm/day)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yield Estimator -->
+                    <div id="yield-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Yield Estimator</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Plants per Square Meter</label>
+                                    <input type="number" id="yield_plants" class="calc-input" placeholder="e.g. 8">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Average Grains per Plant</label>
+                                    <input type="number" id="yield_grains" class="calc-input" placeholder="e.g. 250">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Test Weight (1000-grain weight in grams)</label>
+                                    <input type="number" id="yield_tw" class="calc-input" placeholder="e.g. 35">
+                                </div>
+                            </div>
+                            <button class="btn-pink-gradient mt-3" onclick="calculateYield()">Estimate Yield</button>
+
+                            <div id="yield_result" class="result-box" style="display: none;">
+                                <div class="result-label">Estimated Yield (tonnes/ha)</div>
+                                <div id="yield_val" class="result-val">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Footer moved inside container -->
+            <div class="footer"
+                style="padding: 15px 0px; background: transparent; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                <p style="margin: 0;">COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="position: absolute; left: -9999px; visibility: hidden;">
+                        <form id="rzp_form">
+                            <script src="https://checkout.razorpay.com/v1/payment-button.js"
+                                data-payment_button_id="pl_S0DP8f1W2RjLq8" async> </script>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0)" class="query-static-btn"
+                        onclick="var btn = document.querySelector('#rzp_form .razorpay-payment-button'); if(btn) btn.click();">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Donate</span>
+                    </a>
+                    <a href="../index.html#contact" class="query-static-btn">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        <span>Query / Error / Suggestions</span>
+                    </a>
+                </div>
+            </div>
+        </div> <!-- End container -->
+    </section>
+
+    <!-- Scripts -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/js/user-auth.js"></script>
+    <script>
+        function switchCalc(type, el) {
+            document.querySelectorAll('.calc-section').forEach(s => s.style.display = 'none');
+            document.getElementById(type + '-calc').style.display = 'block';
+
+            document.querySelectorAll('.nav-box').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            localStorage.setItem('agri_calc_last_section', type);
+
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastSection = localStorage.getItem('agri_calc_last_section');
+            if (lastSection) {
+                const navBox = Array.from(document.querySelectorAll('.nav-box')).find(box =>
+                    box.getAttribute('onclick').includes(`'${lastSection}'`)
+                );
+                if (navBox) {
+                    switchCalc(lastSection, navBox);
+                }
+            }
+        });
+
+        function calculateNPK() {
+            const target = parseFloat(document.getElementById('npk_n_target').value);
+            const perc = parseFloat(document.getElementById('npk_n_perc').value);
+            const area = parseFloat(document.getElementById('npk_area').value);
+
+            if (isNaN(target) || isNaN(perc) || perc <= 0) return alert("Please enter valid numbers.");
+
+            const result = (target / perc) * 100 * area;
+            document.getElementById('npk_val').textContent = result.toFixed(2) + " kg";
+            document.getElementById('npk_result').style.display = 'block';
+        }
+
+        function calculateSeedRate() {
+            const pop = parseFloat(document.getElementById('seed_pop').value);
+            const weight = parseFloat(document.getElementById('seed_weight').value);
+            const germ = parseFloat(document.getElementById('seed_germ').value) / 100;
+            const pur = parseFloat(document.getElementById('seed_purity').value) / 100;
+            const est = parseFloat(document.getElementById('seed_est').value) / 100;
+
+            if (isNaN(pop) || isNaN(weight)) return alert("Please enter valid numbers.");
+
+            // Seed Rate (kg/ha) = (Desired Pop * 1000-seed weight in g) / (Germ * Purity * Est * 1,000,000)
+            // But pop is per ha, weight is per 1000. So pop * (weight/1000) = total grams. grams/1000 = kg.
+            const result = (pop * (weight / 1000)) / (germ * pur * est * 1000);
+
+            document.getElementById('seed_val').textContent = result.toFixed(2) + " kg/ha";
+            document.getElementById('seed_result').style.display = 'block';
+        }
+
+        function calculateWater() {
+            const eto = parseFloat(document.getElementById('water_eto').value);
+            const kc = parseFloat(document.getElementById('water_kc').value);
+
+            if (isNaN(eto) || isNaN(kc)) return alert("Please enter valid numbers.");
+
+            const result = eto * kc;
+            document.getElementById('water_val').textContent = result.toFixed(2) + " mm/day";
+            document.getElementById('water_result').style.display = 'block';
+        }
+
+        function calculateYield() {
+            const plants = parseFloat(document.getElementById('yield_plants').value);
+            const grains = parseFloat(document.getElementById('yield_grains').value);
+            const tw = parseFloat(document.getElementById('yield_tw').value);
+
+            if (isNaN(plants) || isNaN(grains) || isNaN(tw)) return alert("Please enter valid numbers.");
+
+            // Yield = (plants/m2 * grains/plant * TW/1000) / 1000 (for kg/m2) * 10000 (for kg/ha) / 1000 (for tonnes)
+            // Yield (t/ha) = (plants * grains * tw) / 100,000
+            const result = (plants * grains * tw) / 100000;
+
+            document.getElementById('yield_val').textContent = result.toFixed(3) + " Tonnes/ha";
+            document.getElementById('yield_result').style.display = 'block';
+        }
+    </script>
+
+    <script>
+        // Handle URL parameters for deep linking
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const calc = params.get('calc');
+            if (calc) {
+                const btn = document.querySelector(`.nav-box[onclick*="'${calc}'"]`);
+                if (btn) btn.click();
+            }
+        });
+    </script>
+</body>
+
+</html>
+

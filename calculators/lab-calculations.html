@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>One Research Hub - Research Calculators</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-edu-meeting.css">
+    <style>
+        .calc-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none !important;
+        }
+
+        .calc-item:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 166, 81, 0.1);
+            border-color: #00a651;
+        }
+
+        .calc-item i {
+            font-size: 50px;
+            color: #00a651;
+            margin-bottom: 20px;
+        }
+
+        .calc-item h4 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .calc-item p {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 80px;
+        }
+
+        /* Feedback Button */
+        .query-static-btn {
+            display: inline-flex;
+            background: #ced4da;
+            color: #333 !important;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none !important;
+        }
+
+        .query-static-btn:hover {
+            background: #00a651;
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 166, 81, 0.2);
+        }
+
+        @media (max-width: 767px) {
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="../index.html" class="logo">
+                            <img src="../assets/images/logo.png" alt="Research Hub Logo">
+                            <div class="logo-text">
+                                <span class="title">Research Hub</span>
+                                <span class="tagline">Where Research Meets Expertise</span>
+                            </div>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="../events.html">Events</a></li>
+                            <li><a href="../book-slot.html">Book Now</a></li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)">Pages</a>
+                                <ul class="sub-menu">
+                                    <li><a href="../events.html">Events</a></li>
+                                    <li><a href="../products.html">Products</a></li>
+                                    <li><a href="../courses.html">Courses</a></li>
+                                    <li><a href="../team.html">Meet Our Team</a></li>
+                                    <li><a href="https://www.youtube.com/@Research-Hub" target="_blank"
+                                            style="color: #FF0000 !important; font-weight: bold;">YouTube</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)" class="active">Statistics</a>
+                                <ul class="sub-menu">
+                                    <li><a href="lab-calculations.html">Lab Calculations</a></li>
+
+                                    <li><a href="https://researchhub.shinyapps.io/onewayanova/" target="_blank">Data
+                                            Analysis</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="../index.html#contact">Contact Us</a></li>
+                            <li class="user-profile">
+                                <a href="javascript:void(0)" id="user-menu-toggle">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                                <div class="user-dropdown" id="user-dropdown">
+                                    <a href="javascript:void(0)" id="show-login">Login</a>
+                                    <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'><span>Menu</span></a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="meetings-page" id="meetings"
+        style="padding-top: 80px; padding-bottom: 20px; min-height: 100vh; display: flex; flex-direction: column;">
+        <div class="container" style="flex: 1;">
+            <div class="row">
+                <div class="col-lg-12 mb-5">
+                    <div class="section-heading">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div class="text-start">
+                                <h2 style="margin-bottom: 5px;">Research Calculators</h2>
+                                <p style="color: #ccc; margin-top: 0;">A collection of specialized tools for your
+                                    laboratory
+                                    research needs.</p>
+                            </div>
+                            <div class="text-end">
+                                <div style="font-size: 13px; color: #aaa; font-style: italic; margin-bottom: 2px;">
+                                    developed by</div>
+                                <div class="d-flex align-items-center justify-content-end gap-2">
+                                    <span style="color: #fff; font-weight: 500;">Dr. Kanmani Bharathi</span>
+                                    <img src="../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi"
+                                        style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #00a651;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Search Bar -->
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="search-box" style="position: relative;">
+                            <input type="text" id="calculatorSearch" placeholder="Search for any calculator..."
+                                class="form-control"
+                                style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 20px 10px 45px; border-radius: 30px; box-shadow: none;">
+                            <i class="fa fa-search"
+                                style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #00a651;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Results Container -->
+                <div id="searchResults" class="row" style="display: none; margin-bottom: 30px;">
+                    <!-- Results injected here -->
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="grid-container">
+            <!-- Agriculture -->
+            <a href="agriculture-calculations.html" class="calc-item">
+                <i class="fa-solid fa-wheat-awn"></i>
+                <h4>Agriculture</h4>
+            </a>
+
+            <!-- Analytics -->
+            <a href="analytics.html" class="calc-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <h4>Analytics</h4>
+            </a>
+
+            <!-- Biology -->
+            <a href="biological-calculations.html" class="calc-item">
+                <i class="fa-solid fa-dna"></i>
+                <h4>Biology</h4>
+            </a>
+
+            <!-- Breeding -->
+            <a href="breeding-calculations.html" class="calc-item">
+                <i class="fa-solid fa-diagram-project"></i>
+                <h4>Breeding</h4>
+            </a>
+
+            <!-- Buffer Recipes -->
+            <a href="buffer-recipes.html" class="calc-item">
+                <i class="fa-solid fa-flask-vial"></i>
+                <h4>Buffer Recipes</h4>
+            </a>
+
+            <!-- Chemistry -->
+            <a href="chemistry-calculations.html" class="calc-item">
+                <i class="fa-solid fa-flask"></i>
+                <h4>Chemistry</h4>
+            </a>
+
+            <!-- General Calculators -->
+            <a href="molarity-calculator.html" class="calc-item">
+                <i class="fa-solid fa-calculator"></i>
+                <h4>General Calculators</h4>
+            </a>
+
+            <!-- Tissue Culture -->
+            <a href="tissue-culture-calculations.html" class="calc-item">
+                <i class="fa-solid fa-leaf"></i>
+                <h4>Tissue Culture</h4>
+            </a>
+
+            <!-- Placeholder for future calculators -->
+            <div class="calc-item" style="border-style: dashed; opacity: 0.6; cursor: default;">
+                <i class="fa fa-plus-circle" style="color: rgba(255,255,255,0.2);"></i>
+                <h4 style="color: rgba(255,255,255,0.4);">More Coming Soon</h4>
+            </div>
+        </div>
+        <div class="footer"
+            style="padding: 15px 80px; background: transparent; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+            <p style="margin: 0;">COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="position: absolute; left: -9999px; visibility: hidden;">
+                    <form id="rzp_form">
+                        <script src="https://checkout.razorpay.com/v1/payment-button.js"
+                            data-payment_button_id="pl_S0DP8f1W2RjLq8" async> </script>
+                    </form>
+                </div>
+                <a href="javascript:void(0)" class="query-static-btn"
+                    onclick="var btn = document.querySelector('#rzp_form .razorpay-payment-button'); if(btn) btn.click();">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Donate</span>
+                </a>
+                <a href="../index.html#contact" class="query-static-btn">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Query / Error / Suggestions</span>
+                </a>
+            </div>
+        </div>
+        </div> <!-- Close container -->
+    </section>
+
+    <!-- Scripts -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/js/user-auth.js"></script>
+    <script>
+        const calculatorIndex = [
+            // Agriculture
+            { name: "NPK Calculator", url: "agriculture-calculations.html?calc=npk", category: "Agriculture" },
+            { name: "Seeding Rate", url: "agriculture-calculations.html?calc=seed", category: "Agriculture" },
+
+            // Analytics
+            { name: "Descriptive Statistics", url: "analytics.html?calc=desc-stats", category: "Analytics" },
+            { name: "Outlier Detection", url: "analytics.html?calc=outliers", category: "Analytics" },
+
+            // Biology
+            { name: "Hardy-Weinberg Equilibrium", url: "biological-calculations.html?calc=hwe", category: "Genetics" },
+            { name: "Punnett Square", url: "biological-calculations.html?calc=punnett", category: "Genetics" },
+            { name: "Linkage Disequilibrium", url: "biological-calculations.html?calc=ld", category: "Genetics" },
+            { name: "Ligation Calculator", url: "biological-calculations.html?calc=ligation", category: "Cloning" },
+            { name: "PCR Mastermix", url: "biological-calculations.html?calc=pcr", category: "Cloning" },
+            { name: "Reconstitution", url: "biological-calculations.html?calc=reconstitution", category: "Lab Tools" },
+            { name: "Michaelis Menten", url: "biological-calculations.html?calc=michaelis", category: "Biochemistry" },
+            { name: "Km Constant", url: "biological-calculations.html?calc=km_const", category: "Biochemistry" },
+            { name: "kcat Calculator", url: "biological-calculations.html?calc=kcat", category: "Biochemistry" },
+            { name: "Kinetics Plots", url: "biological-calculations.html?calc=kinetics-plots", category: "Biochemistry" },
+            { name: "Monod Equation", url: "biological-calculations.html?calc=monod", category: "Biochemistry" },
+            { name: "Microscopy Calculator", url: "biological-calculations.html?calc=microscopy", category: "Microscopy" },
+            { name: "Population Growth", url: "biological-calculations.html?calc=growth", category: "Ecology" },
+            { name: "Species Diversity", url: "biological-calculations.html?calc=diversity", category: "Ecology" },
+            { name: "Half-Life Calculator", url: "biological-calculations.html?calc=halflife", category: "Kinetics" },
+
+            // Breeding
+            { name: "Inbreeding Coefficient", url: "breeding-calculations.html?calc=inbreeding", category: "Breeding" },
+            { name: "Generation Interval", url: "breeding-calculations.html?calc=generation", category: "Breeding" },
+
+            // Chemistry
+            { name: "pH Calculator", url: "chemistry-calculations.html?calc=ph-calc", category: "Chemistry" },
+            { name: "Percent Composition", url: "chemistry-calculations.html?calc=percent-comp", category: "Chemistry" },
+            { name: "Thermodynamics", url: "chemistry-calculations.html?calc=thermo-calc", category: "Chemistry" },
+            { name: "Electrochemistry", url: "chemistry-calculations.html?calc=electrochem-calc", category: "Chemistry" },
+            { name: "Ideal Gas Law", url: "chemistry-calculations.html?calc=ideal-gas-calc", category: "Chemistry" },
+            { name: "Half-Life (Chem)", url: "chemistry-calculations.html?calc=half-life-calc", category: "Chemistry" },
+
+            // General / Molarity
+            { name: "Moles to Grams", url: "molarity-calculator.html?calc=moles-grams", category: "General" },
+            { name: "Molarity Calculator", url: "molarity-calculator.html?calc=molarity", category: "General" },
+            { name: "Dilution Calculator", url: "molarity-calculator.html?calc=dilution", category: "General" },
+            { name: "Unit Converter", url: "molarity-calculator.html?calc=unit-calc", category: "General" },
+            { name: "Common Conversions", url: "molarity-calculator.html?calc=conversions", category: "General" },
+
+            // Tissue Culture
+            { name: "Media Converter", url: "tissue-culture-calculations.html?calc=converter", category: "Tissue Culture" },
+            { name: "PGR Calculator", url: "tissue-culture-calculations.html?calc=pgr-calc", category: "Tissue Culture" },
+            { name: "Sterilization Calculator", url: "tissue-culture-calculations.html?calc=ster-calc", category: "Tissue Culture" },
+
+            // Buffers
+            { name: "Tris-HCl Buffer", url: "buffer-recipes.html?calc=tris-hcl", category: "Buffers" },
+            { name: "HEPES Buffer", url: "buffer-recipes.html?calc=hepes", category: "Buffers" },
+            { name: "MOPS Buffer", url: "buffer-recipes.html?calc=mops", category: "Buffers" },
+            { name: "PIPES Buffer", url: "buffer-recipes.html?calc=pipes", category: "Buffers" },
+            { name: "MES Buffer", url: "buffer-recipes.html?calc=mes", category: "Buffers" },
+            { name: "TES Buffer", url: "buffer-recipes.html?calc=tes", category: "Buffers" },
+            { name: "Tricine Buffer", url: "buffer-recipes.html?calc=tricine", category: "Buffers" },
+            { name: "Bicine Buffer", url: "buffer-recipes.html?calc=bicine", category: "Buffers" },
+            { name: "TAPS Buffer", url: "buffer-recipes.html?calc=taps", category: "Buffers" },
+            { name: "TAE Buffer", url: "buffer-recipes.html?calc=tae", category: "Buffers" },
+            { name: "TBE Buffer", url: "buffer-recipes.html?calc=tbe", category: "Buffers" },
+            { name: "SDS-PAGE Buffer", url: "buffer-recipes.html?calc=page", category: "Buffers" },
+            { name: "PBS Buffer", url: "buffer-recipes.html?calc=pbs", category: "Buffers" },
+            { name: "Phosphate Buffer", url: "buffer-recipes.html?calc=phosphate-buffer", category: "Buffers" },
+            { name: "Citrate Buffer", url: "buffer-recipes.html?calc=citrate", category: "Buffers" },
+            { name: "Borate Buffer", url: "buffer-recipes.html?calc=borate", category: "Buffers" },
+            { name: "Acetate Buffer", url: "buffer-recipes.html?calc=acetate", category: "Buffers" },
+            { name: "TE Buffer", url: "buffer-recipes.html?calc=te", category: "Buffers" }
+        ];
+
+        $(document).ready(function () {
+            $("#calculatorSearch").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                var resultsContainer = $("#searchResults");
+                var gridContainer = $(".grid-container");
+
+                if (value.length < 2) {
+                    resultsContainer.hide().empty();
+                    gridContainer.show();
+                    return;
+                }
+
+                var filtered = calculatorIndex.filter(function (item) {
+                    return item.name.toLowerCase().includes(value) || item.category.toLowerCase().includes(value);
+                });
+
+                if (filtered.length > 0) {
+                    gridContainer.hide();
+                    resultsContainer.empty().show();
+                    filtered.forEach(function (item) {
+                        var html = `
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <a href="${item.url}" class="calc-item" style="flex-direction: row; justify-content: start; padding: 20px; gap: 15px;">
+                                    <i class="fa-solid fa-calculator" style="font-size: 24px; margin-bottom: 0;"></i>
+                                    <div style="text-align: left;">
+                                        <h4 style="font-size: 16px; margin-bottom: 2px;">${item.name}</h4>
+                                        <p style="margin: 0; font-size: 12px; color: #00a651;">${item.category}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                        resultsContainer.append(html);
+                    });
+                } else {
+                    gridContainer.hide();
+                    resultsContainer.html('<div class="col-12 text-center" style="color: #ccc;">No calculators found.</div>').show();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+

@@ -1,0 +1,1457 @@
+.
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>One Research Hub - Chemistry Calculations</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-edu-meeting.css">
+    <style>
+        .calc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .calc-card:hover {
+            transform: translateY(-5px);
+            border-color: #00a651;
+        }
+
+        .calc-card h4 {
+            color: #00a651;
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            color: #ccc;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .calc-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 14px;
+            height: 42px;
+        }
+
+        .calc-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #d63384;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.2);
+        }
+
+        .calc-btn {
+            width: 100%;
+            background: #d63384;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .calc-btn:hover {
+            background: #00a651;
+        }
+
+        .result-box {
+            background: rgba(0, 166, 81, 0.1);
+            border: 1px solid rgba(0, 166, 81, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00a651;
+        }
+
+        .sidebar-nav {
+            position: sticky;
+            top: 170px;
+        }
+
+        .nav-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none !important;
+        }
+
+        .nav-box i {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 166, 81, 0.1);
+            color: #00a651;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .nav-box span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-box:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: rgba(0, 166, 81, 0.3);
+        }
+
+        .nav-box.active {
+            background: rgba(0, 166, 81, 0.15);
+            border-color: #00a651;
+        }
+
+        .nav-box.active i {
+            background: #00a651;
+            color: #fff;
+        }
+
+        .back-to-lab {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .back-to-lab:hover {
+            background: #00a651;
+            color: #fff;
+            border-color: #00a651;
+            transform: translateY(-2px);
+        }
+
+        /* Feedback Button */
+        .query-static-btn {
+            display: inline-flex;
+            background: #ced4da;
+            color: #333 !important;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none !important;
+        }
+
+        .query-static-btn:hover {
+            background: #00a651;
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 166, 81, 0.2);
+        }
+
+
+
+        /* Category Tabs */
+        .cat-tabs-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+
+        .cat-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .cat-tab.active,
+        .cat-tab:hover {
+            background: linear-gradient(135deg, #00a651, #007c3e);
+            color: white;
+            border-color: #00a651;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 166, 81, 0.2);
+        }
+
+        .back-to-lab i {
+            font-size: 16px;
+        }
+
+        .calc-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calc-select {
+            width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            padding: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .calc-select option {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .btn-pink-gradient {
+            background: linear-gradient(135deg, #d63384, #e91e63) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+        }
+
+        .btn-pink-gradient:hover {
+            background: #00a651 !important;
+            box-shadow: 0 4px 15px rgba(0, 166, 81, 0.3);
+        }
+
+        .sci-info-box {
+            background: rgba(0, 166, 81, 0.05);
+            border-left: 4px solid #00a651;
+            padding: 15px;
+            border-radius: 4px;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* Toggle Styles */
+        .unit-toggle {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .unit-option {
+            padding: 4px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            user-select: none;
+            margin-bottom: 0;
+            font-weight: 700;
+        }
+
+        .unit-option.active {
+            background: #00a651;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 166, 81, 0.3);
+        }
+
+        .unit-option input {
+            display: none;
+        }
+
+        /* Premium Mode Toggle (Pill Style) */
+        .mode-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: fit-content;
+            gap: 5px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mode-option {
+            padding: 10px 22px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 0;
+            user-select: none;
+            text-align: center;
+        }
+
+        .mode-option:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .mode-option.active {
+            background: #00a651;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 166, 81, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="../index.html" class="logo">
+                            <img src="../assets/images/logo.png" alt="Research Hub Logo">
+                            <div class="logo-text">
+                                <span class="title">Research Hub</span>
+                                <span class="tagline">Where Research Meets Expertise</span>
+                            </div>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="../events.html">Events</a></li>
+                            <li><a href="../book-slot.html">Book Now</a></li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)">Pages</a>
+                                <ul class="sub-menu">
+                                    <li><a href="../events.html">Events</a></li>
+                                    <li><a href="../products.html">Products</a></li>
+                                    <li><a href="../courses.html">Courses</a></li>
+                                    <li><a href="../team.html">Meet Our Team</a></li>
+                                    <li><a href="https://www.youtube.com/@Research-Hub" target="_blank"
+                                            style="color: #FF0000 !important; font-weight: bold;">YouTube</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)" class="active">Statistics</a>
+                                <ul class="sub-menu">
+                                    <li><a href="lab-calculations.html">Lab Calculations</a></li>
+                                    <li><a href="https://researchhub.shinyapps.io/onewayanova/" target="_blank">Data
+                                            Analysis</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="../index.html#contact">Contact Us</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="meetings-page" id="meetings"
+        style="padding-top: 80px; padding-bottom: 20px; min-height: 100vh; display: flex; flex-direction: column;">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-2">
+                    <a href="lab-calculations.html" class="back-to-lab" style="margin-bottom: 0;">
+                        <i class="fa-solid fa-house"></i>
+                        <span>BACK</span>
+                    </a>
+                </div>
+                <div class="col-lg-8 text-center">
+                    <div class="section-heading" style="margin-bottom: 0;">
+                        <h2 id="page-title" style="margin-bottom: 0;">Chemistry Calculations</h2>
+                        <p id="page-tagline" style="color: #ccc; margin-top: 5px; margin-bottom: 0;">Precise tools for
+                            chemical analysis and thermodynamics.</p>
+                    </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cat-tabs-container">
+                        <button class="cat-tab active" onclick="filterCat('gen-chem', this)">🧪 General
+                            Chemistry</button>
+                        <button class="cat-tab" onclick="filterCat('phys-chem', this)">⚛️ Physical Chemistry</button>
+                        <button class="cat-tab" onclick="filterCat('chem-kinetics', this)">⏱️ Chemical Kinetics</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="sidebar-nav">
+                        <!-- General Chemistry -->
+                        <div class="nav-box active" data-category="gen-chem" onclick="switchSection('ph-calc', this)">
+                            <i class="fa-solid fa-droplet"></i> <span>pH Calculator</span>
+                        </div>
+                        <div class="nav-box" data-category="gen-chem" onclick="switchSection('percent-comp', this)">
+                            <i class="fa-solid fa-percent"></i> <span>Percent Composition</span>
+                        </div>
+
+                        <!-- Physical Chemistry -->
+                        <div class="nav-box" data-category="phys-chem" style="display:none;"
+                            onclick="switchSection('thermo-calc', this)">
+                            <i class="fa-solid fa-fire"></i> <span>Thermodynamics</span>
+                        </div>
+                        <div class="nav-box" data-category="phys-chem" style="display:none;"
+                            onclick="switchSection('electrochem-calc', this)">
+                            <i class="fa-solid fa-bolt"></i> <span>Electrochemistry</span>
+                        </div>
+                        <div class="nav-box" data-category="phys-chem" style="display:none;"
+                            onclick="switchSection('ideal-gas-calc', this)">
+                            <i class="fa-solid fa-wind"></i> <span>Ideal Gas Law</span>
+                        </div>
+
+                        <!-- Chemical Kinetics -->
+                        <div class="nav-box" data-category="chem-kinetics" style="display:none;"
+                            onclick="switchSection('half-life-calc', this)">
+                            <i class="fa-solid fa-hourglass-half"></i> <span>Half-Life Calculator</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <!-- pH Calculator -->
+                    <div id="ph-calc" class="calc-section">
+                        <div class="calc-card">
+                            <h4>pH & pKa Calculator</h4>
+                            <div class="sci-info-box mb-4">
+                                <p class="mb-0" id="ph_formula">Relationship: pH = -log₁₀[H⁺]</p>
+                            </div>
+
+                            <!-- Mode Toggle for pH/pKa -->
+                            <div class="mode-toggle mb-4">
+                                <div class="mode-option active" onclick="switchPHMode('simple', this)">Simple pH / [H⁺]
+                                </div>
+                                <div class="mode-option" onclick="switchPHMode('pka', this)">Calculate pKa</div>
+                                <div class="mode-option" onclick="switchPHMode('ph_hh', this)">Calculate pH (HH)</div>
+                                <div class="mode-option" onclick="switchPHMode('ratio', this)">Calculate Ratio</div>
+                            </div>
+
+                            <div id="ph_input_container">
+                                <!-- Simple Mode Inputs -->
+                                <div id="grp_ph_simple" class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">pH Value</label>
+                                        <input type="number" id="ph_input" class="calc-input" placeholder="e.g. 7.0"
+                                            step="0.01">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">[H⁺] Concentration (M)</label>
+                                        <input type="number" id="h_input" class="calc-input" placeholder="e.g. 1e-7">
+                                    </div>
+                                </div>
+
+                                <!-- HH Mode Inputs -->
+                                <div id="grp_ph_hh" class="row" style="display: none;">
+                                    <div class="col-md-6 mb-3" id="inp_ph_hh">
+                                        <label class="form-label">pH Value</label>
+                                        <input type="number" id="ph_hh" class="calc-input" placeholder="e.g. 7.4"
+                                            step="0.01">
+                                    </div>
+                                    <div class="col-md-6 mb-3" id="inp_pka_hh">
+                                        <label class="form-label">pKa Value</label>
+                                        <input type="number" id="pka_hh" class="calc-input" placeholder="e.g. 6.1"
+                                            step="0.01">
+                                    </div>
+                                    <div class="col-md-12 mb-3" id="inp_ratio_hh">
+                                        <label class="form-label">Ratio ([Base] / [Acid])</label>
+                                        <div class="calc-input-group">
+                                            <input type="number" id="ratio_hh" class="calc-input" placeholder="e.g. 20"
+                                                step="0.01">
+                                            <div class="unit-toggle">
+                                                <label class="unit-option active"
+                                                    onclick="togglePHRatioMode('direct', this)">Direct Ratio<input
+                                                        type="radio" value="direct" checked></label>
+                                                <label class="unit-option"
+                                                    onclick="togglePHRatioMode('concs', this)">Concentrations<input
+                                                        type="radio" value="concs"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3 grp_ph_concs" style="display: none;">
+                                        <label class="form-label">[Base] Concentration (M)</label>
+                                        <input type="number" id="base_conc" class="calc-input" placeholder="e.g. 0.1">
+                                    </div>
+                                    <div class="col-md-6 mb-3 grp_ph_concs" style="display: none;">
+                                        <label class="form-label">[Acid] Concentration (M)</label>
+                                        <input type="number" id="acid_conc" class="calc-input" placeholder="e.g. 0.1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2" id="ph_simple_btns">
+                                <div class="col-md-6 mb-2">
+                                    <button class="calc-btn" onclick="calcHFromPh()">Calculate [H⁺]</button>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <button class="calc-btn" onclick="calcPhFromH()">Calculate pH</button>
+                                </div>
+                            </div>
+
+                            <button id="ph_hh_btn" class="calc-btn btn-pink-gradient" style="display: none;"
+                                onclick="calculateAdvancedPH()">Calculate Relationship</button>
+
+                            <div id="ph_result" class="result-box">
+                                <p id="ph_res_text" class="mb-0 result-value"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Percent Composition -->
+                    <div id="percent-comp" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Percent Composition by Mass</h4>
+                            <p style="color: #ccc; font-size: 14px; margin-bottom: 20px;">Calculate the percentage of an
+                                element in a compound.</p>
+                            <div class="form-group">
+                                <label class="form-label">Mass of Element (g)</label>
+                                <input type="number" id="element_mass" class="calc-input" placeholder="e.g. 12.01">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Total Mass of Compound (g)</label>
+                                <input type="number" id="compound_mass" class="calc-input" placeholder="e.g. 44.01">
+                            </div>
+                            <button class="calc-btn" onclick="calcPercentComp()">Calculate Percentage</button>
+                            <div id="percent_result" class="result-box">
+                                <p id="percent_res_text" class="mb-0 result-value"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Half-Life Calculator -->
+                    <div id="half-life-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Chemistry Half-Life Calculator</h4>
+                            <p style="color: #ccc; font-size: 14px; margin-bottom: 20px;">Calculate the remaining
+                                quantity of
+                                a substance using the half-life equation.</p>
+
+                            <div class="sci-info-box mb-4"
+                                style="background: rgba(214, 51, 132, 0.05); border-left: 4px solid #d63384; padding: 15px; border-radius: 4px; color: #ccc; font-size: 14px;">
+                                <p class="mb-0"><strong>Remaining Quantity Calculation</strong><br>Use the equation N(t)
+                                    =
+                                    N₀ × 0.5<sup>(t / T½)</sup></p>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0">Initial Quantity (N₀)</label>
+                                    <div class="unit-toggle">
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_n0_unit')">
+                                            mg <input type="radio" value="mg">
+                                        </label>
+                                        <label class="unit-option active" onclick="selectUnit(this, 'hl_n0_unit')">
+                                            g <input type="radio" value="g" checked>
+                                        </label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_n0_unit')">
+                                            kg <input type="radio" value="kg">
+                                        </label>
+                                    </div>
+                                </div>
+                                <input type="number" id="hl_n0" class="calc-input" placeholder="Enter quantity">
+                                <input type="hidden" id="hl_n0_unit" value="g">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0">Time Elapsed (t)</label>
+                                    <div class="unit-toggle" style="flex-wrap: wrap; justify-content: flex-end;">
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_t_unit')">s<input
+                                                type="radio" value="sec"></label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_t_unit')">min<input
+                                                type="radio" value="min"></label>
+                                        <label class="unit-option active"
+                                            onclick="selectUnit(this, 'hl_t_unit')">h<input type="radio" value="hr"
+                                                checked></label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_t_unit')">d<input
+                                                type="radio" value="day"></label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_t_unit')">y<input
+                                                type="radio" value="year"></label>
+                                    </div>
+                                </div>
+                                <input type="number" id="hl_t" class="calc-input" placeholder="Enter time">
+                                <input type="hidden" id="hl_t_unit" value="hr">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label mb-0">Half-Life (T½)</label>
+                                    <div class="unit-toggle" style="flex-wrap: wrap; justify-content: flex-end;">
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_thalf_unit')">s<input
+                                                type="radio" value="sec"></label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_thalf_unit')">min<input
+                                                type="radio" value="min"></label>
+                                        <label class="unit-option active"
+                                            onclick="selectUnit(this, 'hl_thalf_unit')">h<input type="radio" value="hr"
+                                                checked></label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_thalf_unit')">d<input
+                                                type="radio" value="day"></label>
+                                        <label class="unit-option" onclick="selectUnit(this, 'hl_thalf_unit')">y<input
+                                                type="radio" value="year"></label>
+                                    </div>
+                                </div>
+                                <input type="number" id="hl_thalf" class="calc-input" placeholder="Enter half-life">
+                                <input type="hidden" id="hl_thalf_unit" value="hr">
+                            </div>
+
+                            <button class="calc-btn btn-pink-gradient" onclick="calcHalfLife()">Calculate Remaining
+                                Quantity</button>
+
+                            <div id="hl_result" class="result-box">
+                                <p id="hl_res_text" class="mb-0 result-value"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Electrochemistry Calculator -->
+                    <div id="electrochem-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Electrochemistry Calculator</h4>
+                            <p style="color: #ccc; font-size: 14px; margin-bottom: 20px;">Calculate Gibbs Free Energy,
+                                Cell Potential, and Equilibrium Constants.</p>
+
+                            <!-- Sub-tabs for Electrochemistry -->
+                            <div class="mode-toggle mb-4">
+                                <div class="mode-option active" onclick="switchECMode('dg', this)">Calculate ΔG°</div>
+                                <div class="mode-option" onclick="switchECMode('e0', this)">Calculate E°</div>
+                                <div class="mode-option" onclick="switchECMode('n', this)">Calculate n</div>
+                                <div class="mode-option" onclick="switchECMode('cell-e', this)">Calculate E</div>
+                                <div class="mode-option" onclick="switchECMode('k', this)">Calculate K</div>
+                            </div>
+
+                            <div id="ec_input_container">
+                                <!-- Dynamic Inputs will be handled by switchECMode -->
+                                <div id="ec_mode_info" class="sci-info-box mb-4">
+                                    <p class="mb-0" id="ec_formula">ΔG° = -nFE°</p>
+                                </div>
+
+                                <div id="ec_common_inputs">
+                                    <div class="form-group" id="grp_ec_n">
+                                        <label class="form-label">Number of Electrons Transferred (n)</label>
+                                        <input type="number" id="ec_n" class="calc-input" placeholder="e.g. 2">
+                                    </div>
+
+                                    <div class="form-group" id="grp_ec_e0">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="form-label mb-0">Standard Reduction Potential (E°)</label>
+                                            <div class="unit-toggle">
+                                                <label class="unit-option"
+                                                    onclick="selectUnit(this, 'ec_e0_unit')">mV<input type="radio"
+                                                        value="mv"></label>
+                                                <label class="unit-option active"
+                                                    onclick="selectUnit(this, 'ec_e0_unit')">V<input type="radio"
+                                                        value="v" checked></label>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="ec_e0" class="calc-input"
+                                            placeholder="Enter potential">
+                                        <input type="hidden" id="ec_e0_unit" value="v">
+                                    </div>
+
+                                    <div class="form-group" id="grp_ec_dg" style="display: none;">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="form-label mb-0">Gibbs Free Energy (ΔG°)</label>
+                                            <div class="unit-toggle">
+                                                <label class="unit-option active"
+                                                    onclick="selectUnit(this, 'ec_dg_unit')">J/mol<input type="radio"
+                                                        value="j" checked></label>
+                                                <label class="unit-option"
+                                                    onclick="selectUnit(this, 'ec_dg_unit')">kJ/mol<input type="radio"
+                                                        value="kj"></label>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="ec_dg" class="calc-input"
+                                            placeholder="Enter Gibbs energy">
+                                        <input type="hidden" id="ec_dg_unit" value="j">
+                                    </div>
+
+                                    <div class="form-group" id="grp_ec_q" style="display: none;">
+                                        <label class="form-label">Reaction Quotient (Q)</label>
+                                        <input type="number" id="ec_q" class="calc-input" placeholder="e.g. 0.01">
+                                    </div>
+
+                                    <div class="form-group" id="grp_ec_t" style="display: none;">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="form-label mb-0">Temperature (T)</label>
+                                            <div class="unit-toggle">
+                                                <label class="unit-option"
+                                                    onclick="selectUnit(this, 'ec_t_unit')">°C<input type="radio"
+                                                        value="c"></label>
+                                                <label class="unit-option active"
+                                                    onclick="selectUnit(this, 'ec_t_unit')">K<input type="radio"
+                                                        value="k" checked></label>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="ec_t" class="calc-input" placeholder="e.g. 298.15">
+                                        <input type="hidden" id="ec_t_unit" value="k">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="calc-btn btn-pink-gradient" onclick="calcElectrochem()">Calculate</button>
+
+                            <div id="ec_result" class="result-box">
+                                <p id="ec_res_text" class="mb-0 result-value"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thermodynamics Calculator -->
+                    <div id="thermo-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Thermodynamics Calculator</h4>
+                            <div class="sci-info-box mb-4">
+                                <p class="mb-0" id="thermo_formula">ΔG = ΔH - TΔS</p>
+                            </div>
+
+                            <div class="mode-toggle mb-4">
+                                <div class="mode-option active" onclick="switchThermoMode('dg', this)">Calculate ΔG
+                                </div>
+                                <div class="mode-option" onclick="switchThermoMode('dh', this)">Calculate ΔH</div>
+                                <div class="mode-option" onclick="switchThermoMode('ds', this)">Calculate ΔS</div>
+                                <div class="mode-option" onclick="switchThermoMode('t', this)">Calculate T</div>
+                            </div>
+
+                            <div id="thermo_inputs">
+                                <div class="form-group" id="grp_th_dg" style="display: none;">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Gibbs Free Energy (ΔG)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'th_dg_unit')">kJ/mol<input type="radio"
+                                                    value="kj" checked></label>
+                                            <label class="unit-option"
+                                                onclick="selectUnit(this, 'th_dg_unit')">J/mol<input type="radio"
+                                                    value="j"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="th_dg" class="calc-input" placeholder="e.g. -30.5">
+                                    <input type="hidden" id="th_dg_unit" value="kj">
+                                </div>
+
+                                <div class="form-group" id="grp_th_dh">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Enthalpy Change (ΔH)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'th_dh_unit')">kJ/mol<input type="radio"
+                                                    value="kj" checked></label>
+                                            <label class="unit-option"
+                                                onclick="selectUnit(this, 'th_dh_unit')">J/mol<input type="radio"
+                                                    value="j"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="th_dh" class="calc-input" placeholder="e.g. -50.2">
+                                    <input type="hidden" id="th_dh_unit" value="kj">
+                                </div>
+
+                                <div class="form-group" id="grp_th_ds">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Entropy Change (ΔS)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'th_ds_unit')">J/mol·K<input type="radio"
+                                                    value="j" checked></label>
+                                            <label class="unit-option"
+                                                onclick="selectUnit(this, 'th_ds_unit')">kJ/mol·K<input type="radio"
+                                                    value="kj"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="th_ds" class="calc-input" placeholder="e.g. 150.5">
+                                    <input type="hidden" id="th_ds_unit" value="j">
+                                </div>
+
+                                <div class="form-group" id="grp_th_t">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Temperature (T)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'th_t_unit')">K<input type="radio" value="k"
+                                                    checked></label>
+                                            <label class="unit-option" onclick="selectUnit(this, 'th_t_unit')">°C<input
+                                                    type="radio" value="c"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="th_t" class="calc-input" placeholder="e.g. 298.15">
+                                    <input type="hidden" id="th_t_unit" value="k">
+                                </div>
+                            </div>
+
+                            <button class="calc-btn btn-pink-gradient" onclick="calculateThermo()">Calculate
+                                Relationship</button>
+
+                            <div id="thermo_result" class="result-box">
+                                <p id="thermo_res_text" class="mb-0 result-value"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ideal Gas Law Calculator -->
+                    <div id="ideal-gas-calc" class="calc-section" style="display: none;">
+                        <div class="calc-card">
+                            <h4>Ideal Gas Law Calculator</h4>
+                            <div class="sci-info-box mb-4">
+                                <p class="mb-0" id="gas_formula">Ideal Gas Law: PV = nRT</p>
+                            </div>
+
+                            <div class="mode-toggle mb-4">
+                                <div class="mode-option active" onclick="switchGasMode('p', this)">Calculate P</div>
+                                <div class="mode-option" onclick="switchGasMode('v', this)">Calculate V</div>
+                                <div class="mode-option" onclick="switchGasMode('n', this)">Calculate n</div>
+                                <div class="mode-option" onclick="switchGasMode('t', this)">Calculate T</div>
+                            </div>
+
+                            <div id="gas_inputs">
+                                <div class="form-group" id="grp_gas_p" style="display: none;">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Pressure (P)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'gas_p_unit')">atm<input type="radio"
+                                                    value="atm" checked></label>
+                                            <label class="unit-option"
+                                                onclick="selectUnit(this, 'gas_p_unit')">kPa<input type="radio"
+                                                    value="kpa"></label>
+                                            <label class="unit-option"
+                                                onclick="selectUnit(this, 'gas_p_unit')">mmHg<input type="radio"
+                                                    value="mmhg"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="gas_p" class="calc-input" placeholder="e.g. 1.0">
+                                    <input type="hidden" id="gas_p_unit" value="atm">
+                                </div>
+
+                                <div class="form-group" id="grp_gas_v">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Volume (V)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'gas_v_unit')">L<input type="radio" value="l"
+                                                    checked></label>
+                                            <label class="unit-option" onclick="selectUnit(this, 'gas_v_unit')">mL<input
+                                                    type="radio" value="ml"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="gas_v" class="calc-input" placeholder="e.g. 22.4">
+                                    <input type="hidden" id="gas_v_unit" value="l">
+                                </div>
+
+                                <div class="form-group" id="grp_gas_n">
+                                    <label class="form-label">Amount (n) in Moles</label>
+                                    <input type="number" id="gas_n" class="calc-input" placeholder="e.g. 1.0">
+                                </div>
+
+                                <div class="form-group" id="grp_gas_t">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label class="form-label mb-0">Temperature (T)</label>
+                                        <div class="unit-toggle">
+                                            <label class="unit-option active"
+                                                onclick="selectUnit(this, 'gas_t_unit')">K<input type="radio" value="k"
+                                                    checked></label>
+                                            <label class="unit-option" onclick="selectUnit(this, 'gas_t_unit')">°C<input
+                                                    type="radio" value="c"></label>
+                                        </div>
+                                    </div>
+                                    <input type="number" id="gas_t" class="calc-input" placeholder="e.g. 273.15">
+                                    <input type="hidden" id="gas_t_unit" value="k">
+                                </div>
+                            </div>
+
+                            <button class="calc-btn btn-pink-gradient" onclick="calculateGas()">Calculate
+                                Value</button>
+
+                            <div id="gas_result" class="result-box">
+                                <p id="gas_res_text" class="mb-0 result-value"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- Close col-lg-9 -->
+            </div> <!-- Close row -->
+            <div class="footer"
+                style="padding: 15px 0px; background: transparent; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                <p style="margin: 0;">COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="position: absolute; left: -9999px; visibility: hidden;">
+                        <form id="rzp_form">
+                            <script src="https://checkout.razorpay.com/v1/payment-button.js"
+                                data-payment_button_id="pl_S0DP8f1W2RjLq8" async> </script>
+                        </form>
+                    </div>
+                    <a href="javascript:void(0)" class="query-static-btn"
+                        onclick="var btn = document.querySelector('#rzp_form .razorpay-payment-button'); if(btn) btn.click();">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Donate</span>
+                    </a>
+                    <a href="../index.html#contact" class="query-static-btn">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        <span>Query / Error / Suggestions</span>
+                    </a>
+                </div>
+            </div>
+        </div> <!-- Close container -->
+    </section>
+
+    <!-- Scripts -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/js/user-auth.js"></script>
+
+    <script>
+        function switchSection(id, el) {
+            document.querySelectorAll('.calc-section').forEach(s => s.style.display = 'none');
+            const target = document.getElementById(id);
+            if (target) target.style.display = 'block';
+
+            document.querySelectorAll('.nav-box').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            localStorage.setItem('chem_calc_last_section', id);
+
+            // Also save the current category
+            const cat = el.getAttribute('data-category');
+            if (cat) localStorage.setItem('chem_calc_last_cat', cat);
+        }
+
+        // Filter categories
+        function filterCat(category, el) {
+            // Update tabs
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+
+            // Show/Hide sidebar items
+            const boxes = document.querySelectorAll('.nav-box');
+            let firstMatch = null;
+
+            boxes.forEach(box => {
+                if (box.getAttribute('data-category') === category) {
+                    box.style.display = 'flex';
+                    if (!firstMatch) firstMatch = box;
+                } else {
+                    box.style.display = 'none';
+                }
+            });
+
+            // Automatically switch to the first calculator in the category if current is not in category
+            const currentActive = document.querySelector('.nav-box.active');
+            if (!currentActive || currentActive.getAttribute('data-category') !== category) {
+                if (firstMatch) firstMatch.click();
+            }
+
+            localStorage.setItem('chem_calc_last_cat', category);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastCat = localStorage.getItem('chem_calc_last_cat') || 'gen-chem';
+            const lastSection = localStorage.getItem('chem_calc_last_section');
+
+            // find the category button and click it to set the state
+            const catBtn = Array.from(document.querySelectorAll('.cat-tab')).find(btn =>
+                btn.getAttribute('onclick').includes(`'${lastCat}'`)
+            );
+            if (catBtn) {
+                filterCat(lastCat, catBtn);
+            }
+
+            // After filtering, if we had a last section, try to reactivate it
+            if (lastSection) {
+                const navBox = Array.from(document.querySelectorAll('.nav-box')).find(box =>
+                    box.getAttribute('onclick').includes(`'${lastSection}'`)
+                );
+                if (navBox && navBox.getAttribute('data-category') === lastCat) {
+                    switchSection(lastSection, navBox);
+                }
+            }
+        });
+
+        let currentPHMode = 'simple';
+        let phRatioType = 'direct';
+
+        function switchPHMode(mode, el) {
+            currentPHMode = mode;
+            document.querySelectorAll('#ph-calc .mode-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+
+            const formula = document.getElementById('ph_formula');
+            const grpSimple = document.getElementById('grp_ph_simple');
+            const grp_hh = document.getElementById('grp_ph_hh');
+            const simpleBtns = document.getElementById('ph_simple_btns');
+            const hhBtn = document.getElementById('ph_hh_btn');
+
+            // Info boxes
+            const inpPH = document.getElementById('inp_ph_hh');
+            const inpPKa = document.getElementById('inp_pka_hh');
+            const inpRatio = document.getElementById('inp_ratio_hh');
+
+            document.getElementById('ph_result').style.display = 'none';
+
+            if (mode === 'simple') {
+                formula.innerHTML = "Relationship: pH = -log₁₀[H⁺]";
+                grpSimple.style.display = 'flex';
+                grp_hh.style.display = 'none';
+                simpleBtns.style.display = 'flex';
+                hhBtn.style.display = 'none';
+            } else {
+                grpSimple.style.display = 'none';
+                grp_hh.style.display = 'flex';
+                simpleBtns.style.display = 'none';
+                hhBtn.style.display = 'block';
+
+                inpPH.style.display = (mode === 'pka' || mode === 'ratio') ? 'block' : 'none';
+                inpPKa.style.display = (mode === 'ph_hh' || mode === 'ratio') ? 'block' : 'none';
+                inpRatio.style.display = (mode !== 'ratio') ? 'block' : 'none';
+
+                // Ensure concentration fields are hidden in Ratio mode
+                if (mode === 'ratio') {
+                    document.querySelectorAll('.grp_ph_concs').forEach(g => g.style.display = 'none');
+                } else {
+                    // Restore based on previous toggle state for other modes
+                    document.querySelectorAll('.grp_ph_concs').forEach(g => g.style.display = (phRatioType === 'concs' ? 'block' : 'none'));
+                }
+
+                if (mode === 'pka') {
+                    formula.innerHTML = "Henderson-Hasselbalch: pKa = pH - log₁₀([Base]/[Acid])";
+                    hhBtn.innerText = "Calculate pKa";
+                } else if (mode === 'ph_hh') {
+                    formula.innerHTML = "Henderson-Hasselbalch: pH = pKa + log₁₀([Base]/[Acid])";
+                    hhBtn.innerText = "Calculate pH";
+                } else if (mode === 'ratio') {
+                    formula.innerHTML = "Henderson-Hasselbalch: Ratio = 10^(pH - pKa)";
+                    hhBtn.innerText = "Calculate Ratio";
+                    // In ratio mode, hide concentrations toggle and just show result from pH/pKa
+                    document.getElementById('inp_ratio_hh').style.display = 'none';
+                }
+            }
+        }
+
+        function togglePHRatioMode(type, el) {
+            phRatioType = type;
+            const parent = el.parentElement;
+            parent.querySelectorAll('.unit-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+
+            document.querySelectorAll('.grp_ph_concs').forEach(g => g.style.display = (type === 'concs' ? 'block' : 'none'));
+            document.getElementById('ratio_hh').disabled = (type === 'concs');
+        }
+
+        function calculateAdvancedPH() {
+            const resBox = document.getElementById('ph_result');
+            const resText = document.getElementById('ph_res_text');
+
+            let ph = parseFloat(document.getElementById('ph_hh').value);
+            let pka = parseFloat(document.getElementById('pka_hh').value);
+            let ratio;
+
+            if (phRatioType === 'concs') {
+                const base = parseFloat(document.getElementById('base_conc').value);
+                const acid = parseFloat(document.getElementById('acid_conc').value);
+                if (isNaN(base) || isNaN(acid) || acid <= 0) return alert("Please enter valid concentrations.");
+                ratio = base / acid;
+                document.getElementById('ratio_hh').value = ratio.toFixed(4);
+            } else {
+                ratio = parseFloat(document.getElementById('ratio_hh').value);
+            }
+
+            if (currentPHMode === 'pka') {
+                if (isNaN(ph) || isNaN(ratio) || ratio <= 0) return alert("Please enter valid pH and Ratio.");
+                pka = ph - Math.log10(ratio);
+                resText.innerHTML = "pKa = " + pka.toFixed(4);
+            } else if (currentPHMode === 'ph_hh') {
+                if (isNaN(pka) || isNaN(ratio) || ratio <= 0) return alert("Please enter valid pKa and Ratio.");
+                ph = pka + Math.log10(ratio);
+                resText.innerHTML = "pH = " + ph.toFixed(4);
+            } else if (currentPHMode === 'ratio') {
+                if (isNaN(ph) || isNaN(pka)) return alert("Please enter valid pH and pKa.");
+                ratio = Math.pow(10, ph - pka);
+                resText.innerHTML = "Ratio ([Base]/[Acid]) = " + (ratio < 0.0001 ? ratio.toExponential(4) : ratio.toFixed(4));
+            }
+
+            resBox.style.display = 'block';
+        }
+
+        function calcHFromPh() {
+            const ph = parseFloat(document.getElementById('ph_input').value);
+            if (isNaN(ph)) return alert("Please enter pH value.");
+            const h = Math.pow(10, -ph);
+            const resBox = document.getElementById('ph_result');
+            const resText = document.getElementById('ph_res_text');
+            resText.innerHTML = "[H⁺] = " + h.toExponential(4) + " M";
+            resBox.style.display = 'block';
+        }
+
+        function calcPhFromH() {
+            const h = parseFloat(document.getElementById('h_input').value);
+            if (isNaN(h) || h <= 0) return alert("Please enter valid [H⁺] concentration.");
+            const ph = -Math.log10(h);
+            const resBox = document.getElementById('ph_result');
+            const resText = document.getElementById('ph_res_text');
+            resText.innerHTML = "pH = " + ph.toFixed(2);
+            resBox.style.display = 'block';
+        }
+
+        function calcPercentComp() {
+            const eMass = parseFloat(document.getElementById('element_mass').value);
+            const cMass = parseFloat(document.getElementById('compound_mass').value);
+            if (isNaN(eMass) || isNaN(cMass) || cMass === 0) return alert("Please enter valid masses.");
+            const percent = (eMass / cMass) * 100;
+            const resBox = document.getElementById('percent_result');
+            const resText = document.getElementById('percent_res_text');
+            resText.innerHTML = percent.toFixed(2) + "% by mass";
+            resBox.style.display = 'block';
+        }
+
+        function calcHalfLife() {
+            const n0 = parseFloat(document.getElementById('hl_n0').value);
+            const n0_unit = document.getElementById('hl_n0_unit').value;
+            const t = parseFloat(document.getElementById('hl_t').value);
+            const t_unit = document.getElementById('hl_t_unit').value;
+            const thalf = parseFloat(document.getElementById('hl_thalf').value);
+            const thalf_unit = document.getElementById('hl_thalf_unit').value;
+
+            if (isNaN(n0) || isNaN(t) || isNaN(thalf) || thalf <= 0) {
+                return alert("Please enter valid positive numbers. Half-life must be greater than 0.");
+            }
+
+            // Convert time to seconds for consistent ratio calculation
+            const timeUnits = {
+                'sec': 1,
+                'min': 60,
+                'hr': 3600,
+                'day': 86400,
+                'week': 604800,
+                'month': 2629800, // Approx 30.44 days
+                'year': 31536000  // 365 days
+            };
+
+            const t_total_sec = t * timeUnits[t_unit];
+            const thalf_total_sec = thalf * timeUnits[thalf_unit];
+
+            const remaining = n0 * Math.pow(0.5, t_total_sec / thalf_total_sec);
+
+            const resBox = document.getElementById('hl_result');
+            const resText = document.getElementById('hl_res_text');
+
+            // Format numbers nicely
+            let formattedRes = remaining < 0.0001 ? remaining.toExponential(4) : remaining.toFixed(4);
+
+            resText.innerHTML = "Remaining Quantity (N(t)) = " + formattedRes + " " + n0_unit;
+            resBox.style.display = 'block';
+        }
+
+        let currentThermoMode = 'dg';
+        function switchThermoMode(mode, el) {
+            currentThermoMode = mode;
+            document.querySelectorAll('#thermo-calc .mode-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+
+            const formula = document.getElementById('thermo_formula');
+            const grpDG = document.getElementById('grp_th_dg');
+            const grpDH = document.getElementById('grp_th_dh');
+            const grpDS = document.getElementById('grp_th_ds');
+            const grpT = document.getElementById('grp_th_t');
+
+            grpDG.style.display = (mode === 'dg') ? 'none' : 'block';
+            grpDH.style.display = (mode === 'dh') ? 'none' : 'block';
+            grpDS.style.display = (mode === 'ds') ? 'none' : 'block';
+            grpT.style.display = (mode === 't') ? 'none' : 'block';
+
+            if (mode === 'dg') formula.innerHTML = "ΔG = ΔH - TΔS";
+            else if (mode === 'dh') formula.innerHTML = "ΔH = ΔG + TΔS";
+            else if (mode === 'ds') formula.innerHTML = "ΔS = (ΔH - ΔG) / T";
+            else if (mode === 't') formula.innerHTML = "T = (ΔH - ΔG) / ΔS";
+
+            document.getElementById('thermo_result').style.display = 'none';
+        }
+
+        function calculateThermo() {
+            const dgInput = parseFloat(document.getElementById('th_dg').value);
+            const dgUnit = document.getElementById('th_dg_unit').value;
+            const dhInput = parseFloat(document.getElementById('th_dh').value);
+            const dhUnit = document.getElementById('th_dh_unit').value;
+            const dsInput = parseFloat(document.getElementById('th_ds').value);
+            const dsUnit = document.getElementById('th_ds_unit').value;
+            const tInput = parseFloat(document.getElementById('th_t').value);
+            const tUnit = document.getElementById('th_t_unit').value;
+
+            // Normalize to Standard Units: ΔG (J), ΔH (J), ΔS (J/K), T (K)
+            let dg = dgUnit === 'kj' ? dgInput * 1000 : dgInput;
+            let dh = dhUnit === 'kj' ? dhInput * 1000 : dhInput;
+            let ds = dsUnit === 'kj' ? dsInput * 1000 : dsInput;
+            let t = tUnit === 'c' ? tInput + 273.15 : tInput;
+
+            let result, resultText;
+
+            if (currentThermoMode === 'dg') {
+                if (isNaN(dh) || isNaN(t) || isNaN(ds)) return alert("Please fill all required inputs.");
+                result = dh - (t * ds);
+                resultText = "ΔG = " + (result / 1000).toFixed(4) + " kJ/mol (" + result.toFixed(2) + " J/mol)";
+            } else if (currentThermoMode === 'dh') {
+                if (isNaN(dg) || isNaN(t) || isNaN(ds)) return alert("Please fill all required inputs.");
+                result = dg + (t * ds);
+                resultText = "ΔH = " + (result / 1000).toFixed(4) + " kJ/mol (" + result.toFixed(2) + " J/mol)";
+            } else if (currentThermoMode === 'ds') {
+                if (isNaN(dh) || isNaN(dg) || isNaN(t) || t === 0) return alert("Please fill all required inputs. Temperature cannot be zero.");
+                result = (dh - dg) / t;
+                resultText = "ΔS = " + result.toFixed(4) + " J/mol·K (" + (result / 1000).toFixed(6) + " kJ/mol·K)";
+            } else if (currentThermoMode === 't') {
+                if (isNaN(dh) || isNaN(dg) || isNaN(ds) || ds === 0) return alert("Please fill all required inputs. Entropy change cannot be zero.");
+                result = (dh - dg) / ds;
+                resultText = "T = " + result.toFixed(2) + " K (" + (result - 273.15).toFixed(2) + " °C)";
+            }
+
+            const resBox = document.getElementById('thermo_result');
+            const resVal = document.getElementById('thermo_res_text');
+            resVal.innerText = resultText;
+            resBox.style.display = 'block';
+        }
+
+        let currentGasMode = 'p';
+        function switchGasMode(mode, el) {
+            currentGasMode = mode;
+            document.querySelectorAll('#ideal-gas-calc .mode-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+
+            const formula = document.getElementById('gas_formula');
+            const grpP = document.getElementById('grp_gas_p');
+            const grpV = document.getElementById('grp_gas_v');
+            const grpN = document.getElementById('grp_gas_n');
+            const grpT = document.getElementById('grp_gas_t');
+
+            grpP.style.display = (mode === 'p') ? 'none' : 'block';
+            grpV.style.display = (mode === 'v') ? 'none' : 'block';
+            grpN.style.display = (mode === 'n') ? 'none' : 'block';
+            grpT.style.display = (mode === 't') ? 'none' : 'block';
+
+            if (mode === 'p') formula.innerHTML = "Pressure: P = nRT / V";
+            else if (mode === 'v') formula.innerHTML = "Volume: V = nRT / P";
+            else if (mode === 'n') formula.innerHTML = "Moles: n = PV / RT";
+            else if (mode === 't') formula.innerHTML = "Temperature: T = PV / nR";
+
+            document.getElementById('gas_result').style.display = 'none';
+        }
+
+        function calculateGas() {
+            const pVal = parseFloat(document.getElementById('gas_p').value);
+            const pUnit = document.getElementById('gas_p_unit').value;
+            const vVal = parseFloat(document.getElementById('gas_v').value);
+            const vUnit = document.getElementById('gas_v_unit').value;
+            const nVal = parseFloat(document.getElementById('gas_n').value);
+            const tVal = parseFloat(document.getElementById('gas_t').value);
+            const tUnit = document.getElementById('gas_t_unit').value;
+
+            const R = 0.08206; // L·atm/(mol·K)
+
+            // Normalize to base units: atm, L, mol, K
+            let P = pVal;
+            if (pUnit === 'kpa') P = pVal / 101.325;
+            else if (pUnit === 'mmhg') P = pVal / 760;
+
+            let V = vVal;
+            if (vUnit === 'ml') V = vVal / 1000;
+
+            let n = nVal;
+
+            let T = tVal;
+            if (tUnit === 'c') T = tVal + 273.15;
+
+            let result, resultText;
+
+            if (currentGasMode === 'p') {
+                if (isNaN(V) || isNaN(n) || isNaN(T) || V === 0) return alert("Please fill all required inputs correctly.");
+                result = (n * R * T) / V; // in atm
+                resultText = "Pressure (P) = " + result.toFixed(4) + " atm (" + (result * 101.325).toFixed(2) + " kPa)";
+            } else if (currentGasMode === 'v') {
+                if (isNaN(P) || isNaN(n) || isNaN(T) || P === 0) return alert("Please fill all required inputs correctly.");
+                result = (n * R * T) / P; // in L
+                resultText = "Volume (V) = " + result.toFixed(4) + " L (" + (result * 1000).toFixed(2) + " mL)";
+            } else if (currentGasMode === 'n') {
+                if (isNaN(P) || isNaN(V) || isNaN(T) || T === 0) return alert("Please fill all required inputs correctly.");
+                result = (P * V) / (R * T); // in mol
+                resultText = "Moles (n) = " + result.toFixed(6) + " mol";
+            } else if (currentGasMode === 't') {
+                if (isNaN(P) || isNaN(V) || isNaN(n) || n === 0) return alert("Please fill all required inputs correctly.");
+                result = (P * V) / (n * R); // in K
+                resultText = "Temperature (T) = " + result.toFixed(2) + " K (" + (result - 273.15).toFixed(2) + " °C)";
+            }
+
+            const resBox = document.getElementById('gas_result');
+            const resVal = document.getElementById('gas_res_text');
+            resVal.innerText = resultText;
+            resBox.style.display = 'block';
+        }
+
+        function selectUnit(el, targetId) {
+            const parent = el.parentElement;
+            parent.querySelectorAll('.unit-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            const val = el.querySelector('input').value;
+            document.getElementById(targetId).value = val;
+        }
+
+        let currentECMode = 'dg';
+        function switchECMode(mode, el) {
+            currentECMode = mode;
+            document.querySelectorAll('#electrochem-calc .mode-option').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+
+            // Hide all first
+            const groups = ['grp_ec_n', 'grp_ec_e0', 'grp_ec_dg', 'grp_ec_q', 'grp_ec_t'];
+            groups.forEach(g => document.getElementById(g).style.display = 'none');
+
+            const formula = document.getElementById('ec_formula');
+
+            if (mode === 'dg') {
+                document.getElementById('grp_ec_n').style.display = 'block';
+                document.getElementById('grp_ec_e0').style.display = 'block';
+                formula.innerHTML = "ΔG° = -nFE°";
+            } else if (mode === 'e0') {
+                document.getElementById('grp_ec_dg').style.display = 'block';
+                document.getElementById('grp_ec_n').style.display = 'block';
+                formula.innerHTML = "E° = -ΔG° / (nF)";
+            } else if (mode === 'n') {
+                document.getElementById('grp_ec_dg').style.display = 'block';
+                document.getElementById('grp_ec_e0').style.display = 'block';
+                formula.innerHTML = "n = -ΔG° / (FE°)";
+            } else if (mode === 'cell-e') {
+                document.getElementById('grp_ec_e0').style.display = 'block';
+                document.getElementById('grp_ec_n').style.display = 'block';
+                document.getElementById('grp_ec_q').style.display = 'block';
+                document.getElementById('grp_ec_t').style.display = 'block';
+                formula.innerHTML = "E = E° - (RT/nF) ln(Q)";
+            } else if (mode === 'k') {
+                document.getElementById('grp_ec_e0').style.display = 'block';
+                document.getElementById('grp_ec_n').style.display = 'block';
+                document.getElementById('grp_ec_t').style.display = 'block';
+                formula.innerHTML = "ln(K) = (nFE°) / (RT)";
+            }
+            document.getElementById('ec_result').style.display = 'none';
+        }
+
+        function calcElectrochem() {
+            const F = 96485.33;
+            const R = 8.314;
+
+            const n = parseFloat(document.getElementById('ec_n').value);
+            let e0 = parseFloat(document.getElementById('ec_e0').value);
+            const e0_u = document.getElementById('ec_e0_unit').value;
+            let dg = parseFloat(document.getElementById('ec_dg').value);
+            const dg_u = document.getElementById('ec_dg_unit').value;
+            const q = parseFloat(document.getElementById('ec_q').value);
+            let t = parseFloat(document.getElementById('ec_t').value);
+            const t_u = document.getElementById('ec_t_unit').value;
+
+            // Unit conversions
+            if (e0_u === 'mv') e0 /= 1000;
+            if (dg_u === 'kj') dg *= 1000;
+            if (t_u === 'c') t += 273.15;
+
+            let result = 0;
+            let label = "";
+            let unit = "";
+
+            try {
+                if (currentECMode === 'dg') {
+                    if (isNaN(n) || isNaN(e0)) throw "Please enter n and E°";
+                    result = -n * F * e0;
+                    label = "ΔG°";
+                    unit = dg_u === 'kj' ? "kJ/mol" : "J/mol";
+                    if (dg_u === 'kj') result /= 1000;
+                } else if (currentECMode === 'e0') {
+                    if (isNaN(dg) || isNaN(n) || n === 0) throw "Please enter ΔG° and n (n≠0)";
+                    result = -dg / (n * F);
+                    label = "E°";
+                    unit = e0_u === 'mv' ? "mV" : "V";
+                    if (e0_u === 'mv') result *= 1000;
+                } else if (currentECMode === 'n') {
+                    if (isNaN(dg) || isNaN(e0) || e0 === 0) throw "Please enter ΔG° and E° (E°≠0)";
+                    result = -dg / (F * e0);
+                    label = "n";
+                    unit = "electrons";
+                } else if (currentECMode === 'cell-e') {
+                    if (isNaN(e0) || isNaN(n) || isNaN(q) || isNaN(t) || q <= 0) throw "Please enter valid E°, n, Q (Q>0), and T";
+                    result = e0 - (R * t / (n * F)) * Math.log(q);
+                    label = "Cell Potential (E)";
+                    unit = e0_u === 'mv' ? "mV" : "V";
+                    if (e0_u === 'mv') result *= 1000;
+                } else if (currentECMode === 'k') {
+                    if (isNaN(e0) || isNaN(n) || isNaN(t)) throw "Please enter E°, n, and T";
+                    const lnK = (n * F * e0) / (R * t);
+                    result = Math.exp(lnK);
+                    label = "Equilibrium Constant (K)";
+                    unit = "";
+                }
+
+                const resBox = document.getElementById('ec_result');
+                const resText = document.getElementById('ec_res_text');
+
+                let formattedRes;
+                if (currentECMode === 'k' && (result > 10000 || result < 0.0001)) {
+                    formattedRes = result.toExponential(4);
+                } else if (Math.abs(result) < 0.001 && result !== 0) {
+                    formattedRes = result.toExponential(4);
+                } else {
+                    formattedRes = result.toFixed(4);
+                }
+
+                resText.innerHTML = `${label} = ${formattedRes} ${unit}`;
+                resBox.style.display = 'block';
+            } catch (err) {
+                alert(err);
+            }
+        }
+    </script>
+    <script>
+        // Handle URL parameters for deep linking
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const calc = params.get('calc');
+            if (calc) {
+                const btn = document.querySelector(`.nav-box[onclick*="'${calc}'"]`);
+                if (btn) btn.click();
+            }
+        });
+    </script>
+</body>
+
+</html>
+
