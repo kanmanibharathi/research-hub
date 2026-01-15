@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Line x Tester Analysis</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-table th {
+            background: rgba(214, 51, 132, 0.1);
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        .sig-star {
+            color: #4ade80;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='../data-analyzer.html'">
+                &larr; Back
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <span class="badge">Breeding Analysis</span>
+            </div>
+            <h1>Line &times; Tester Analysis</h1>
+            <p>Estimate GCA, SCA, and Genetic Variance components.</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar -->
+            <aside class="glass-card sidebar">
+                <h2>Analysis Setup</h2>
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">📂</p>
+                        <p>Upload CSV Data</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <div class="form-group">
+                        <label>Replication Column</label>
+                        <select id="rep-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Line Column</label>
+                        <select id="line-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tester Column</label>
+                        <select id="tester-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Trait Column (Numeric)</label>
+                        <select id="trait-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Significance Level (α)</label>
+                        <input type="number" id="alpha" class="form-control" value="0.05" step="0.01">
+                    </div>
+                    <button class="btn btn-primary" id="analyze-btn">Run Analysis</button>
+                    <div id="error-box" style="margin-top:1rem; color:#f87171; display:none;"></div>
+                </div>
+            </aside>
+
+            <!-- Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <div id="empty-state" class="empty-state">
+                    <h3>L &times; Tester Analysis Engine</h3>
+                    <p>Upload balanced RCBD hybrid data to partition genetic variation.</p>
+                    <button class="btn" onclick="downloadLTTemplate()"
+                        style="margin-top:1.5rem; background:#d63384; color:white;">Download Sample Template</button>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <h3>Processing...</h3>
+                    <div class="loader-ribbon"></div>
+                </div>
+
+                <div id="output-content" class="hidden">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="showTab('anova-tab')">L&times;T ANOVA</button>
+                        <button class="tab-btn" onclick="showTab('effects-tab')">Combining Ability</button>
+                        <button class="tab-btn" onclick="showTab('genetic-tab')">Genetic Variances</button>
+                    </div>
+
+                    <!-- ANOVA Tab -->
+                    <div id="anova-tab" class="tab-content">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>DF</th>
+                                    <th>SS</th>
+                                    <th>MS</th>
+                                    <th>F</th>
+                                    <th>P-value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="anova-body"></tbody>
+                        </table>
+                        <div class="result-card" style="margin-top:2rem;">
+                            <h4>Summary Statistics</h4>
+                            <p>Grand Mean: <span id="res-mean" style="font-weight:600;"></span></p>
+                            <p>CV (%): <span id="res-cv" style="font-weight:600;"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Effects Tab -->
+                    <div id="effects-tab" class="tab-content hidden">
+                        <h4>GCA Effects (Lines)</h4>
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Line</th>
+                                    <th>Effect</th>
+                                    <th>SE</th>
+                                    <th>t-val</th>
+                                    <th>Sig</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gca-line-body"></tbody>
+                        </table>
+
+                        <h4 style="margin-top:2rem;">GCA Effects (Testers)</h4>
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Tester</th>
+                                    <th>Effect</th>
+                                    <th>SE</th>
+                                    <th>t-val</th>
+                                    <th>Sig</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gca-tester-body"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Genetic Variance Tab -->
+                    <div id="genetic-tab" class="tab-content hidden">
+                        <div class="result-card">
+                            <h3 style="color:#d63384; margin-bottom:1rem;">Genetic Components</h3>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                                <div>
+                                    <p style="opacity:0.7;">σ² GCA (Lines)</p>
+                                    <p id="var-gca-l" style="font-weight:800; font-size:1.2rem;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity:0.7;">σ² GCA (Testers)</p>
+                                    <p id="var-gca-t" style="font-weight:800; font-size:1.2rem;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity:0.7;">σ² SCA</p>
+                                    <p id="var-sca" style="font-weight:800; font-size:1.2rem;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity:0.7;">σ² Additive (σ²A)</p>
+                                    <p id="var-a" style="font-weight:800; font-size:1.2rem;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity:0.7;">σ² Dominance (σ²D)</p>
+                                    <p id="var-d" style="font-weight:800; font-size:1.2rem;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity:0.7;">Degree of Dominance</p>
+                                    <p id="var-dom" style="font-weight:800; font-size:1.2rem;">-</p>
+                                </div>
+                            </div>
+                            <div
+                                style="margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
+                                <p style="font-style:italic;" id="res-interpretation">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:2rem;">
+                        <button id="dl-doc-btn" class="btn btn-primary">Download Comprehensive Report (DOCX)</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/line_tester.js"></script>
+    <script>
+        function downloadLTTemplate() {
+            const csv = "Replication,Line,Tester,Yield\nR1,L1,T1,45\nR1,L1,T2,48\nR1,L2,T1,42\nR1,L2,T2,47\nR2,L1,T1,44\nR2,L1,T2,49\nR2,L2,T1,43\nR2,L2,T2,46";
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'line_tester_template.csv'; a.click();
+        }
+        function showTab(t) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(t).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stability Analysis – Eberhart & Russell Model</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .trait-tabs {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .trait-tab {
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .trait-tab.active {
+            background: #d63384;
+            color: white;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.1);
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .sig-star {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        .inference-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stable {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .responsive {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .unstable {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .average {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='/data-analyzer.html'">
+                &larr; Back
+            </div>
+            <span class="badge">Breeding Analysis</span>
+            <h1>Stability Analysis (Eberhart & Russell)</h1>
+            <p>Assess genotype performance across multiple environments using the Eberhart & Russell (1966) regression
+                model.</p>
+        </header>
+
+        <main class="app-grid">
+            <aside class="glass-card sidebar">
+                <h2>Configuration</h2>
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p>📂 Upload CSV Data</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <div class="form-group">
+                        <label>Genotype / Entry</label>
+                        <select id="genotype-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Environment / Location</label>
+                        <select id="env-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Replication / Block</label>
+                        <select id="rep-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Trait</label>
+                        <select id="trait-col" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Model Type</label>
+                        <select id="model-type" class="form-control">
+                            <option value="fixed">Fixed Effect Model</option>
+                            <option value="mixed">Mixed Effect Model</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="analyze-btn">Perform Stability Analysis</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; display: none;"></div>
+                </div>
+            </aside>
+
+            <section class="glass-card main-panel">
+                <div id="empty-state" class="empty-state">
+                    <h3>G&times;E Interaction Analysis</h3>
+                    <p>Upload your multi-environment trial data to compute stability parameters and adaptation patterns.
+                    </p>
+                    <div style="margin-top: 2rem; font-size: 0.85rem; color: rgba(255,255,255,0.5);">
+                        Note: Regression and stability plots are generated exclusively in the downloadable DOCX report.
+                    </div>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <div class="loader-spinner"></div>
+                    <h3>Calculating Stability Parameters...</h3>
+                </div>
+
+                <div id="output-content" class="hidden">
+
+                    <div id="stability-results">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>Combined ANOVA</h3>
+                            <div id="bartlett-msg" style="font-size: 0.8rem; opacity: 0.8;"></div>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Source of Variation</th>
+                                        <th>df</th>
+                                        <th>SS</th>
+                                        <th>MS</th>
+                                        <th>F-Value</th>
+                                        <th>Sig.</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pooled-anova-body"></tbody>
+                            </table>
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">Eberhart & Russell Stability ANOVA</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Source of Variation</th>
+                                        <th>df</th>
+                                        <th>SS</th>
+                                        <th>MS</th>
+                                        <th>F-Value</th>
+                                        <th>Sig.</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="stability-anova-body"></tbody>
+                            </table>
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">Environmental Index (I<sub>j</sub>)</h3>
+                        <div class="table-wrapper">
+                            <table style="max-width: 500px;">
+                                <thead>
+                                    <tr>
+                                        <th>Environment</th>
+                                        <th>Mean</th>
+                                        <th>Index (I<sub>j</sub>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="env-index-body"></tbody>
+                            </table>
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">Stability Parameters & Inference</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Genotype</th>
+                                        <th>Mean</th>
+                                        <th>b<sub>i</sub></th>
+                                        <th>SE(b<sub>i</sub>)</th>
+                                        <th>S<sup>2</sup>d<sub>i</sub></th>
+                                        <th>Sig (b<sub>i</sub>=1)</th>
+                                        <th>Sig (S<sup>2</sup>d<sub>i</sub>=0)</th>
+                                        <th>Inference</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="params-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 3rem; display: flex; gap: 1rem;">
+                        <button id="dl-doc-btn" class="btn btn-primary">📄 Download Detailed DOCX Report</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/eberhart_russell.js"></script>
+</body>
+
+</html>

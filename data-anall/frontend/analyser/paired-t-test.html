@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paired Sample t-Test</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-table th {
+            background: rgba(214, 51, 132, 0.1);
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        .normality-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .normality-normal {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .normality-not-normal {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='../data-analyzer.html'">
+                &larr; Back
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <span class="badge">Hypothesis Testing</span>
+            </div>
+            <h1>Paired Sample t-Test</h1>
+            <p>Compare means of two related (paired) samples.</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar: Input & Config -->
+            <aside class="glass-card sidebar">
+                <h2>Analysis Configuration</h2>
+
+                <!-- File Upload Trigger -->
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                        <p style="font-size: 0.8em; opacity: 0.6;">(Two numeric paired columns)</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <div class="form-group">
+                        <label>Select Sample 1</label>
+                        <select id="col1-select" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Sample 2 (Paired)</label>
+                        <select id="col2-select" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hypothesized Mean Diff (d₀)</label>
+                        <input type="number" id="d0-input" class="form-control" value="0" step="any">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Significance Level (Alpha)</label>
+                        <input type="number" id="alpha-input" class="form-control" value="0.05" min="0.01" max="0.1"
+                            step="0.01">
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 1.5rem;">Perform t-Test</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; font-size: 0.9rem; display: none;">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main: Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Statistical Summary</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <h3>Paired Comparison Engine</h3>
+                    <p>Upload your data to test for differences between two related samples.</p>
+                    <div
+                        style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8; text-align: left; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(214, 51, 132, 0.2);">
+                        <strong>Statistical Requirements:</strong><br>
+                        &bull; Exactly two related columns (e.g. Before/After)<br>
+                        &bull; Row-wise matched pairs<br>
+                        &bull; Column differences should be normally distributed
+                    </div>
+                    <button class="btn" style="width: auto; margin-top: 1.5rem; background: #d63384; color: white;"
+                        onclick="downloadTTestTemplate()">Download CSV Template</button>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <h3>Analyzing Pairs...</h3>
+                    <p>Computing differences, t-statistic and CI...</p>
+                    <div class="loader-ribbon"></div>
+                </div>
+
+                <div id="output-content" class="hidden">
+                    <div class="tabs" style="margin-bottom: 2rem;">
+                        <button class="tab-btn active" onclick="showTab('summary-tab')">Results Summary</button>
+                        <button class="tab-btn" onclick="showTab('desc-tab')">Descriptive Stats</button>
+                        <button class="tab-btn" onclick="showTab('norm-tab')">Normality (Diffs)</button>
+                    </div>
+
+                    <!-- t-Test Summary Tab -->
+                    <div id="summary-tab" class="tab-content">
+                        <div class="result-card">
+                            <h3 style="color: #d63384; margin-bottom: 1rem;">Paired Sample t-Test Results</h3>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">t-value</p>
+                                    <p id="res-t-stat" style="font-size: 1.5rem; font-weight: 800;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">P-value (Two-tailed)</p>
+                                    <p id="res-p-val" style="font-size: 1.5rem; font-weight: 800;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">Observed Mean Diff</p>
+                                    <p id="res-mean-diff" style="font-weight: 600;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">Degrees of Freedom (df)</p>
+                                    <p id="res-df" style="font-weight: 600;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">Lower 95% CI</p>
+                                    <p id="res-lci" style="font-weight: 600;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">Upper 95% CI</p>
+                                    <p id="res-uci" style="font-weight: 600;">-</p>
+                                </div>
+                            </div>
+                            <div
+                                style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <p style="opacity: 0.7; font-size: 0.9rem; margin-bottom: 0.5rem;">Interpretation</p>
+                                <p id="res-interpretation" style="line-height: 1.6; font-style: italic;">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descriptive Stats Tab -->
+                    <div id="desc-tab" class="tab-content hidden">
+                        <h3>Descriptive Statistics</h3>
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th id="desc-col1-head">Sample 1</th>
+                                    <th id="desc-col2-head">Sample 2</th>
+                                </tr>
+                            </thead>
+                            <tbody id="desc-body"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Normality Tab -->
+                    <div id="norm-tab" class="tab-content hidden">
+                        <h3>Normality of Paired Differences</h3>
+                        <div id="normality-container" style="margin-top: 1rem;">
+                            <!-- Normality card will be injected here -->
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Full Report</h3>
+                    <p style="margin-bottom: 1rem; opacity: 0.7;">Note: Visualizations (Histograms, Boxplots and Paired
+                        Line Plots) are
+                        included exclusively in the DOCX report.</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <button id="dl-doc-btn" class="btn btn-primary">
+                            📄 Download Thesis-Grade Report (DOCX)
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/paired_t_test.js"></script>
+    <script>
+        function downloadTTestTemplate() {
+            const csvContent = "Before,After\n7.5,6.8\n8.2,7.9\n6.9,6.1\n7.8,7.3\n8.5,8.1\n8.1,7.5\n7.9,7.2\n8.3,7.8\n7.6,6.9\n8.0,7.4";
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "paired_t_test_template.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            if (event) event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

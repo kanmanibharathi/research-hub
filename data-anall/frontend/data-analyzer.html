@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HARVEST - Research Analytics Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .spiral-container {
+            position: relative;
+            width: 80px;
+            height: 220px;
+            flex-shrink: 0;
+        }
+
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(79, 209, 255, 0.6), transparent);
+            transform: translateX(-50%);
+            opacity: 0.6;
+        }
+
+        .spiral-dot {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #4fd1ff;
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 0 8px rgba(79, 209, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header id="main-header"
+            style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap;">
+            <div class="spiral-container" id="spiral-logo">
+                <div class="center-line"></div>
+            </div>
+            <div style="flex: 1; min-width: 300px; max-width: 900px; text-align: left;">
+                <h1 style="margin-bottom: 0.5rem;">HARVEST</h1>
+                <h3
+                    style="color: #d63384; font-weight: 700; font-size: 1.5rem; margin-bottom: 1.5rem; opacity: 1; letter-spacing: 0.5px;">
+                    <span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">H</span>olistic
+                    <span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">A</span>nalytics
+                    for
+                    <span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">R</span>esearch,
+                    <span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">V</span>alidation,
+                    <span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">E</span>xperimentation
+                    &
+                    <span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">S</span><span
+                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">T</span>atistics
+                </h3>
+                <p style="line-height: 1.6; font-size: 1.05rem; font-style: italic;">A unified analytical platform
+                    providing end-to-end statistical tools for research design, data validation, experimental analysis,
+                    and scientific inference across multidisciplinary life-science and research domains.</p>
+            </div>
+        </header>
+
+        <!-- Categories Grid (Visible by default) -->
+        <main class="tools-grid" id="categories-grid">
+            <div class="card tool-card" onclick="showCategory('doe-tools')">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <h2 style="font-size: 1.5rem;">Design of<br><span style="color: #d63384;">Experiment</span></h2>
+                    <span style="font-size: 2rem;">📐</span>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.6;">Comprehensive suite of experimental designs
+                    including CRD, RCBD, Split Plot, and Pooled Analysis.</p>
+                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <span class="badge">15+ Tools</span>
+                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                </div>
+            </div>
+
+            <div class="card tool-card" onclick="showCategory('multivariate-tools')">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <h2 style="font-size: 1.5rem;">Multivariate<br><span style="color: #d63384;">Analysis</span></h2>
+                    <span style="font-size: 2rem;">📉</span>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.6;">Dimensionality reduction, pattern
+                    recognition, and relationship visualization.</p>
+                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <span class="badge">New</span>
+                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                </div>
+            </div>
+
+            <div class="card tool-card" onclick="showCategory('correlation-tools')">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <h2 style="font-size: 1.5rem;">Correlation &<br><span style="color: #d63384;">Regression</span></h2>
+                    <span style="font-size: 2rem;">🔗</span>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.6;">Analyze relationships, associations and
+                    predictive models.</p>
+                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <span class="badge">Testing</span>
+                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                </div>
+            </div>
+
+            <div class="card tool-card" onclick="showCategory('breeding-tools')">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <h2 style="font-size: 1.5rem;">Breeding<br><span style="color: #d63384;">Analysis</span></h2>
+                    <span style="font-size: 2rem;">🧬</span>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.6;">Genetic analysis tools including Diallel
+                    crosses, GCA, SCA and Heterosis estimation.</p>
+                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <span class="badge">Testing</span>
+                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                </div>
+            </div>
+
+            <div class="card tool-card" onclick="showCategory('hypothesis-tools')">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <h2 style="font-size: 1.5rem;">Hypothesis<br><span style="color: #d63384;">Testing</span></h2>
+                    <span style="font-size: 2rem;">🧪</span>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.6;">Statistical tests to validate research
+                    assumptions,
+                    including t-tests, Z-tests, and Chi-square analysis.</p>
+                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <span class="badge">Testing</span>
+                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Design of Experiment Tools Grid (Hidden by default) -->
+        <div id="doe-tools" style="display: none;">
+            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
+                onclick="showCategories()">
+                &larr; Back to Categories
+            </div>
+
+            <div class="category-header" style="margin-bottom: 2rem;">
+                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Design of Experiment</h2>
+            </div>
+
+            <main class="tools-grid">
+                <!-- Active Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/lsd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Latin Square<br><span style="color: #d63384;">Design</span></h2>
+                        <span style="font-size: 2rem;">🔲</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze row, column, and treatment
+                        effects
+                        with balanced orthogonality. Includes ANOVA, Means, and Post-hoc tests.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Strip Plot Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/strip-plot.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Strip Plot<br><span style="color: #d63384;">Design</span></h2>
+                        <span style="font-size: 2rem;">🌾</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze factorial experiments laid out in
+                        perpendicular strips. Includes interactions and precision stats.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Factorial CRD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/factorial-crd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Factorial<br><span style="color: #d63384;">CRD</span></h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Two-Factor Completely Randomized Design.
+                        Analyze Main A, Main B, and Interaction effects.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Three-Factor CRD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/three-factor-crd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Three-Factor<br><span style="color: #d63384;">CRD</span></h2>
+                        <span style="font-size: 2rem;">🧊</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze complex A x B x C interactions.
+                        Includes main effects, 2-way, and 3-way interactions.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Pooled CRD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/pooled-crd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">One Factor<br><span style="color: #d63384;">Pooled CRD</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🌎</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Combined analysis across environments
+                        (Locations/Years). Includes Bartlett's Test.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Two Factor Pooled CRD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/two-factor-pooled-crd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Two-Factor<br><span style="color: #d63384;">Pooled CRD</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Pooled Analysis of Two Factors (A x B)
+                        across
+                        Environments. Includes Interactions.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- CRD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/crd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">CRD<br><span style="color: #d63384;">Analysis</span></h2>
+                        <span style="font-size: 2rem;">🎲</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Completely Randomized Design. One-way
+                        ANOVA
+                        for simple experiments.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- One Factor RCBD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/one-factor-rcbd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">One Factor<br><span style="color: #d63384;">RCBD</span></h2>
+                        <span style="font-size: 2rem;">田</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Randomized Complete Block Design. Single
+                        treatment factor with replication blocking.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Two Factor RCBD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/two-factor-rcbd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Two Factor<br><span style="color: #d63384;">RCBD</span></h2>
+                        <span style="font-size: 2rem;">🔢</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Factorial RCBD (Factor A x Factor B) with
+                        Replications. Includes Interaction effects.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Three Factor RCBD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/three-factor-rcbd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Three Factor<br><span style="color: #d63384;">RCBD</span></h2>
+                        <span style="font-size: 2rem;">🧊</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Factorial RCBD (A x B x C) with
+                        Replications. Includes three-way interactions.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Simple Split Plot Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/split-plot.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Split Plot<br><span style="color: #d63384;">Design</span></h2>
+                        <span style="font-size: 2rem;">🌱</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Main Plot x Sub Plot Design with two
+                        error
+                        terms and precision levels.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Split Plot (2,1) Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/split-plot-21.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Split Plot<br><span style="color: #d63384;">(2,1)</span></h2>
+                        <span style="font-size: 2rem;">🌿</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Two Main Plots &times; One Sub Plot
+                        Design.
+                        Includes complex interactions.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Split Plot (1,2) Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/split-plot-12.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Split Plot<br><span style="color: #d63384;">(1,2)</span></h2>
+                        <span style="font-size: 2rem;">🌾</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">One Main Plot &times; Two Sub Plots
+                        Design.
+                        Three-way interactions supported.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Split-Split Plot Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/split-split-plot.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Split-Split<br><span style="color: #d63384;">Plot</span></h2>
+                        <span style="font-size: 2rem;">🎋</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Main &times; Sub &times; Sub-Sub Design
+                        with
+                        three error terms (a, b, c).</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Split CRD Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/split-crd.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Split CRD<br><span style="color: #d63384;">Design</span></h2>
+                        <span style="font-size: 2rem;">🧪</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Split Plot Design in CRD with two error
+                        terms
+                        (Main & Sub).</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Pooled Split Plot Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/split-pooled.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Pooled Split<br><span style="color: #d63384;">Plot</span></h2>
+                        <span style="font-size: 2rem;">🌎</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Combined analysis of Split Plots across
+                        environments/years.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Multivariate Tools Grid (Hidden by default) -->
+        <div id="multivariate-tools" style="display: none;">
+            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
+                onclick="showCategories()">
+                &larr; Back to Categories
+            </div>
+
+            <div class="category-header" style="margin-bottom: 2rem;">
+                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Multivariate Analysis</h2>
+            </div>
+
+            <main class="tools-grid">
+                <!-- PCA Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/pca.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Principal<br>Component</h2>
+                        <span style="font-size: 2rem;">📉</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze structure of variation, reduce
+                        dimensionality, and visualize relationships (SVD-based).</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Path Analysis Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/path-analysis.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Path<br><span style="color: #d63384;">Analysis</span></h2>
+                        <span style="font-size: 2rem;">🛣️</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Partition correlation into Direct and
+                        Indirect effects. Visualize Causal Paths.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Correlation Tools -->
+        <div id="correlation-tools" style="display: none;">
+            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
+                onclick="showCategories()">
+                &larr; Back to Categories
+            </div>
+
+            <div class="category-header" style="margin-bottom: 2rem;">
+                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Correlation & Regression
+                </h2>
+            </div>
+
+            <main class="tools-grid">
+                <!-- Pearson Correlation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/pearson-correlation.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Pearson<br><span style="color: #d63384;">Correlation</span></h2>
+                        <span style="font-size: 2rem;">🔗</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Test linear associations with
+                        significance testing and heatmap visualization.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Genotypic Correlation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/genotypic-correlation.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Genotypic<br><span style="color: #d63384;">Correlation</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze genetic associations by
+                        partitioning covariance components from RCBD ANOVA.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Phenotypic Correlation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/phenotypic-correlation.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Phenotypic<br><span style="color: #d63384;">Correlation</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧪</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Observe overall trait associations
+                        including genetic and environmental effects.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Spearman Correlation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/spearman-correlation.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">Spearman Rank<br><span style="color: #d63384;">Correlation</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🔢</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Measure monotonic associations using
+                        Ranked data. Robust to outliers.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Regression Analysis Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/regression-analyzer.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">REGRESSION<br><span style="color: #d63384;">ANALYSIS</span>
+                        </h2>
+                        <span style="font-size: 2rem;">📉</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Build predictive models using Linear,
+                        Multiple, and Polynomial regression. Includes full diagnostics and OLS mapping.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+
+        <!-- Breeding Tools -->
+        <div id="breeding-tools" style="display: none;">
+            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
+                onclick="showCategories()">
+                &larr; Back to Categories
+            </div>
+
+            <div class="category-header" style="margin-bottom: 2rem;">
+                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Breeding Analysis</h2>
+            </div>
+
+            <main class="tools-grid">
+                <!-- Genotypic Correlation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/genotypic-correlation.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GENOTYPIC<br><span style="color: #d63384;">CORRELATION</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Precision analysis of genetic
+                        associations
+                        partitioned from RCBD ANOVA. Eliminates environment and experimental errors.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Phenotypic Correlation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/phenotypic-correlation.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">PHENOTYPIC<br><span style="color: #d63384;">CORRELATION</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧪</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Measure trait associations at the
+                        observable level. Includes genetic and environmental interactions.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Genotypic Path Analysis Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/genotypic-path-analysis.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GENOTYPIC<br><span style="color: #d63384;">PATH ANALYSIS</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🔢</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Decompose genetic correlations into
+                        direct and indirect effects using matrix inversion.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Phenotypic Path Analysis Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/phenotypic-path-analysis.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">PHENOTYPIC<br><span style="color: #d63384;">PATH ANALYSIS</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze observable trait associations and
+                        partition them into direct and indirect causal components.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Mahalanobis D2 Statistics Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/mahalanobis-d2.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">MAHALANOBIS<br><span style="color: #d63384;">D² STATISTICS</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Classify genotypes into clusters using
+                        Tocher's Method and quantify genetic divergence.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Genetic Parameter Estimation Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/genetic-parameters.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GENETIC PARAMETER<br><span
+                                style="color: #d63384;">ESTIMATION</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">ANOVA-based estimation of h², GCV/PCV,
+                        and
+                        Genetic Advance for RCBD trials.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Griffing Method 1 (WITHOUT CHECK) Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method1.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 1<br><span style="color: #d63384;">(FULL
+                                DIALLEL WITHOUT CHECK)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🌀</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Full Diallel Analysis (Method I)
+                        including Parents, F1s, and Reciprocals. Estimates GCA, SCA, and RCA.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Griffing Method 1 (WITH CHECK) Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method1-check.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 1<br><span style="color: #d63384;">(FULL
+                                DIALLEL WITH CHECK)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Diallel Method I with partitioning of
+                        ANOVA for Check varieties. Includes Standard Heterosis calculations.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Griffing Method 2 (HALF DIALLEL) Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method2.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 2<br><span style="color: #d63384;">(HALF
+                                DIALLEL WITHOUT CHECK)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🌟</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Half Diallel Analysis (Method II)
+                        including Parents and F1s. Estimates GCA, SCA, and Heritability.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Griffing Method 2 (WITH CHECK) Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method2-check.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 2<br><span style="color: #d63384;">(HALF
+                                DIALLEL WITH CHECK)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧪</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Half Diallel Method II with partitioning
+                        of ANOVA for Check varieties. Estimates GCA, SCA and Heterosis.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Eberhart & Russell Stability Analysis Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/eberhart-russell.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">STABILITY ANALYSIS<br><span style="color: #d63384;">(EBERHART &
+                                RUSSELL)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">📈</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze G&times;E interaction and
+                        stability using linear regression. Includes b<sub>i</sub> and S<sup>2</sup>d<sub>i</sub>
+                        parameters.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Line x Tester Analysis Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/line-tester.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">LINE &times; TESTER<br><span
+                                style="color: #d63384;">ANALYSIS</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧬</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze hybrid performance, estimate
+                        GCA/SCA effects, and partition genetic variance into additive/non-additive components.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Design Generator Tool -->
+                <div class="card tool-card" onclick="window.location.href='../../modules/design-gen/doe.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">DESIGN<br><span style="color: #d63384;">GENERATOR</span>
+                        </h2>
+                        <span style="font-size: 2rem;">📐</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Generate randomized field layouts for
+                        various experimental designs including CRD, RCBD, and Augmented designs.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <!-- Hypothesis Testing Tools -->
+        <div id="hypothesis-tools" style="display: none;">
+            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
+                onclick="showCategories()">
+                &larr; Back to Categories
+            </div>
+
+            <div class="category-header" style="margin-bottom: 2rem;">
+                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Hypothesis Testing</h2>
+            </div>
+
+            <main class="tools-grid">
+                <!-- F-Test Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/f-test.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">F-TEST<br><span style="color: #d63384;">(VARIANCE RATIO)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🧪</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Compare variances of two independent
+                        samples. Includes normality testing and thesis-grade reporting.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- One-Sample t-Test Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/one-sample-t-test.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">t-TEST<br><span style="color: #d63384;">(ONE SAMPLE)</span></h2>
+                        <span style="font-size: 2rem;">🔢</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Test if a population mean differs from a
+                        target value. Includes Shapiro-Wilk and thesis-grade reporting.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Testing</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Two-Sample t-Test Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/two-sample-t-test.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">t-TEST<br><span style="color: #d63384;">(TWO INDEPENDENT)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">📉</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Compare means of two groups.
+                        Automatically handles variance equality via Bartlett's test for Student/Welch t-test.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Statistical</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Paired t-Test Tool -->
+                <div class="card tool-card" onclick="window.location.href='analyser/paired-t-test.html'">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem;">t-TEST<br><span style="color: #d63384;">(PAIRED SAMPLE)</span>
+                        </h2>
+                        <span style="font-size: 2rem;">🔗</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze related pairs (e.g.
+                        Before/After). Includes normality test on differences and paired line plots.</p>
+                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="badge">Statistical</span>
+                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Background Pattern -->
+    <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.4;
+        background-image: 
+        radial-gradient(circle at 10% 20%, rgba(214, 51, 132, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(214, 51, 132, 0.1) 0%, transparent 20%);
+    "></div>
+
+    <script>
+        // Simple logic to switch views
+        function showCategory(id) {
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('categories-grid').style.display = 'none';
+            document.getElementById('doe-tools').style.display = 'none';
+            document.getElementById('multivariate-tools').style.display = 'none';
+            document.getElementById('correlation-tools').style.display = 'none';
+            document.getElementById('breeding-tools').style.display = 'none';
+            document.getElementById('hypothesis-tools').style.display = 'none';
+
+            const tool = document.getElementById(id);
+            if (tool) {
+                tool.style.display = 'block';
+                // Animation fade in?
+                tool.style.opacity = 0;
+                setTimeout(() => tool.style.opacity = 1, 50);
+                tool.style.transition = "opacity 0.3s ease";
+            }
+        }
+
+        function showCategories() {
+            document.getElementById('main-header').style.display = 'flex';
+            document.getElementById('doe-tools').style.display = 'none';
+            document.getElementById('multivariate-tools').style.display = 'none';
+            document.getElementById('correlation-tools').style.display = 'none';
+            document.getElementById('breeding-tools').style.display = 'none';
+            document.getElementById('hypothesis-tools').style.display = 'none';
+
+            const grid = document.getElementById('categories-grid');
+            grid.style.display = 'grid';
+            grid.style.opacity = 0;
+            setTimeout(() => grid.style.opacity = 1, 50);
+            grid.style.transition = "opacity 0.3s ease";
+        }
+
+        // Spiral Logo Animation
+        const spiralContainer = document.getElementById("spiral-logo");
+        const DOTS = 36;
+        const RADIUS = 25;
+        const SPEED = 0.02;
+        const HEIGHT = 220;
+
+        let dots = [];
+        let t = 0;
+
+        for (let i = 0; i < DOTS; i++) {
+            const d = document.createElement("div");
+            d.className = "spiral-dot";
+            spiralContainer.appendChild(d);
+            dots.push({
+                el: d,
+                phase: (Math.PI * 2 / DOTS) * i
+            });
+        }
+
+        function animateSpiral() {
+            t += SPEED;
+            dots.forEach((dot, i) => {
+                const y = (i / DOTS) * HEIGHT;
+                const angle = t + dot.phase;
+                const xOffset = Math.sin(angle) * RADIUS;
+                const zScale = (Math.cos(angle) + 1.5) / 2.5;
+
+                dot.el.style.top = `${y}px`;
+                dot.el.style.transform = `translateX(${xOffset}px) scale(${zScale})`;
+                dot.el.style.opacity = zScale;
+            });
+            requestAnimationFrame(animateSpiral);
+        }
+        animateSpiral();
+    </script>
+</body>
+
+</html>

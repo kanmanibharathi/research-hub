@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PCA - Principal Component Analysis</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Multi-select check list style */
+        .check-list-container {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            text-align: left;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+        }
+
+        .check-item input {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='/data-analyzer.html'">
+                &larr; Back
+            </div>
+            <h1>PCA</h1>
+            <p>Principal Component Analysis (Multivariate)</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar: Input & Config -->
+            <aside class="glass-card sidebar">
+                <h2>Data Input</h2>
+
+                <!-- File Upload Trigger -->
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                        <p style="font-size: 0.8em; opacity: 0.6;">(or drag & drop)</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <span class="section-title">Map Columns</span>
+
+                    <div class="form-group">
+                        <label>Observation Identifier (Rows)</label>
+                        <select id="col-obs"></select>
+                        <small style="opacity: 0.6; font-size: 0.8rem;">Select unique ID (e.g., Genotype)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Variables (Select Multiple)</label>
+                        <div id="col-vars" class="check-list-container"></div>
+                        <small style="opacity: 0.6; font-size: 0.8rem;">Select numeric variables (Min 2)</small>
+                        <div style="margin-top: 5px;">
+                            <button id="select-all-btn" class="btn"
+                                style="padding: 0.2rem 0.5rem; font-size: 0.8rem; width: auto;">Select All</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 2rem;">Run PCA Analysis</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; font-size: 0.9rem; display: none;">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main: Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Analysis Results</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <h3>Ready to Analyze</h3>
+                    <p>Upload a CSV with multivariate data.</p>
+                    <p
+                        style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8; text-align: left; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                        <strong>Requirements:</strong><br>
+                        &bull; One column for Observation Names (Unique)<br>
+                        &bull; Multiple Numeric Columns for Variables<br>
+                        &bull; No Missing Values
+                    </p>
+                    <button class="btn" style="width: auto; margin-top: 1rem;" onclick="downloadTemplate()">Download
+                        Template</button>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <h3>Calculating...</h3>
+                    <p>Performing SVD and generating plots...</p>
+                </div>
+
+                <div id="output-content" class="hidden">
+
+                    <div
+                        style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;">
+                        <div class="glass-card" style="padding: 1.5rem; text-align: center; flex: 1;">
+                            <h3>Total Variance Explained</h3>
+                            <div id="total-var-disp" style="font-size: 2rem; font-weight: bold; color: #4ade80;">-</div>
+                            <p style="font-size: 0.9rem; opacity: 0.7;">(Using Eigenvalue >= 1)</p>
+                        </div>
+                        <div class="glass-card" style="padding: 1.5rem; text-align: center; flex: 1;">
+                            <h3>PCs Retained</h3>
+                            <div id="pcs-retained-disp" style="font-size: 2rem; font-weight: bold; color: #60a5fa;">-
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Downloads</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <button id="dl-plots-btn" class="btn btn-primary">
+                            📊 Download Plots (DOCX)
+                        </button>
+                        <button id="dl-text-btn" class="btn btn-primary">
+                            📝 Download Interpretation
+                        </button>
+                        <button id="dl-excel-btn" class="btn btn-primary">
+                            📗 Download Excel Output
+                        </button>
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Quick Look: Scree Plot</h3>
+                    <div id="scree-container"
+                        style="background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; color: black;">
+                        <!-- We can try to fetch one image or just show table -->
+                        <table id="eig-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #ccc;">
+                                    <th style="padding: 0.5rem;">PC</th>
+                                    <th style="padding: 0.5rem;">Eigenvalue</th>
+                                    <th style="padding: 0.5rem;">% Variance</th>
+                                    <th style="padding: 0.5rem;">Cumulative %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eig-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/multivariate/pca.js"></script>
+    <script>
+        function downloadTemplate() {
+            const csvContent = "Genotype,PH,PL,GY,TW\nG1,120,25,5.5,22\nG2,118,24,5.2,21\nG3,125,28,6.1,24\nG4,110,22,4.8,19\nG5,130,30,6.5,25";
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "pca_template.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+
+</html>

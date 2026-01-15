@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Strip Plot Analysis - Data Hub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='/data-analyzer.html'">
+                &larr; Back
+            </div>
+            <h1>Strip Plot Analysis</h1>
+            <p>Factorial experiment in row and column strips.</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar: Input & Config -->
+            <aside class="glass-card sidebar">
+                <h2>Data Input</h2>
+
+                <!-- File Upload Trigger -->
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                        <p style="font-size: 0.8em; opacity: 0.6;">(or drag & drop)</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <span class="section-title">Map Columns</span>
+
+                    <div class="form-group">
+                        <label>Replication</label>
+                        <select id="col-rep"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Horizontal Factor (A)</label>
+                        <select id="col-a"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vertical Factor (B)</label>
+                        <select id="col-b"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Response Variable</label>
+                        <select id="col-resp"></select>
+                    </div>
+
+                    <span class="section-title">Configuration</span>
+
+                    <div class="form-group">
+                        <label>Significance Level (&alpha;)</label>
+                        <select id="alpha">
+                            <option value="0.05">0.05 (5%)</option>
+                            <option value="0.01">0.01 (1%)</option>
+                            <option value="0.10">0.10 (10%)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Multiple Comparison</label>
+                        <select id="post-hoc">
+                            <option value="lsd">LSD (Least Significant Difference)</option>
+                            <option value="tukey">Tukey's HSD</option>
+                            <option value="duncan">Duncan's Multiple Range Test</option>
+                            <!-- Duncan support is limited for interaction, focusing on LSD/Tukey -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Order Means</label>
+                        <select id="mean-order">
+                            <option value="desc">High to Low (Descending)</option>
+                            <option value="asc">Low to High (Ascending)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 2rem;">Run Analysis</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; font-size: 0.9rem; display: none;">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main: Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Analysis Results</h2>
+
+                <!-- Initial Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <h3>Ready to Analyze</h3>
+                    <p>Upload a CSV file and map columns to begin.</p>
+                    <br>
+                    <p
+                        style="font-size: 0.9rem; text-align: left; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 1rem;">
+                        <strong>Format Requirements:</strong><br>
+                        &bull; Columns: Rep, FactorA, FactorB, Response<br>
+                        &bull; Balanced Design<br>
+                        &bull; No missing values
+                    </p>
+                    <br>
+                    <button class="btn" style="width: auto;" onclick="downloadTemplate()">Download Template CSV</button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading" class="hidden empty-state">
+                    <h3>Analyzing...</h3>
+                    <p>Please wait while we calculate ANOVA tables and Interactions.</p>
+                </div>
+
+                <!-- Results Content -->
+                <div id="output-content" class="hidden">
+                    <h3>ANOVA Table</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="anova-table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>DF</th>
+                                    <th>SS</th>
+                                    <th>MS</th>
+                                    <th>F-Value</th>
+                                    <th>P-Value</th>
+                                    <th>Sig</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div id="means-container">
+                        <!-- Dynamic tables will be inserted here -->
+                    </div>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button id="download-btn" class="btn btn-primary" style="width: auto;">Download Full Report
+                            (DOCX)</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/doe/strip-plot.js"></script>
+    <script>
+        function downloadTemplate() {
+            const csvContent = "Rep,N_Level,V_Level,Yield\n1,N0,V1,4.5\n1,N0,V2,5.1\n1,N1,V1,6.2\n1,N1,V2,6.8\n2,N0,V1,4.8\n2,N0,V2,5.3\n2,N1,V1,6.5\n2,N1,V2,7.0";
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "strip_plot_template.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+
+</html>

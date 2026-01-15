@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahalanobis D² Clustering</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .check-list-container {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cluster-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cluster-card h3 {
+            margin-bottom: 0.8rem;
+            color: #4ade80;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th,
+        td {
+            padding: 0.8rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .visualization-box {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .visualization-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+        .badge-divergence {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='/data-analyzer.html'">
+                &larr; Back
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <span class="badge">Breeding Analysis</span>
+                <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa;">Multivariate</span>
+            </div>
+            <h1>Mahalanobis D² Statistics</h1>
+            <p>Assessment of genetic divergence and clustering using Tocher's Algorithm.</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar: Configuration -->
+            <aside class="glass-card sidebar">
+                <h2>Analysis Setup</h2>
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p>📂 Click or Drag CSV File</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <div class="form-group">
+                        <label>Genotype Column</label>
+                        <select id="genotype-col" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Replication Column (to average data)</label>
+                        <select id="rep-col" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Trait Variables (Quantitative)</label>
+                        <div id="trait-cols" class="check-list-container"></div>
+                        <button class="btn" id="select-all-btn" style="margin-top: 0.5rem; font-size: 0.75rem;">Select
+                            All Variables</button>
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn">Run Clustering Engine</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; display: none;"></div>
+                </div>
+            </aside>
+
+            <!-- Main Results -->
+            <section class="glass-card main-panel">
+                <div id="empty-state" class="empty-state">
+                    <h3>Explore Genetic Divergence</h3>
+                    <p>Mahalanobis D² analysis is the golden standard in plant breeding for classifying germplasm based
+                        on multiple quantitative traits.</p>
+                    <div style="text-align: left; margin-top: 2rem;">
+                        <strong>Engine Capabilities:</strong>
+                        <ul style="margin-top: 1rem; opacity: 0.8; font-size: 0.9rem;">
+                            <li>Automated Z-score Standardization</li>
+                            <li>Tocher's Clustering Algorithm</li>
+                            <li>Intra & Inter-Cluster Distance Matrix</li>
+                            <li>Singh & Chaudhary (%) Trait Contributions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <div class="loader-spinner"></div>
+                    <h3>Computing Genetic Distances...</h3>
+                </div>
+
+                <div id="output-content" class="hidden">
+                    <h2>Analysis Results</h2>
+
+                    <div class="stats-grid">
+                        <div class="glass-card" style="padding: 1.5rem;">
+                            <h3>Cluster Groupings</h3>
+                            <div id="cluster-list"></div>
+                        </div>
+                        <div class="glass-card" style="padding: 1.5rem;">
+                            <h3>Trait Contributions</h3>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Trait</th>
+                                            <th>Rank 1 Count</th>
+                                            <th>Contribution %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="contribution-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>Divergence Visualizations</h3>
+                        <div class="stats-grid">
+                            <div class="visualization-box">
+                                <p style="color: #666; margin-bottom: 0.5rem; font-weight: 600;">Hierarchical Dendrogram
+                                </p>
+                                <img id="dendro-img" src="" alt="Dendrogram">
+                            </div>
+                            <div class="visualization-box">
+                                <p style="color: #666; margin-bottom: 0.5rem; font-weight: 600;">Genetic Cluster Map
+                                    (PCA)</p>
+                                <img id="plot-img" src="" alt="Cluster Plot">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>Statistical Tables</h3>
+                        <div class="form-group">
+                            <label>View Data Table:</label>
+                            <select id="table-selector" class="form-control">
+                                <option value="intra-inter">Intra & Inter-Cluster Distances</option>
+                                <option value="means">Cluster Means for Traits</option>
+                                <option value="d2">Mahalanobis D² Matrix</option>
+                            </select>
+                        </div>
+                        <div class="table-container">
+                            <table id="dynamic-table">
+                                <thead id="dynamic-head"></thead>
+                                <tbody id="dynamic-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                        <h3>Genetic Interpretation</h3>
+                        <div id="interpretation-text" style="opacity: 0.8; line-height: 1.6;"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button id="dl-doc-btn" class="btn btn-primary">📄 Download Report (DOCX)</button>
+                        <button id="dl-excel-btn" class="btn" style="background: #107c10; color: white;">📗 Export
+                            Statistics (Excel)</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/mahalanobis_d2.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phenotypic Correlation Analysis</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .check-list-container {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            text-align: left;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+        }
+
+        .matrix-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        #matrix-table th,
+        #matrix-table td {
+            text-align: center;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #matrix-table th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            position: sticky;
+            left: 0;
+            z-index: 10;
+        }
+
+        #matrix-table td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: rgba(30, 30, 30, 0.9);
+            font-weight: bold;
+        }
+
+        .variance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .variance-table th,
+        .variance-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='/data-analyzer.html'">
+                &larr; Back
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <span class="badge">Breeding Analysis</span>
+            </div>
+            <h1>Phenotypic Correlation</h1>
+            <p>Analyze observable associations between traits, combining genetic and environmental effects.</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar: Input & Config -->
+            <aside class="glass-card sidebar">
+                <h2>Experimental Setup</h2>
+
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                        <p style="font-size: 0.8em; opacity: 0.6;">(RCBD Plot Observations)</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <div class="form-group">
+                        <label>Genotype Column</label>
+                        <select id="genotype-col" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Replication Column</label>
+                        <select id="rep-col" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Traits for Analysis</label>
+                        <div id="trait-vars" class="check-list-container"></div>
+                        <div style="margin-top: 5px; display: flex; gap: 10px;">
+                            <button id="select-all-btn" class="btn"
+                                style="padding: 0.2rem 0.5rem; font-size: 0.8rem; width: auto;">Select All</button>
+                            <button id="deselect-all-btn" class="btn"
+                                style="padding: 0.2rem 0.5rem; font-size: 0.8rem; width: auto; background: rgba(255,255,255,0.05);">Deselect
+                                All</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 2rem;">Run Phenotypic
+                        Analysis</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; font-size: 0.9rem; display: none;">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main: Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Analysis Results</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <h3>Phenotypic Interaction Hub</h3>
+                    <p>Estimating associations at the observable level is crucial for understanding trait correlations
+                        in field conditions.</p>
+                    <div
+                        style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8; text-align: left; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 1rem;">
+                        <strong>Methodology Note:</strong><br>
+                        &bull; Computes Pearson correlation on plot-level data<br>
+                        &bull; Significance tested via t-test with (N-2) degrees of freedom<br>
+                        &bull; Useful for selection decisions when genetic info is unavailable
+                    </div>
+                    <button class="btn" style="width: auto; margin-top: 1.5rem;"
+                        onclick="downloadPhenotypicTemplate()">Download RCBD Template</button>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <h3>Processing Plot Data...</h3>
+                    <p>Calculating phenotypic variances and covariances...</p>
+                </div>
+
+                <div id="output-content" class="hidden">
+                    <div class="tabs" style="margin-bottom: 2rem;">
+                        <button class="tab-btn active" onclick="showTab('mat-tab')">Phenotypic Matrix</button>
+                        <button class="tab-btn" onclick="showTab('var-tab')">Phenotypic Variances</button>
+                        <button class="tab-btn" onclick="showTab('interp-tab')">Interpretation</button>
+                    </div>
+
+                    <div id="mat-tab" class="tab-content">
+                        <h3>Phenotypic Correlation matrix (rp)</h3>
+                        <div class="matrix-container glass-card" style="padding: 0;">
+                            <table id="matrix-table"
+                                style="width: 100%; border-collapse: collapse; white-space: nowrap;">
+                                <thead id="matrix-head"></thead>
+                                <tbody id="matrix-body"></tbody>
+                            </table>
+                        </div>
+                        <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">Note: * p ≤ 0.05, ** p ≤ 0.01.
+                            Significance indicates observable synchrony between traits.</p>
+                    </div>
+
+                    <div id="var-tab" class="tab-content hidden">
+                        <h3>Trait Variability Summary</h3>
+                        <div class="glass-card" style="padding: 1rem;">
+                            <table class="variance-table">
+                                <thead>
+                                    <tr>
+                                        <th>Trait</th>
+                                        <th>Overall Mean</th>
+                                        <th>Phenotypic Var (σ²p)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="variance-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="interp-tab" class="tab-content hidden">
+                        <h3>Observable Relationship Insight</h3>
+                        <div id="interpretation-list" style="line-height: 1.6; color: var(--text-secondary);"></div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Downloads</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <button id="dl-doc-btn" class="btn btn-primary">📄 Download Full Report (DOCX)</button>
+                        <button id="dl-excel-btn" class="btn" style="background: #107c10; color: white;">📗 Download
+                            Result (Excel)</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/phenotypic_correlation.js"></script>
+    <script>
+        function downloadPhenotypicTemplate() {
+            const csvContent = "Genotype,Replication,Yield,Height,DaysToFlowering,Biomass\nG1,R1,45,120,65,550\nG1,R2,47,122,66,560\nG1,R3,44,121,65,545\nG2,R1,38,110,60,500\nG2,R2,40,112,61,510\nG2,R3,39,111,60,490\nG3,R1,52,135,70,620\nG3,R2,54,138,71,630\nG3,R3,51,136,70,615\nG4,R1,41,115,62,530\nG4,R2,43,118,63,540\nG4,R3,42,117,62,525";
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = "phenotypic_correlation_template.csv";
+            document.body.appendChild(a); a.click(); a.remove();
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
