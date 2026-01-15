@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pandas
+numpy
+scipy
+statsmodels
+python-docx
+python-multipart
+jinja2
+scikit-posthocs
+networkx
+matplotlib
+seaborn
+openpyxl
+
