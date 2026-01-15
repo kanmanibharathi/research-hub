@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HARVEST - Research Analytics Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HARVEST</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .spiral-container {
             position: relative;
@@ -37,854 +38,1576 @@
             z-index: 2;
             box-shadow: 0 0 8px rgba(79, 209, 255, 0.8);
         }
+
+        /* Footer Styles */
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: #cccccc;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .footer-btn i {
+            font-size: 1rem;
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+            position: relative;
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .developer-info span {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .developer-info strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00a651;
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+
+            .footer-center {
+                order: 3;
+            }
+        }
+
+        .donate-tooltip {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background: rgba(31, 39, 43, 0.98);
+            border: 1px solid #d63384;
+            border-radius: 15px;
+            padding: 20px;
+            color: #fff;
+            font-size: 12px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .footer-btn.donate:hover .donate-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: 140%;
+        }
+
+        .donate-tooltip strong {
+            display: block;
+            color: #d63384;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(214, 51, 132, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .donate-tooltip p {
+            color: #eee;
+            margin-bottom: 10px;
+            line-height: 1.6;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .donate-tooltip em {
+            font-style: italic;
+            color: #00a651;
+            display: block;
+        }
+
+        /* Home Button Styles */
+        .home-btn-container {
+            flex: 0 0 auto;
+            margin-left: auto;
+        }
+
+        .home-btn {
+            text-decoration: none;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            color: #00a651;
+            border-color: #00a651;
+        }
+
+        /* User Profile & Dropdown */
+        .user-profile {
+            position: relative;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        .user-profile #user-menu-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-profile #user-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #00a651 !important;
+            border-color: #00a651;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #1e293b;
+            min-width: 180px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: block;
+            color: #ccc;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(0, 166, 81, 0.1);
+            color: #00a651;
+        }
+
+        /* Auth Modals */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-modal-content {
+            background: #1e293b;
+            margin: auto;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 420px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            animation: modalFadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .close-modal {
+            color: #94a3b8;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .auth-title-dark {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #00FF00, #00a651);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .auth-form input:focus {
+            border-color: #00a651;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(0, 166, 81, 0.2);
+        }
+
+        .auth-form button {
+            background: linear-gradient(135deg, #00a651 0%, #008c44 100%);
+            color: white;
+            padding: 14px;
+            margin: 15px 0 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 166, 81, 0.3);
+        }
+
+        .auth-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 166, 81, 0.4);
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .auth-links a {
+            color: #00a651;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        /* Sub-grid Accordion Styles */
+        .sub-grid-header {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .sub-grid-header:hover {
+            opacity: 0.8;
+            transform: translateX(5px);
+        }
+
+        .toggle-triangle {
+            margin-left: 15px;
+            color: #00a651;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+            font-size: 1.2rem;
+        }
+
+        .sub-category-section.active .toggle-triangle {
+            transform: rotate(90deg);
+        }
+
+        .sub-grid-content {
+            display: none;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .sub-category-section.active .sub-grid-content {
+            display: grid;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-links a:hover {
+            color: #00FF00;
+            text-decoration: underline;
+        }
+
+        .reset-status-text {
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .home-btn-container {
+                width: 100%;
+                margin-top: 1rem;
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        /* Utility Classes to Replace Inline Styles */
+        .main-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .header-text-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 900px;
+            text-align: left;
+        }
+
+        .header-title {
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            color: #d63384;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .akira-gradient-text {
+            background: linear-gradient(to bottom, #00FF00, #00a651);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-desc {
+            line-height: 1.6;
+            font-size: 1.05rem;
+            font-style: italic;
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title-lg {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .akira-green {
+            color: #00a651;
+        }
+
+        .card-desc-box {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .card-footer-flex {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-action-btn {
+            color: #00a651;
+            font-weight: 600;
+        }
+
+        .category-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-title {
+            color: #fff;
+            border-left: 5px solid #00a651;
+            padding-left: 1rem;
+            margin: 0;
+        }
+
+        .sub-grid-title {
+            color: #fff;
+            border-left: 4px solid #00a651;
+            padding-left: 1rem;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .flex-center-gap {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .badge-testing {
+            background: rgba(0, 166, 81, 0.1);
+            color: #00a651;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .bg-pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 166, 81, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 166, 81, 0.1) 0%, transparent 20%);
+            pointer-events: none;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <header id="main-header"
-            style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 4rem; flex-wrap: wrap;">
+        <header id="main-header" class="main-header-flex">
             <div class="spiral-container" id="spiral-logo">
                 <div class="center-line"></div>
             </div>
-            <div style="flex: 1; min-width: 300px; max-width: 900px; text-align: left;">
-                <h1 style="margin-bottom: 0.5rem;">HARVEST</h1>
-                <h3
-                    style="color: #d63384; font-weight: 700; font-size: 1.5rem; margin-bottom: 1.5rem; opacity: 1; letter-spacing: 0.5px;">
-                    <span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">H</span>olistic
-                    <span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">A</span>nalytics
+            <div class="header-text-container">
+                <h1 class="header-title">HARVEST</h1>
+                <h3 class="header-subtitle">
+                    <span class="akira-gradient-text">H</span>olistic
+                    <span class="akira-gradient-text">A</span>nalytics
                     for
-                    <span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">R</span>esearch,
-                    <span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">V</span>alidation,
-                    <span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">E</span>xperimentation
+                    <span class="akira-gradient-text">R</span>esearch,
+                    <span class="akira-gradient-text">V</span>alidation,
+                    <span class="akira-gradient-text">E</span>xperimentation,
+                    <span class="akira-gradient-text">S</span>tatistics
                     &
-                    <span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">S</span><span
-                        style="background: linear-gradient(to bottom, #00FF00, #00a651); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">T</span>atistics
+                    <span class="akira-gradient-text">T</span>esting
                 </h3>
-                <p style="line-height: 1.6; font-size: 1.05rem; font-style: italic;">A unified analytical platform
+                <p class="header-desc">A unified analytical platform
                     providing end-to-end statistical tools for research design, data validation, experimental analysis,
                     and scientific inference across multidisciplinary life-science and research domains.</p>
+            </div>
+            <div class="home-btn-container flex-center-gap-1">
+                <a href="../../index.html" class="home-btn">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <a href="javascript:void(0)" id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
             </div>
         </header>
 
         <!-- Categories Grid (Visible by default) -->
         <main class="tools-grid" id="categories-grid">
             <div class="card tool-card" onclick="showCategory('doe-tools')">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                    <h2 style="font-size: 1.5rem;">Design of<br><span style="color: #d63384;">Experiment</span></h2>
-                    <span style="font-size: 2rem;">📐</span>
+                <div class="card-header-flex">
+                    <h2 class="card-title-lg">Design of<br><span class="akira-green">Experiment</span></h2>
+                    <span class="fs-2rem">📐</span>
                 </div>
-                <p style="color: var(--text-secondary); line-height: 1.6;">Comprehensive suite of experimental designs
+                <p class="card-desc-box">Comprehensive suite of experimental designs
                     including CRD, RCBD, Split Plot, and Pooled Analysis.</p>
-                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                <div class="card-footer-flex">
                     <span class="badge">15+ Tools</span>
-                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                    <span class="card-action-btn">Open &rarr;</span>
                 </div>
             </div>
 
             <div class="card tool-card" onclick="showCategory('multivariate-tools')">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                    <h2 style="font-size: 1.5rem;">Multivariate<br><span style="color: #d63384;">Analysis</span></h2>
-                    <span style="font-size: 2rem;">📉</span>
+                <div class="card-header-flex">
+                    <h2 class="card-title-lg">Multivariate<br><span class="akira-green">Analysis</span></h2>
+                    <span class="fs-2rem">📉</span>
                 </div>
-                <p style="color: var(--text-secondary); line-height: 1.6;">Dimensionality reduction, pattern
+                <p class="card-desc-box">Dimensionality reduction, pattern
                     recognition, and relationship visualization.</p>
-                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                <div class="card-footer-flex">
                     <span class="badge">New</span>
-                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                    <span class="card-action-btn">Open &rarr;</span>
                 </div>
             </div>
 
             <div class="card tool-card" onclick="showCategory('correlation-tools')">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                    <h2 style="font-size: 1.5rem;">Correlation &<br><span style="color: #d63384;">Regression</span></h2>
-                    <span style="font-size: 2rem;">🔗</span>
+                <div class="card-header-flex">
+                    <h2 class="card-title-lg">Correlation &<br><span class="akira-green">Regression</span></h2>
+                    <span class="fs-2rem">🔗</span>
                 </div>
-                <p style="color: var(--text-secondary); line-height: 1.6;">Analyze relationships, associations and
+                <p class="card-desc-box">Analyze relationships, associations and
                     predictive models.</p>
-                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                <div class="card-footer-flex">
                     <span class="badge">Testing</span>
-                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                    <span class="card-action-btn">Open &rarr;</span>
                 </div>
             </div>
 
             <div class="card tool-card" onclick="showCategory('breeding-tools')">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                    <h2 style="font-size: 1.5rem;">Breeding<br><span style="color: #d63384;">Analysis</span></h2>
-                    <span style="font-size: 2rem;">🧬</span>
+                <div class="card-header-flex">
+                    <h2 class="card-title-lg">Breeding<br><span class="akira-green">Analysis</span></h2>
+                    <span class="fs-2rem">🧬</span>
                 </div>
-                <p style="color: var(--text-secondary); line-height: 1.6;">Genetic analysis tools including Diallel
+                <p class="card-desc-box">Genetic analysis tools including Diallel
                     crosses, GCA, SCA and Heterosis estimation.</p>
-                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                <div class="card-footer-flex">
                     <span class="badge">Testing</span>
-                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                    <span class="card-action-btn">Open &rarr;</span>
                 </div>
             </div>
 
             <div class="card tool-card" onclick="showCategory('hypothesis-tools')">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                    <h2 style="font-size: 1.5rem;">Hypothesis<br><span style="color: #d63384;">Testing</span></h2>
-                    <span style="font-size: 2rem;">🧪</span>
+                <div class="card-header-flex">
+                    <h2 class="card-title-lg">Hypothesis<br><span class="akira-green">Testing</span></h2>
+                    <span class="fs-2rem">🧪</span>
                 </div>
-                <p style="color: var(--text-secondary); line-height: 1.6;">Statistical tests to validate research
+                <p class="card-desc-box">Statistical tests to validate research
                     assumptions,
                     including t-tests, Z-tests, and Chi-square analysis.</p>
-                <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                <div class="card-footer-flex">
                     <span class="badge">Testing</span>
-                    <span style="color: #d63384; font-weight: 600;">Open &rarr;</span>
+                    <span class="card-action-btn">Open &rarr;</span>
                 </div>
             </div>
         </main>
 
         <!-- Design of Experiment Tools Grid (Hidden by default) -->
-        <div id="doe-tools" style="display: none;">
-            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
-                onclick="showCategories()">
-                &larr; Back to Categories
+        <div id="doe-tools" class="hidden">
+            <div class="category-header">
+                <h2 class="category-title">Design of
+                    Experiment</h2>
+                <a href="javascript:void(0)" class="back-btn" onclick="showCategories()">
+                    &larr; Back to Categories
+                </a>
             </div>
 
-            <div class="category-header" style="margin-bottom: 2rem;">
-                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Design of Experiment</h2>
+            <div class="sub-category-section mt-0-5" id="crd-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('crd-section')">
+                    <h3 class="sub-grid-title">
+                        Completely Randomized Design</h3>
+                    <span class="toggle-triangle">▶</span>
+                </div>
+
+                <main class="tools-grid sub-grid-content">
+                    <!-- CRD (1-Factor) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/crd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">CRD <span class="akira-green">(1-Factor)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🎲</span>
+                        </div>
+                        <p class="card-desc-box">Analyze treatment mean differences
+                            and test significance under a Completely Randomized Design</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- CRD (2-Factor) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/factorial-crd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">CRD <span class="akira-green">(2-Factor)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Analyze Main Factor A, Main Factor B,
+                            and their Interaction effects under CRD</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- CRD (3-Factor) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/three-factor-crd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">CRD <span class="akira-green">(3-Factor)</span><br>Analysis</h2>
+                            <span class="fs-2rem"></span>
+                        </div>
+                        <p class="card-desc-box">Analyze complex A x B x C
+                            interactions. Includes main effects, 2-way, and 3-way interactions.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- CRD (1-Factor Pooled) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/pooled-crd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">CRD <span class="akira-green">(1-Factor
+                                    Pooled)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🌎</span>
+                        </div>
+                        <p class="card-desc-box">Combined analysis across environments
+                            (Locations/Years). Includes Bartlett's Test.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- CRD (2-Factor Pooled) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/two-factor-pooled-crd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">CRD <span class="akira-green">(2-Factor
+                                    Pooled)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Pooled Analysis of Two Factors (A x
+                            B) across Environments. Includes Interactions.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
             </div>
 
-            <main class="tools-grid">
-                <!-- Active Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/lsd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Latin Square<br><span style="color: #d63384;">Design</span></h2>
-                        <span style="font-size: 2rem;">🔲</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze row, column, and treatment
-                        effects
-                        with balanced orthogonality. Includes ANOVA, Means, and Post-hoc tests.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
+            <div class="sub-category-section mt-0-5" id="rcbd-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('rcbd-section')">
+                    <h3 class="sub-grid-title">Randomized Complete Block Design</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Strip Plot Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/strip-plot.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Strip Plot<br><span style="color: #d63384;">Design</span></h2>
-                        <span style="font-size: 2rem;">🌾</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- RCBD (1-Factor) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/one-factor-rcbd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">RCBD <span class="akira-green">(1-Factor)</span><br>Analysis</h2>
+                            <span class="fs-2rem">田</span>
+                        </div>
+                        <p class="card-desc-box">Randomized Complete Block Design. Single treatment factor with
+                            replication blocking.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze factorial experiments laid out in
-                        perpendicular strips. Includes interactions and precision stats.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+
+                    <!-- RCBD (2-Factor) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/two-factor-rcbd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">RCBD <span class="akira-green">(2-Factor)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🔢</span>
+                        </div>
+                        <p class="card-desc-box">Factorial RCBD (Factor A x Factor B) with Replications. Includes
+                            Interaction effects.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
+
+                    <!-- RCBD (3-Factor) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/three-factor-rcbd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">RCBD <span class="akira-green">(3-Factor)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🧊</span>
+                        </div>
+                        <p class="card-desc-box">Factorial RCBD (A x B x C) with Replications. Includes three-way
+                            interactions.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="split-plot-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('split-plot-section')">
+                    <h3 class="sub-grid-title">Split Plot Design</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Factorial CRD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/factorial-crd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Factorial<br><span style="color: #d63384;">CRD</span></h2>
-                        <span style="font-size: 2rem;">🧬</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Split Plot (1,1) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/split-plot.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Split Plot <span class="akira-green">(1,1)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🌱</span>
+                        </div>
+                        <p class="card-desc-box">Main Plot x Sub Plot Design with two error terms and precision levels.
+                        </p>
+                        <div class="card-footer-flex">
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Two-Factor Completely Randomized Design.
-                        Analyze Main A, Main B, and Interaction effects.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+
+                    <!-- Split Plot (2-1) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/split-plot-21.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Split Plot <span class="akira-green">(2-1)</span><br>Analysis</h2>
+                            <span class="fs-2rem"></span>
+                        </div>
+                        <p class="card-desc-box">Two Main Plots &times; One Sub Plot Design. Includes complex
+                            interactions.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
+
+                    <!-- Split Plot (1,2) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/split-plot-12.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Split Plot <span class="akira-green">(1,2)</span><br>Analysis</h2>
+                            <span class="fs-2rem"></span>
+                        </div>
+                        <p class="card-desc-box">One Main Plot &times; Two Sub Plots Design. Three-way interactions
+                            supported.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Split-Split Plot (1,1,1) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/split-split-plot.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Split-Split Plot <span
+                                    class="akira-green">(1,1,1)</span><br>Analysis</h2>
+                            <span class="fs-2rem"></span>
+                        </div>
+                        <p class="card-desc-box">Main &times; Sub &times; Sub-Sub Design with three error terms (a, b,
+                            c).</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Split Plot (CRD) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/split-crd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Split Plot <span class="akira-green">(CRD)</span><br>Analysis</h2>
+                            <span class="fs-2rem">🧪</span>
+                        </div>
+                        <p class="card-desc-box">Split Plot Design in CRD with two error terms (Main & Sub).</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Split Plot (Pooled) Analysis -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/split-pooled.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Split Plot <span class="akira-green">(Pooled)</span><br>Analysis
+                            </h2>
+                            <span class="fs-2rem"></span>
+                        </div>
+                        <p class="card-desc-box">Combined analysis of Split Plots across environments/years.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="lsd-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('lsd-section')">
+                    <h3 class="sub-grid-title">Latin Square Design</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Three-Factor CRD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/three-factor-crd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Three-Factor<br><span style="color: #d63384;">CRD</span></h2>
-                        <span style="font-size: 2rem;">🧊</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Latin Square Design -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/lsd.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Latin Square<br><span class="akira-green">Design</span></h2>
+                            <span class="fs-2rem">🔲</span>
+                        </div>
+                        <p class="card-desc-box">Analyze row, column, and treatment effects with balanced orthogonality.
+                            Includes ANOVA, Means, and Post-hoc tests.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze complex A x B x C interactions.
-                        Includes main effects, 2-way, and 3-way interactions.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="strip-plot-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('strip-plot-section')">
+                    <h3 class="sub-grid-title">Strip Plot Analysis</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Pooled CRD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/pooled-crd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">One Factor<br><span style="color: #d63384;">Pooled CRD</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🌎</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Strip Plot -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/strip-plot.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Strip Plot<br><span class="akira-green">Design</span></h2>
+                            <span class="fs-2rem">🌾</span>
+                        </div>
+                        <p class="card-desc-box">Analyze factorial experiments laid out in perpendicular strips.
+                            Includes interactions and precision stats.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Combined analysis across environments
-                        (Locations/Years). Includes Bartlett's Test.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
+                </main>
+            </div>
 
-                <!-- Two Factor Pooled CRD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/two-factor-pooled-crd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Two-Factor<br><span style="color: #d63384;">Pooled CRD</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Pooled Analysis of Two Factors (A x B)
-                        across
-                        Environments. Includes Interactions.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- CRD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/crd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">CRD<br><span style="color: #d63384;">Analysis</span></h2>
-                        <span style="font-size: 2rem;">🎲</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Completely Randomized Design. One-way
-                        ANOVA
-                        for simple experiments.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- One Factor RCBD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/one-factor-rcbd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">One Factor<br><span style="color: #d63384;">RCBD</span></h2>
-                        <span style="font-size: 2rem;">田</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Randomized Complete Block Design. Single
-                        treatment factor with replication blocking.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Two Factor RCBD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/two-factor-rcbd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Two Factor<br><span style="color: #d63384;">RCBD</span></h2>
-                        <span style="font-size: 2rem;">🔢</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Factorial RCBD (Factor A x Factor B) with
-                        Replications. Includes Interaction effects.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Three Factor RCBD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/three-factor-rcbd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Three Factor<br><span style="color: #d63384;">RCBD</span></h2>
-                        <span style="font-size: 2rem;">🧊</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Factorial RCBD (A x B x C) with
-                        Replications. Includes three-way interactions.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Simple Split Plot Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/split-plot.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Split Plot<br><span style="color: #d63384;">Design</span></h2>
-                        <span style="font-size: 2rem;">🌱</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Main Plot x Sub Plot Design with two
-                        error
-                        terms and precision levels.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Split Plot (2,1) Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/split-plot-21.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Split Plot<br><span style="color: #d63384;">(2,1)</span></h2>
-                        <span style="font-size: 2rem;">🌿</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Two Main Plots &times; One Sub Plot
-                        Design.
-                        Includes complex interactions.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Split Plot (1,2) Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/split-plot-12.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Split Plot<br><span style="color: #d63384;">(1,2)</span></h2>
-                        <span style="font-size: 2rem;">🌾</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">One Main Plot &times; Two Sub Plots
-                        Design.
-                        Three-way interactions supported.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Split-Split Plot Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/split-split-plot.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Split-Split<br><span style="color: #d63384;">Plot</span></h2>
-                        <span style="font-size: 2rem;">🎋</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Main &times; Sub &times; Sub-Sub Design
-                        with
-                        three error terms (a, b, c).</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Split CRD Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/split-crd.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Split CRD<br><span style="color: #d63384;">Design</span></h2>
-                        <span style="font-size: 2rem;">🧪</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Split Plot Design in CRD with two error
-                        terms
-                        (Main & Sub).</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Pooled Split Plot Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/split-pooled.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Pooled Split<br><span style="color: #d63384;">Plot</span></h2>
-                        <span style="font-size: 2rem;">🌎</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Combined analysis of Split Plots across
-                        environments/years.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-            </main>
         </div>
 
-        <!-- Multivariate Tools Grid (Hidden by default) -->
-        <div id="multivariate-tools" style="display: none;">
-            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
-                onclick="showCategories()">
-                &larr; Back to Categories
-            </div>
-
-            <div class="category-header" style="margin-bottom: 2rem;">
-                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Multivariate Analysis</h2>
+        <div id="multivariate-tools" class="hidden">
+            <div class="category-header">
+                <h2 class="category-title">Multivariate Analysis</h2>
+                <a href="javascript:void(0)" class="back-btn" onclick="showCategories()">
+                    &larr; Back to Categories
+                </a>
             </div>
 
             <main class="tools-grid">
                 <!-- PCA Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/pca.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Principal<br>Component</h2>
-                        <span style="font-size: 2rem;">📉</span>
+                <div class="card tool-card"
+                    onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/pca.html'">
+                    <div class="card-header-flex">
+                        <h2 class="card-title-lg">Principal<br>Component</h2>
+                        <span class="fs-2rem">📉</span>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze structure of variation, reduce
-                        dimensionality, and visualize relationships (SVD-based).</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <p class="card-desc-box">Analyze structure of variation, reduce dimensionality, and visualize
+                        relationships (SVD-based).</p>
+                    <div class="card-footer-flex">
                         <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                        <span class="card-action-btn">Start &rarr;</span>
                     </div>
                 </div>
 
                 <!-- Path Analysis Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/path-analysis.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Path<br><span style="color: #d63384;">Analysis</span></h2>
-                        <span style="font-size: 2rem;">🛣️</span>
+                <div class="card tool-card"
+                    onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/path-analysis.html'">
+                    <div class="card-header-flex">
+                        <h2 class="card-title-lg">Path<br><span class="akira-green">Analysis</span></h2>
+                        <span class="fs-2rem">🛣️</span>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Partition correlation into Direct and
-                        Indirect effects. Visualize Causal Paths.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
+                    <p class="card-desc-box">Partition correlation into Direct and Indirect effects. Visualize Causal
+                        Paths.</p>
+                    <div class="card-footer-flex">
                         <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+                        <span class="card-action-btn">Start &rarr;</span>
                     </div>
                 </div>
             </main>
         </div>
 
-        <!-- Correlation Tools -->
-        <div id="correlation-tools" style="display: none;">
-            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
-                onclick="showCategories()">
-                &larr; Back to Categories
+        <div id="correlation-tools" class="hidden">
+            <div class="category-header">
+                <h2 class="category-title">Correlation &
+                    Regression</h2>
+                <a href="javascript:void(0)" class="back-btn" onclick="showCategories()">
+                    &larr; Back to Categories
+                </a>
             </div>
 
-            <div class="category-header" style="margin-bottom: 2rem;">
-                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Correlation & Regression
-                </h2>
+            <div class="sub-category-section mt-0-5" id="correlation-sub-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('correlation-sub-section')">
+                    <h3 class="sub-grid-title">
+                        Correlation</h3>
+                    <span class="toggle-triangle">▶</span>
+                </div>
+
+                <main class="tools-grid sub-grid-content">
+                    <!-- Pearson Correlation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/pearson-correlation.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Pearson<br><span class="akira-green">Correlation</span></h2>
+                            <span class="fs-2rem">🔗</span>
+                        </div>
+                        <p class="card-desc-box">Test linear associations with
+                            significance testing and heatmap visualization.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Genotypic Correlation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/genotypic-correlation.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Genotypic<br><span class="akira-green">Correlation</span>
+                            </h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Analyze genetic associations by
+                            partitioning covariance components from RCBD ANOVA.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Phenotypic Correlation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/phenotypic-correlation.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Phenotypic<br><span class="akira-green">Correlation</span>
+                            </h2>
+                            <span class="fs-2rem">🧪</span>
+                        </div>
+                        <p class="card-desc-box">Observe overall trait associations
+                            including genetic and environmental effects.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Spearman Correlation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/spearman-correlation.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Spearman Rank<br><span class="akira-green">Correlation</span>
+                            </h2>
+                            <span class="fs-2rem">🔢</span>
+                        </div>
+                        <p class="card-desc-box">Measure monotonic associations using
+                            Ranked data. Robust to outliers.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
             </div>
 
-            <main class="tools-grid">
-                <!-- Pearson Correlation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/pearson-correlation.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Pearson<br><span style="color: #d63384;">Correlation</span></h2>
-                        <span style="font-size: 2rem;">🔗</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Test linear associations with
-                        significance testing and heatmap visualization.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
+            <div class="sub-category-section mt-0-5" id="regression-sub-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('regression-sub-section')">
+                    <h3 class="sub-grid-title">Regression</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Genotypic Correlation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/genotypic-correlation.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Genotypic<br><span style="color: #d63384;">Correlation</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Regression Analysis Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/regression-analyzer.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">REGRESSION<br><span class="akira-green">ANALYSIS</span>
+                            </h2>
+                            <span class="fs-2rem">📉</span>
+                        </div>
+                        <p class="card-desc-box">Build predictive models using Linear,
+                            Multiple, and Polynomial regression. Includes full diagnostics and OLS mapping.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze genetic associations by
-                        partitioning covariance components from RCBD ANOVA.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Phenotypic Correlation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/phenotypic-correlation.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Phenotypic<br><span style="color: #d63384;">Correlation</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧪</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Observe overall trait associations
-                        including genetic and environmental effects.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Spearman Correlation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/spearman-correlation.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">Spearman Rank<br><span style="color: #d63384;">Correlation</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🔢</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Measure monotonic associations using
-                        Ranked data. Robust to outliers.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Regression Analysis Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/regression-analyzer.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">REGRESSION<br><span style="color: #d63384;">ANALYSIS</span>
-                        </h2>
-                        <span style="font-size: 2rem;">📉</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Build predictive models using Linear,
-                        Multiple, and Polynomial regression. Includes full diagnostics and OLS mapping.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-            </main>
+                </main>
+            </div>
 
         </div>
 
-        <!-- Breeding Tools -->
-        <div id="breeding-tools" style="display: none;">
-            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
-                onclick="showCategories()">
-                &larr; Back to Categories
+        <div id="breeding-tools" class="hidden">
+            <div class="category-header">
+                <div class="flex-center-gap">
+                    <h2 class="category-title">Breeding Analysis</h2>
+                    <a href="../../modules/design-gen/doe.html" class="back-btn badge-testing">
+                        <i class="fas fa-layer-group font-size-sm"></i>
+                        Design Generator
+                    </a>
+                </div>
+                <a href="javascript:void(0)" class="back-btn" onclick="showCategories()">
+                    &larr; Back to Categories
+                </a>
             </div>
 
-            <div class="category-header" style="margin-bottom: 2rem;">
-                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Breeding Analysis</h2>
+            <div class="sub-category-section mt-0-5" id="correlation-association-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('correlation-association-section')">
+                    <h3 class="sub-grid-title">Correlation & Association Analysis</h3>
+                    <span class="toggle-triangle">▶</span>
+                </div>
+
+                <main class="tools-grid sub-grid-content">
+                    <!-- Genotypic Correlation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/genotypic-correlation.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Genotypic<br><span class="akira-green">Correlation</span></h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Precision analysis of genetic associations partitioned from RCBD ANOVA.
+                        </p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Phenotypic Correlation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/phenotypic-correlation.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Phenotypic<br><span class="akira-green">Correlation</span></h2>
+                            <span class="fs-2rem">🧪</span>
+                        </div>
+                        <p class="card-desc-box">Measure trait associations at the observable level. Includes genetic
+                            and environmental interactions.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
             </div>
 
-            <main class="tools-grid">
-                <!-- Genotypic Correlation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/genotypic-correlation.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GENOTYPIC<br><span style="color: #d63384;">CORRELATION</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Precision analysis of genetic
-                        associations
-                        partitioned from RCBD ANOVA. Eliminates environment and experimental errors.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
+            <div class="sub-category-section mt-0-5" id="path-analysis-breeding-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('path-analysis-breeding-section')">
+                    <h3 class="sub-grid-title">Path Analysis (Cause–Effect)</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Phenotypic Correlation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/phenotypic-correlation.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">PHENOTYPIC<br><span style="color: #d63384;">CORRELATION</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧪</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Genotypic Path Analysis Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/genotypic-path-analysis.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Genotypic<br><span class="akira-green">Path Analysis</span></h2>
+                            <span class="fs-2rem">🔢</span>
+                        </div>
+                        <p class="card-desc-box">Decompose genetic correlations into direct and indirect effects using
+                            matrix inversion.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Measure trait associations at the
-                        observable level. Includes genetic and environmental interactions.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+
+                    <!-- Phenotypic Path Analysis Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/phenotypic-path-analysis.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Phenotypic<br><span class="akira-green">Path Analysis</span></h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Analyze observable trait associations and partition them into direct
+                            and indirect causal components.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="genetic-variability-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('genetic-variability-section')">
+                    <h3 class="sub-grid-title">Genetic Variability & Divergence</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Genotypic Path Analysis Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/genotypic-path-analysis.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GENOTYPIC<br><span style="color: #d63384;">PATH ANALYSIS</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🔢</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Genetic Parameter Estimation Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/genetic-parameters.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Genetic Parameter<br><span class="akira-green">Estimation</span>
+                            </h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">ANOVA-based estimation of h², GCV/PCV, and Genetic Advance for RCBD
+                            trials.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Decompose genetic correlations into
-                        direct and indirect effects using matrix inversion.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+
+                    <!-- Mahalanobis D2 Statistics Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/mahalanobis-d2.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Mahalanobis<br><span class="akira-green">D² Statistics</span></h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Classify genotypes into clusters using Tocher's Method and quantify
+                            genetic divergence.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="diallel-analysis-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('diallel-analysis-section')">
+                    <h3 class="sub-grid-title">Combining Ability & Diallel Analysis</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Phenotypic Path Analysis Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/phenotypic-path-analysis.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">PHENOTYPIC<br><span style="color: #d63384;">PATH ANALYSIS</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Griffing Method 1 (WITHOUT CHECK) Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/griffing-method1.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">GRIFFING'S METHOD 1<br><span class="akira-green">(FULL
+                                    DIALLEL)</span></h2>
+                            <span class="fs-2rem">🌀</span>
+                        </div>
+                        <p class="card-desc-box">Full Diallel Analysis (Method I) including Parents, F1s, and
+                            Reciprocals. Estimates GCA, SCA, and RCA.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze observable trait associations and
-                        partition them into direct and indirect causal components.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
+
+                    <!-- Griffing Method 1 (WITH CHECK) Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/griffing-method1-check.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">GRIFFING'S METHOD 1<br><span class="akira-green">(DIALLEL +
+                                    CHECK)</span></h2>
+                            <span class="fs-2rem">🧬</span>
+                        </div>
+                        <p class="card-desc-box">Diallel Method I with partitioning of ANOVA for Check varieties.
+                            Includes Standard Heterosis calculations.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
+
+                    <!-- Griffing Method 2 (HALF DIALLEL) Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/griffing-method2.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">GRIFFING'S METHOD 2<br><span class="akira-green">(HALF
+                                    DIALLEL)</span></h2>
+                            <span class="fs-2rem">🌟</span>
+                        </div>
+                        <p class="card-desc-box">Half Diallel Analysis (Method II) including Parents and F1s. Estimates
+                            GCA, SCA, and Heritability.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Griffing Method 2 (WITH CHECK) Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/griffing-method2-check.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">GRIFFING'S METHOD 2<br><span class="akira-green">(HALF +
+                                    CHECK)</span></h2>
+                            <span class="fs-2rem">🧪</span>
+                        </div>
+                        <p class="card-desc-box">Half Diallel Method II with partitioning of ANOVA for Check varieties.
+                            Estimates GCA, SCA and Heterosis.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="hybrid-mating-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('hybrid-mating-section')">
+                    <h3 class="sub-grid-title">Hybrid & Mating Analysis</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Mahalanobis D2 Statistics Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/mahalanobis-d2.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">MAHALANOBIS<br><span style="color: #d63384;">D² STATISTICS</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Line x Tester Analysis Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/line-tester.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Line &times; Tester<br><span class="akira-green">Analysis</span>
+                            </h2>
+                            <span class="fs-2rem">✖️</span>
+                        </div>
+                        <p class="card-desc-box">Analyze Combining Ability, Genetic Variance & Heterosis in L&times;T
+                            mating design.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Classify genotypes into clusters using
-                        Tocher's Method and quantify genetic divergence.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
+                </main>
+            </div>
+
+            <div class="sub-category-section mt-0-5" id="stability-ge-section">
+                <div class="sub-grid-header mb-0" onclick="toggleSubGrid('stability-ge-section')">
+                    <h3 class="sub-grid-title">Stability & G&times;E Analysis</h3>
+                    <span class="toggle-triangle">▶</span>
                 </div>
 
-                <!-- Genetic Parameter Estimation Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/genetic-parameters.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GENETIC PARAMETER<br><span
-                                style="color: #d63384;">ESTIMATION</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
+                <main class="tools-grid sub-grid-content">
+                    <!-- Eberhart & Russell Stability Analysis Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/eberhart-russell.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">Stability Analysis<br><span class="akira-green">(Eberhart &
+                                    Russell)</span></h2>
+                            <span class="card-icon">📈</span>
+                        </div>
+                        <p class="card-desc-box">Analyze G&times;E interaction and stability using linear regression.
+                            Includes b<sub>i</sub> and S<sup>2</sup>d<sub>i</sub> parameters.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">ANOVA-based estimation of h², GCV/PCV,
-                        and
-                        Genetic Advance for RCBD trials.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Griffing Method 1 (WITHOUT CHECK) Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method1.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 1<br><span style="color: #d63384;">(FULL
-                                DIALLEL WITHOUT CHECK)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🌀</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Full Diallel Analysis (Method I)
-                        including Parents, F1s, and Reciprocals. Estimates GCA, SCA, and RCA.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Griffing Method 1 (WITH CHECK) Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method1-check.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 1<br><span style="color: #d63384;">(FULL
-                                DIALLEL WITH CHECK)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Diallel Method I with partitioning of
-                        ANOVA for Check varieties. Includes Standard Heterosis calculations.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Griffing Method 2 (HALF DIALLEL) Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method2.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 2<br><span style="color: #d63384;">(HALF
-                                DIALLEL WITHOUT CHECK)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🌟</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Half Diallel Analysis (Method II)
-                        including Parents and F1s. Estimates GCA, SCA, and Heritability.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Griffing Method 2 (WITH CHECK) Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/griffing-method2-check.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">GRIFFING'S METHOD 2<br><span style="color: #d63384;">(HALF
-                                DIALLEL WITH CHECK)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧪</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Half Diallel Method II with partitioning
-                        of ANOVA for Check varieties. Estimates GCA, SCA and Heterosis.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Eberhart & Russell Stability Analysis Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/eberhart-russell.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">STABILITY ANALYSIS<br><span style="color: #d63384;">(EBERHART &
-                                RUSSELL)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">📈</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze G&times;E interaction and
-                        stability using linear regression. Includes b<sub>i</sub> and S<sup>2</sup>d<sub>i</sub>
-                        parameters.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Line x Tester Analysis Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/line-tester.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">LINE &times; TESTER<br><span
-                                style="color: #d63384;">ANALYSIS</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧬</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze hybrid performance, estimate
-                        GCA/SCA effects, and partition genetic variance into additive/non-additive components.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Design Generator Tool -->
-                <div class="card tool-card" onclick="window.location.href='../../modules/design-gen/doe.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">DESIGN<br><span style="color: #d63384;">GENERATOR</span>
-                        </h2>
-                        <span style="font-size: 2rem;">📐</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Generate randomized field layouts for
-                        various experimental designs including CRD, RCBD, and Augmented designs.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-            </main>
+                </main>
+            </div>
         </div>
 
-        <!-- Hypothesis Testing Tools -->
-        <div id="hypothesis-tools" style="display: none;">
-            <div style="margin-bottom: 2rem; cursor: pointer; color: #d63384; font-weight: 600; display: inline-block;"
-                onclick="showCategories()">
-                &larr; Back to Categories
+        <div id="hypothesis-tools" class="hidden">
+            <div class="category-header">
+                <h2 class="category-title">Hypothesis Testing</h2>
+                <a href="javascript:void(0)" class="back-btn" onclick="showCategories()">
+                    &larr; Back to Categories
+                </a>
             </div>
 
-            <div class="category-header" style="margin-bottom: 2rem;">
-                <h2 style="color: #fff; border-left: 5px solid #d63384; padding-left: 1rem;">Hypothesis Testing</h2>
+            <div class="sub-category-section mt-1-5" id="t-test-section">
+                <div class="sub-grid-header mb-1-5">
+                    <h3 class="sub-grid-title">t-TEST</h3>
+                </div>
+
+                <main class="tools-grid">
+                    <!-- One-Sample t-Test Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/one-sample-t-test.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">t-Test <span class="akira-green">(One Sample)</span></h2>
+                            <span class="fs-2rem">🔢</span>
+                        </div>
+                        <p class="card-desc-box">Test if a population mean differs from a target value. Includes
+                            Shapiro-Wilk and thesis-grade reporting.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Two-Sample t-Test Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/two-sample-t-test.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">t-Test <span class="akira-green">(Two Sample)</span></h2>
+                            <span class="fs-2rem">📈</span>
+                        </div>
+                        <p class="card-desc-box">Compare means of two groups. Handles variance equality via Bartlett's
+                            test for Student/Welch t-test.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Statistical</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+
+                    <!-- Paired t-Test Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/paired-t-test.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">t-Test <span class="akira-green">(Paired Sample)</span></h2>
+                            <span class="fs-2rem">🔗</span>
+                        </div>
+                        <p class="card-desc-box">Analyze related pairs (e.g. Before/After). Includes normality test on
+                            differences and paired line plots.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Statistical</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
+                    </div>
+                </main>
             </div>
 
-            <main class="tools-grid">
-                <!-- F-Test Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/f-test.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">F-TEST<br><span style="color: #d63384;">(VARIANCE RATIO)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🧪</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Compare variances of two independent
-                        samples. Includes normality testing and thesis-grade reporting.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
+            <div class="sub-category-section mt-1-5" id="f-test-section">
+                <div class="sub-grid-header mb-1-5">
+                    <h3 class="sub-grid-title">F-TEST</h3>
                 </div>
 
-                <!-- One-Sample t-Test Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/one-sample-t-test.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">t-TEST<br><span style="color: #d63384;">(ONE SAMPLE)</span></h2>
-                        <span style="font-size: 2rem;">🔢</span>
+                <main class="tools-grid">
+                    <!-- F-Test Tool -->
+                    <div class="card tool-card"
+                        onclick="if(window.requireAuth && !window.requireAuth())return; window.location.href='analyser/f-test.html'">
+                        <div class="card-header-flex">
+                            <h2 class="card-title-lg">F-TEST <span class="akira-green">(VARIANCE RATIO)</span></h2>
+                            <span class="fs-2rem">🧪</span>
+                        </div>
+                        <p class="card-desc-box">Compare variances of two independent samples. Includes normality
+                            testing and thesis-grade reporting.</p>
+                        <div class="card-footer-flex">
+                            <span class="badge">Testing</span>
+                            <span class="card-action-btn">Start &rarr;</span>
+                        </div>
                     </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Test if a population mean differs from a
-                        target value. Includes Shapiro-Wilk and thesis-grade reporting.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Testing</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Two-Sample t-Test Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/two-sample-t-test.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">t-TEST<br><span style="color: #d63384;">(TWO INDEPENDENT)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">📉</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Compare means of two groups.
-                        Automatically handles variance equality via Bartlett's test for Student/Welch t-test.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Statistical</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Paired t-Test Tool -->
-                <div class="card tool-card" onclick="window.location.href='analyser/paired-t-test.html'">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h2 style="font-size: 1.5rem;">t-TEST<br><span style="color: #d63384;">(PAIRED SAMPLE)</span>
-                        </h2>
-                        <span style="font-size: 2rem;">🔗</span>
-                    </div>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">Analyze related pairs (e.g.
-                        Before/After). Includes normality test on differences and paired line plots.</p>
-                    <div style="margin-top: 2rem; display: flex; align-items: center; justify-content: space-between;">
-                        <span class="badge">Statistical</span>
-                        <span style="color: #d63384; font-weight: 600;">Start &rarr;</span>
-                    </div>
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
-
+    </div>
     </div>
 
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- Background Pattern -->
-    <div style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        opacity: 0.4;
-        background-image: 
-        radial-gradient(circle at 10% 20%, rgba(214, 51, 132, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(214, 51, 132, 0.1) 0%, transparent 20%);
-    "></div>
+    <div class="bg-pattern-overlay"></div>
 
     <script>
         // Simple logic to switch views
         function showCategory(id) {
-            document.getElementById('main-header').style.display = 'none';
-            document.getElementById('categories-grid').style.display = 'none';
-            document.getElementById('doe-tools').style.display = 'none';
-            document.getElementById('multivariate-tools').style.display = 'none';
-            document.getElementById('correlation-tools').style.display = 'none';
-            document.getElementById('breeding-tools').style.display = 'none';
-            document.getElementById('hypothesis-tools').style.display = 'none';
+            const sections = ['categories-grid', 'doe-tools', 'multivariate-tools', 'correlation-tools', 'breeding-tools', 'hypothesis-tools'];
+            const header = document.getElementById('main-header');
+
+            header.classList.add('hidden');
+            sections.forEach(sid => {
+                const el = document.getElementById(sid);
+                if (el) el.classList.add('hidden');
+            });
 
             const tool = document.getElementById(id);
             if (tool) {
-                tool.style.display = 'block';
-                // Animation fade in?
+                tool.classList.remove('hidden');
                 tool.style.opacity = 0;
                 setTimeout(() => tool.style.opacity = 1, 50);
                 tool.style.transition = "opacity 0.3s ease";
@@ -892,18 +1615,29 @@
         }
 
         function showCategories() {
-            document.getElementById('main-header').style.display = 'flex';
-            document.getElementById('doe-tools').style.display = 'none';
-            document.getElementById('multivariate-tools').style.display = 'none';
-            document.getElementById('correlation-tools').style.display = 'none';
-            document.getElementById('breeding-tools').style.display = 'none';
-            document.getElementById('hypothesis-tools').style.display = 'none';
-
+            const sections = ['doe-tools', 'multivariate-tools', 'correlation-tools', 'breeding-tools', 'hypothesis-tools'];
+            const header = document.getElementById('main-header');
             const grid = document.getElementById('categories-grid');
-            grid.style.display = 'grid';
-            grid.style.opacity = 0;
-            setTimeout(() => grid.style.opacity = 1, 50);
-            grid.style.transition = "opacity 0.3s ease";
+
+            header.classList.remove('hidden');
+            sections.forEach(sid => {
+                const el = document.getElementById(sid);
+                if (el) el.classList.add('hidden');
+            });
+
+            if (grid) {
+                grid.classList.remove('hidden');
+                grid.style.opacity = 0;
+                setTimeout(() => grid.style.opacity = 1, 50);
+                grid.style.transition = "opacity 0.3s ease";
+            }
+        }
+
+        function toggleSubGrid(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.classList.toggle('active');
+            }
         }
 
         // Spiral Logo Animation
@@ -942,6 +1676,63 @@
         }
         animateSpiral();
     </script>
+
+    <!-- Core Scripts -->
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/custom.js"></script>
+    <script src="../../assets/js/user-auth.js"></script>
+
+    <!-- Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-title-dark">Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-pass-link">Forgot Password?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-title-dark">Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-title-dark">Reset Password</h2>
+            <p class="reset-status-text">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
