@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pooled Two Factor RCBD - Data Hub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='../data-analyzer.html'">
+                &larr; Back
+            </div>
+            <h1>Pooled Two Factor RCBD</h1>
+            <p>Factorial RCBD (A &times; B) Combined Over Years/Locations</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar -->
+            <aside class="glass-card sidebar">
+                <h2>Data Input</h2>
+                <div class="file-status-box" id="drop-zone">
+                    <div id="upload-msg">
+                        <span style="font-size: 1.5rem;">📂</span>
+                        <p>Click to Upload CSV</p>
+                    </div>
+                </div>
+                <input type="file" id="file-input" accept=".csv" hidden>
+
+                <div id="config-form" class="hidden">
+                    <span class="section-title">Map Columns</span>
+                    <div class="form-group"><label>Year / Location (Y)</label><select id="col-year"></select></div>
+                    <div class="form-group"><label>Factor A</label><select id="col-a"></select></div>
+                    <div class="form-group"><label>Factor B</label><select id="col-b"></select></div>
+                    <div class="form-group"><label>Replication</label><select id="col-rep"></select></div>
+                    <div class="form-group"><label>Response Variable</label><select id="col-resp"></select></div>
+
+                    <span class="section-title">Configuration</span>
+                    <div class="form-group">
+                        <label>Alpha (&alpha;)</label>
+                        <select id="alpha">
+                            <option value="0.05">0.05 (Default)</option>
+                            <option value="0.01">0.01</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Multiple Comparison</label>
+                        <select id="post-hoc">
+                            <option value="lsd">LSD</option>
+                            <option value="tukey">Tukey HSD</option>
+                            <option value="dmrt">DMRT</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 2rem;">Run Analysis</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; display: none;"></div>
+                </div>
+            </aside>
+
+            <!-- Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Analysis Results</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <h3>Ready</h3>
+                    <p>Upload CSV with Year, Factor A, Factor B, Rep.</p>
+                </div>
+                <div id="loading" class="hidden empty-state">
+                    <h3>Analyzing...</h3>
+                    <p>Processing Pooled Factorial RCBD...</p>
+                </div>
+
+                <div id="output-content" class="hidden">
+
+                    <h3>Homogeneity Test (F-Max)</h3>
+                    <div id="bartlett-box" style="margin-bottom: 2rem;"></div>
+
+                    <h3>ANOVA Table</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="anova-table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>DF</th>
+                                    <th>SS</th>
+                                    <th>MS</th>
+                                    <th>F</th>
+                                    <th>P</th>
+                                    <th>Sig</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div id="stats-cards-container"></div>
+                    <div id="means-results-container"></div>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button id="download-btn" class="btn btn-primary" style="width: auto;">Download Report
+                            (DOCX)</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/doe/pooled-two-factor-rcbd.js"></script>
+</body>
+
+</html>

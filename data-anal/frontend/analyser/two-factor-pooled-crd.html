@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Two-Factor Pooled CRD - Data Hub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='/data-analyzer.html'">
+                &larr; Back
+            </div>
+            <h1>Two-Factor Pooled CRD</h1>
+            <p>Pooled Analysis of Two Factors (A &#215; B) across Environments</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar -->
+            <aside class="glass-card sidebar">
+                <h2>Data Input</h2>
+                <div class="file-status-box" id="drop-zone">
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                    </div>
+                </div>
+                <input type="file" id="file-input" accept=".csv" hidden>
+
+                <div id="config-panel" class="hidden">
+                    <span class="section-title">Map Columns</span>
+                    <div class="form-group"><label>Factor A</label><select id="col-treat-a"></select></div>
+                    <div class="form-group"><label>Factor B</label><select id="col-treat-b"></select></div>
+                    <div class="form-group"><label>Year / Location</label><select id="col-year"></select></div>
+                    <div class="form-group"><label>Response Variable</label><select id="col-resp"></select></div>
+
+                    <span class="section-title">Configuration</span>
+                    <div class="form-group">
+                        <label>Alpha (&alpha;)</label>
+                        <select id="alpha">
+                            <option value="0.05">0.05 (Default)</option>
+                            <option value="0.01">0.01</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Multiple Comparison</label>
+                        <select id="post-hoc">
+                            <option value="lsd">LSD</option>
+                            <option value="tukey">Tukey HSD</option>
+                            <option value="dmrt">DMRT</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 2rem;">Run Analysis</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; display: none;"></div>
+                </div>
+            </aside>
+
+            <!-- Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Analysis Results</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <h3>Ready</h3>
+                    <p>Upload CSV to begin.</p>
+                </div>
+                <div id="loading" class="hidden empty-state">
+                    <h3>Analyzing...</h3>
+                    <p>Running Pooled Two-Factor ANOVA...</p>
+                </div>
+
+                <div id="output-content" class="hidden">
+                    <!-- Bartlett Section -->
+                    <div class="glass-card" style="margin-bottom: 2rem; border-left: 4px solid #fff;">
+                        <h3>Homogeneity Check (Bartlett's Test)</h3>
+                        <div style="display: flex; gap: 2rem; align-items: center; margin-top: 1rem;">
+                            <div>
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Statistic</div>
+                                <div id="bartlett-stat" style="font-size: 1.2rem; font-weight: bold;">-</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9rem; opacity: 0.7;">P-Value</div>
+                                <div id="bartlett-p" style="font-size: 1.2rem; font-weight: bold;">-</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Decision</div>
+                                <div id="bartlett-decision">-</div>
+                            </div>
+                        </div>
+                        <p id="pooling-msg" style="margin-top: 1rem; font-style: italic;"></p>
+                    </div>
+
+                    <h3>Pooled ANOVA Table</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="anova-table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>DF</th>
+                                    <th>SS</th>
+                                    <th>MS</th>
+                                    <th>F</th>
+                                    <th>P</th>
+                                    <th>Sig</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div id="means-results-container"></div>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button id="download-btn" class="btn btn-primary" style="width: auto;">Download Report
+                            (DOCX)</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/doe/two-factor-pooled-crd.js"></script>
+</body>
+
+</html>

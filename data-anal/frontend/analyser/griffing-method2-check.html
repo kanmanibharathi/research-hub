@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIFFING'S METHOD 2 (HALF DIALLEL WITH CHECK) - Research Hub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .trait-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .trait-tab {
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+        }
+
+        .trait-tab.active {
+            background: #d63384;
+            color: white;
+        }
+
+        .results-section {
+            margin-bottom: 3rem;
+        }
+
+        .data-grid-matrix {
+            display: grid;
+            overflow-x: auto;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+
+        .matrix-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .matrix-table th {
+            background: rgba(214, 51, 132, 0.2);
+        }
+
+        .matrix-table td:first-child {
+            font-weight: bold;
+            background: rgba(214, 51, 132, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='../data-analyzer.html'">
+                &larr; Back
+            </div>
+            <h1>GRIFFING'S METHOD 2</h1>
+            <p>(HALF DIALLEL WITH CHECK)</p>
+        </header>
+
+        <main class="app-grid">
+            <aside class="glass-card sidebar">
+                <h2>Data Input</h2>
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                        <p style="font-size: 0.8em; opacity: 0.6;">(Half Diallel + Checks)</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <span class="section-title">Map Columns</span>
+                    <div class="form-group">
+                        <label>Female Parent (P1)</label>
+                        <select id="col-female"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Male Parent (P2)</label>
+                        <select id="col-male"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Replication</label>
+                        <select id="col-rep"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Check Column</label>
+                        <p style="font-size:0.7rem; opacity:0.7;">Mark entries as 'Diallel' or Check Name.</p>
+                        <select id="col-check"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Traits</label>
+                        <div id="traits-container" style="max-height: 150px; overflow-y: auto;"></div>
+                    </div>
+                    <button class="btn btn-primary" id="analyze-btn">Run Analysis</button>
+                </div>
+            </aside>
+
+            <section class="glass-card main-panel" id="results-panel">
+                <div id="empty-state" class="empty-state">
+                    <h3>Half-Diallel with Check Analysis</h3>
+                    <p>Griffing's Method 2 partitioned ANOVA.</p>
+                </div>
+                <div id="loading" class="hidden empty-state">
+                    <div class="spinner"></div>
+                    <h3>Processing...</h3>
+                </div>
+                <div id="output-content" class="hidden">
+                    <div class="trait-tabs" id="trait-tabs"></div>
+                    <div id="trait-results-container"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 3rem; justify-content: center;">
+                        <button class="btn btn-primary" id="download-doc">DOCX Report</button>
+                        <button class="btn" id="download-excel">Excel Data</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <template id="trait-result-template">
+        <div class="results-section">
+            <h3>I. Combining Ability ANOVA</h3>
+            <table class="grid-table anova-comb-table">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>DF</th>
+                        <th>SS</th>
+                        <th>MS</th>
+                        <th>F-value</th>
+                        <th>Sig</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="results-section">
+            <h3>II. GCA Effects</h3>
+            <table class="grid-table gca-table">
+                <thead>
+                    <tr>
+                        <th>Parent</th>
+                        <th>Effect</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="results-section">
+            <h3>III. SCA Matrix</h3>
+            <div class="data-grid-matrix sca-matrix-container"></div>
+        </div>
+        <div class="results-section">
+            <h3>IV. Genetic Parameters</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div class="glass-card"><label>H² (Broad)</label>
+                    <div class="h2-broad-val"></div>
+                </div>
+                <div class="glass-card"><label>h² (Narrow)</label>
+                    <div class="h2-narrow-val"></div>
+                </div>
+                <div class="glass-card"><label>Pred. Ratio</label>
+                    <div class="pred-ratio-val"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="../js/griffing_method2_check.js"></script>
+</body>
+
+</html>

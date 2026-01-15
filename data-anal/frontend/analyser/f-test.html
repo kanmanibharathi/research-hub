@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>F-Test (Variance Ratio Test)</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-table th {
+            background: rgba(214, 51, 132, 0.1);
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        .normality-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .normality-normal {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .normality-not-normal {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div style="position: absolute; top: 2rem; left: 2rem; cursor: pointer;"
+                onclick="window.location.href='../data-analyzer.html'">
+                &larr; Back
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <span class="badge">Hypothesis Testing</span>
+            </div>
+            <h1>F-Test (Variance Ratio Test)</h1>
+            <p>Statistically compare the variances of two independent samples.</p>
+        </header>
+
+        <main class="app-grid">
+            <!-- Sidebar: Input & Config -->
+            <aside class="glass-card sidebar">
+                <h2>Analysis Configuration</h2>
+
+                <!-- File Upload Trigger -->
+                <div class="file-status-box" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div id="upload-msg">
+                        <p style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem;">📂</p>
+                        <p>Click to Upload CSV</p>
+                        <p style="font-size: 0.8em; opacity: 0.6;">(Samples in separate columns)</p>
+                    </div>
+                </div>
+
+                <div id="config-panel" class="hidden">
+                    <div class="form-group">
+                        <label>Variable 1 (Group 1 Data)</label>
+                        <select id="g1-col" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Variable 2 (Group 2 Data)</label>
+                        <select id="g2-col" class="form-control"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Significance Level (Alpha)</label>
+                        <input type="number" id="alpha-input" class="form-control" value="0.05" min="0.01" max="0.1"
+                            step="0.01">
+                    </div>
+
+                    <button class="btn btn-primary" id="analyze-btn" style="margin-top: 1.5rem;">Perform F-Test</button>
+                    <div id="error-box" style="margin-top: 1rem; color: #f87171; font-size: 0.9rem; display: none;">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main: Results -->
+            <section class="glass-card main-panel" id="results-panel">
+                <h2>Statistical Summary</h2>
+
+                <div id="empty-state" class="empty-state">
+                    <h3>Variance Comparison Engine</h3>
+                    <p>Upload your data to test for equality of variances between two variables.</p>
+                    <div
+                        style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8; text-align: left; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(214, 51, 132, 0.2);">
+                        <strong>Statistical Requirements:</strong><br>
+                        &bull; Two independent variables/columns required<br>
+                        &bull; Data should follow a normal distribution<br>
+                        &bull; Continuous measurement scale
+                    </div>
+                    <button class="btn" style="width: auto; margin-top: 1.5rem; background: #d63384; color: white;"
+                        onclick="downloadFTestTemplate()">Download CSV Template</button>
+                </div>
+
+                <div id="loading" class="hidden empty-state">
+                    <h3>Analyzing Variances...</h3>
+                    <p>Computing F-statistic, p-value and confidence intervals...</p>
+                    <div class="loader-ribbon"></div>
+                </div>
+
+                <div id="output-content" class="hidden">
+                    <div class="tabs" style="margin-bottom: 2rem;">
+                        <button class="tab-btn active" onclick="showTab('summary-tab')">Results Summary</button>
+                        <button class="tab-btn" onclick="showTab('desc-tab')">Descriptive Stats</button>
+                        <button class="tab-btn" onclick="showTab('norm-tab')">Normality Check</button>
+                    </div>
+
+                    <!-- F-Test Summary Tab -->
+                    <div id="summary-tab" class="tab-content">
+                        <div class="result-card">
+                            <h3 style="color: #d63384; margin-bottom: 1rem;">F-Test Results</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">F Statistic</p>
+                                    <p id="res-f-stat" style="font-size: 1.5rem; font-weight: 800;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">P-value (Two-tailed)</p>
+                                    <p id="res-p-val" style="font-size: 1.5rem; font-weight: 800;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">DF1 (Numerator)</p>
+                                    <p id="res-df1" style="font-weight: 600;">-</p>
+                                </div>
+                                <div>
+                                    <p style="opacity: 0.7; font-size: 0.9rem;">DF2 (Denominator)</p>
+                                    <p id="res-df2" style="font-weight: 600;">-</p>
+                                </div>
+                            </div>
+                            <div
+                                style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <p style="opacity: 0.7; font-size: 0.9rem; margin-bottom: 0.5rem;">Interpretation</p>
+                                <p id="res-interpretation" style="line-height: 1.6; font-style: italic;">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descriptive Stats Tab -->
+                    <div id="desc-tab" class="tab-content hidden">
+                        <h3>Descriptive Statistics</h3>
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th id="desc-group1-head">-</th>
+                                    <th id="desc-group2-head">-</th>
+                                </tr>
+                            </thead>
+                            <tbody id="desc-body"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Normality Tab -->
+                    <div id="norm-tab" class="tab-content hidden">
+                        <h3>Normality Test (Shapiro-Wilk)</h3>
+                        <div id="normality-container"
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                            <!-- Normality cards will be injected here -->
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem;">Full Report</h3>
+                    <p style="margin-bottom: 1rem; opacity: 0.7;">Note: Visualizations (Boxplots and Histograms) are
+                        included exclusively in the DOCX report.</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <button id="dl-doc-btn" class="btn btn-primary">
+                            📄 Download Thesis-Grade Report (DOCX)
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/f_test.js"></script>
+    <script>
+        function downloadFTestTemplate() {
+            const csvContent = "Y1900,Y1970\n42.7,54.2\n43.7,50.4\n34,44.2\n39.2,49.7\n46.1,55.4\n48.7,57.0\n49.4,58.2\n45.9,56.6\n55.3,61.9\n,57.5\n,53.4";
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "f_test_sample_data.csv";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            if (event) event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
