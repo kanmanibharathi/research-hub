@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Wet-Lab Utilities - One Research Hub</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+            --pink-gradient: linear-gradient(135deg, #d63384, #e91e63);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(217, 70, 239, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Site Wrapper */
+        .site-wrapper {
+            padding: 0 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Standardized Header */
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        .header-content {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .back-button-container,
+        .user-profile-container {
+            flex: 0 0 auto;
+            min-width: 100px;
+        }
+
+        .user-profile-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            padding-bottom: 4rem;
+            flex: 1;
+        }
+
+        .sidebar-nav {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .nav-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+            text-decoration: none !important;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-box i {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 166, 81, 0.1);
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-box span {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .nav-box:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .nav-box.active {
+            background: rgba(0, 166, 81, 0.15);
+            border-color: var(--primary);
+        }
+
+        .nav-box.active i {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Calculator Cards */
+        .calc-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            height: 100%;
+            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .calc-card:hover {
+            border-color: var(--primary);
+        }
+
+        .calc-card h4 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .calc-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            height: 45px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .calc-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 166, 81, 0.1);
+        }
+
+        .calc-select {
+            background: #2a2c2d;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .calc-btn {
+            width: 100%;
+            background: var(--gradient);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 166, 81, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .calc-btn.btn-pink-gradient {
+            background: var(--pink-gradient);
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.2);
+        }
+
+        .calc-btn.btn-pink-gradient:hover {
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.3);
+        }
+
+        .result-box {
+            background: rgba(0, 166, 81, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-option {
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            transition: all 0.3s ease;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .mode-option.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 166, 81, 0.2);
+        }
+
+        /* Standardized Footer */
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        /* User Auth Modals */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-modal-content {
+            background: #1f272b;
+            padding: 40px;
+            border: 1px solid var(--border);
+            width: 95%;
+            max-width: 420px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            color: var(--text-dim);
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .auth-modal h2 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .auth-form input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 166, 81, 0.1);
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 166, 81, 0.3);
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .auth-links p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .auth-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Tooltips */
+        .info-icon-container {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            cursor: help;
+        }
+
+        .info-icon-container i {
+            font-size: 0.9rem;
+            color: var(--primary);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .info-icon-container:hover i {
+            opacity: 1;
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            width: 250px;
+            background: rgba(0, 0, 0, 0.9);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            font-weight: normal;
+        }
+
+        .info-icon-container:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .donate-tooltip {
+            visibility: hidden;
+            width: 300px;
+            background: #1f272b;
+            color: #fff;
+            text-align: left;
+            border-radius: 15px;
+            padding: 20px;
+            position: absolute;
+            z-index: 100;
+            bottom: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+        }
+
+        .donate-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #1f272b transparent transparent transparent;
+        }
+
+        .footer-btn.donate:hover .donate-tooltip {
+            visibility: visible;
+            opacity: 1;
+            bottom: 130%;
+        }
+
+        .donate-tooltip strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .donate-tooltip p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #eee;
+            margin-bottom: 15px;
+        }
+
+        .donate-tooltip em {
+            color: var(--primary);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .donate-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .donate-stats span {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* User Profile & Dropdown */
+        .user-profile {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-profile #user-menu-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .user-profile #user-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary) !important;
+            border-color: var(--primary);
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #1f272b;
+            min-width: 160px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: block;
+            color: #ccc;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(0, 166, 81, 0.1);
+            color: var(--primary);
+        }
+
+        @media (max-width: 992px) {
+            .header-main {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .sidebar-nav {
+                position: relative;
+                top: 0;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden-section {
+            display: none;
+        }
+
+        .auth-header-margin {
+            margin-bottom: 30px;
+        }
+
+        .forgot-pass-link {
+            font-size: 13px;
+            color: #00a651;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .reset-pass-desc {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="akira-hub.html" class="back-btn" title="Back to Hub">
+                    <i class="fas fa-arrow-left"></i> Back to Hub
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1>Wet-Lab Utilities</h1>
+                <p class="subtitle">Essential conversion tools for laboratory research.</p>
+            </div>
+
+            <div class="user-profile-container">
+                <div class="user-profile">
+                    <a href="javascript:void(0)" id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <div class="row">
+                <!-- Sidebar Navigation -->
+                <div class="col-lg-3">
+                    <div class="sidebar-nav">
+                        <div class="nav-box active" onclick="showCalculator('moles-grams', this)">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <span>Moles ⇄ Grams</span>
+                        </div>
+                        <div class="nav-box" onclick="showCalculator('molarity', this)">
+                            <i class="fa-solid fa-flask"></i>
+                            <span>Molarity Calculator</span>
+                        </div>
+                        <div class="nav-box" onclick="showCalculator('dilution', this)">
+                            <i class="fa-solid fa-droplet-slash"></i>
+                            <span>Dilution (C1V1 = C2V2)</span>
+                        </div>
+                        <div class="nav-box" id="nav-unit-calc" onclick="showCalculator('unit-calc', this)">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <span>Unit Activity</span>
+                        </div>
+                        <div class="nav-box" id="nav-conversions" onclick="showCalculator('conversions', this)">
+                            <i class="fa fa-exchange"></i>
+                            <span>ppm x X</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Calculator Content -->
+                <div class="col-lg-9">
+                    <!-- Category 0: Moles and Grams -->
+                    <div id="section-moles-grams" class="calc-section">
+                        <div class="row g-4">
+                            <!-- Moles from grams -->
+                            <div class="col-md-6">
+                                <div class="calc-card">
+                                    <h4>Moles from grams</h4>
+                                    <div class="form-group">
+                                        <label class="form-label">Mass</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="m0_mass" class="calc-input" placeholder="Value">
+                                            <select id="m0_mass_unit" class="calc-select" title="Mass Unit">
+                                                <option value="1000">kilograms</option>
+                                                <option value="1" selected>grams</option>
+                                                <option value="0.001">milligrams</option>
+                                                <option value="0.000001">micrograms</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Formula Weight (daltons)</label>
+                                        <input type="number" id="m0_fw" class="calc-input" placeholder="e.g. 180.16">
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcMolesFromMass()">Calculate Moles</button>
+                                    <div id="m0_result" class="result-box">
+                                        <div class="result-label">Calculated Moles</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Grams from moles -->
+                            <div class="col-md-6">
+                                <div class="calc-card">
+                                    <h4>Grams from moles</h4>
+                                    <div class="form-group">
+                                        <label class="form-label">Moles</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="m1_moles" class="calc-input" placeholder="Value">
+                                            <select id="m1_moles_unit" class="calc-select" title="Moles Unit">
+                                                <option value="1" selected>moles</option>
+                                                <option value="0.001">millimoles</option>
+                                                <option value="0.000001">micromoles</option>
+                                                <option value="1e-9">nanomoles</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Formula Weight (daltons)</label>
+                                        <input type="number" id="m1_fw" class="calc-input" placeholder="e.g. 180.16">
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcMassFromMoles()">Calculate Grams</button>
+                                    <div id="m1_result" class="result-box">
+                                        <div class="result-label">Calculated Mass</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 1: Molarity -->
+                    <div id="section-molarity" class="calc-section hidden-section">
+                        <div class="row g-4">
+                            <!-- Mass from Volume/Concentration -->
+                            <div class="col-md-6">
+                                <div class="calc-card">
+                                    <h4>Mass from volume & concentration</h4>
+                                    <div class="form-group">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="form-label mb-0">Concentration</label>
+                                            <div class="mode-toggle">
+                                                <div class="mode-option active"
+                                                    onclick="setUnit('c1_conc_unit', '1', this)">M</div>
+                                                <div class="mode-option"
+                                                    onclick="setUnit('c1_conc_unit', '0.001', this)">mM</div>
+                                                <div class="mode-option"
+                                                    onclick="setUnit('c1_conc_unit', '0.000001', this)">&micro;M</div>
+                                            </div>
+                                            <select id="c1_conc_unit" class="calc-select hidden-section">
+                                                <option value="1" selected>Molar (M)</option>
+                                                <option value="0.001">Millimolar (mM)</option>
+                                                <option value="0.000001">Micromolar (&micro;M)</option>
+                                            </select>
+                                        </div>
+                                        <input type="number" id="c1_conc" class="calc-input" placeholder="Value">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Formula Weight (daltons)</label>
+                                        <input type="number" id="c1_fw" class="calc-input" placeholder="e.g. 180.16">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="form-label mb-0">Volume</label>
+                                            <div class="mode-toggle">
+                                                <div class="mode-option" onclick="setUnit('c1_vol_unit', '1', this)">L
+                                                </div>
+                                                <div class="mode-option active"
+                                                    onclick="setUnit('c1_vol_unit', '0.001', this)">mL</div>
+                                                <div class="mode-option"
+                                                    onclick="setUnit('c1_vol_unit', '0.000001', this)">&micro;L</div>
+                                            </div>
+                                            <select id="c1_vol_unit" class="calc-select hidden-section">
+                                                <option value="1">Liter (L)</option>
+                                                <option value="0.001" selected>Milliliter (mL)</option>
+                                                <option value="0.000001">Microliter (&micro;L)</option>
+                                            </select>
+                                        </div>
+                                        <input type="number" id="c1_vol" class="calc-input" placeholder="Value">
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcMass()">Calculate Mass</button>
+                                    <div id="c1_result" class="result-box">
+                                        <div class="result-label">Required Mass</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Volume from Mass/Concentration -->
+                            <div class="col-md-6">
+                                <div class="calc-card">
+                                    <h4>Volume from mass & concentration</h4>
+                                    <div class="form-group">
+                                        <label class="form-label">Mass</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="c2_mass" class="calc-input" placeholder="Value">
+                                            <select id="c2_mass_unit" class="calc-select">
+                                                <option value="1" selected>Grams (g)</option>
+                                                <option value="0.001">Milligrams (mg)</option>
+                                                <option value="0.000001">Micrograms (&micro;g)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Formula Weight (daltons)</label>
+                                        <input type="number" id="c2_fw" class="calc-input" placeholder="e.g. 180.16">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Concentration</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="c2_conc" class="calc-input" placeholder="Value">
+                                            <select id="c2_conc_unit" class="calc-select">
+                                                <option value="1" selected>Molar</option>
+                                                <option value="0.001">Millimolar</option>
+                                                <option value="0.000001">Micromolar</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcVolume()">Calculate Volume</button>
+                                    <div id="c2_result" class="result-box">
+                                        <div class="result-label">Required Volume</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 2: Dilution -->
+                    <div id="section-dilution" class="calc-section hidden-section">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div class="calc-card">
+                                    <h4>Dilute a stock solution (C1V1 = C2V2)</h4>
+                                    <div class="form-group">
+                                        <label class="form-label">Stock concentration (C1)</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="c4_c1" class="calc-input" placeholder="Value">
+                                            <select id="c4_c1_unit" class="calc-select">
+                                                <option value="1" selected>Molar</option>
+                                                <option value="0.001">Millimolar</option>
+                                                <option value="0.000001">Micromolar</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Desired concentration (C2)</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="c4_c2" class="calc-input" placeholder="Value">
+                                            <select id="c4_c2_unit" class="calc-select">
+                                                <option value="1" selected>Molar</option>
+                                                <option value="0.001">Millimolar</option>
+                                                <option value="0.000001">Micromolar</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Desired volume (V2)</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="c4_v2" class="calc-input" placeholder="Value">
+                                            <select id="c4_v2_unit" class="calc-select">
+                                                <option value="1">Liter</option>
+                                                <option value="0.001" selected>Milliliter</option>
+                                                <option value="0.000001">Microliter</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcDilution()">Calculate V1</button>
+                                    <div id="c4_result" class="result-box">
+                                        <div class="result-label">Required Stock Volume (V1)</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 3: Unit Activity -->
+                    <div id="section-unit-calc" class="calc-section hidden-section">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="calc-card">
+                                    <h4>Units per volume (C = A &times; m / V)</h4>
+                                    <div class="row g-4 align-items-end">
+                                        <div class="col-md-5">
+                                            <label class="form-label">Activity (units/mass)</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="number" id="upv_a" class="calc-input" placeholder="Value">
+                                                <select id="upv_a_unit_u" class="calc-select">
+                                                    <option value="1" selected>Units</option>
+                                                    <option value="1000">kUnits</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 text-center text-dim pb-3">per</div>
+                                        <div class="col-md-5">
+                                            <label class="form-label">Mass Unit</label>
+                                            <select id="upv_a_unit_m" class="calc-select w-100">
+                                                <option value="1" selected>grams</option>
+                                                <option value="0.001">milligrams</option>
+                                                <option value="1e-6">micrograms</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr class="custom-hr">
+                                    <div class="row g-4">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Mass of solute (m)</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="number" id="upv_m" class="calc-input" placeholder="Value">
+                                                <select id="upv_m_unit" class="calc-select">
+                                                    <option value="1" selected>grams</option>
+                                                    <option value="0.001">mg</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Volume of solution (V)</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="number" id="upv_v" class="calc-input" placeholder="Value">
+                                                <select id="upv_v_unit" class="calc-select">
+                                                    <option value="1">L</option>
+                                                    <option value="0.001" selected>mL</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Concentration (C)</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="number" id="upv_c" class="calc-input" placeholder="Value">
+                                                <div class="d-flex flex-column gap-1">
+                                                    <select id="upv_c_unit_u" class="calc-select">
+                                                        <option value="1" selected>Units</option>
+                                                        <option value="1000">kUnits</option>
+                                                    </select>
+                                                    <select id="upv_c_unit_v" class="calc-select">
+                                                        <option value="1">per L</option>
+                                                        <option value="0.001" selected>per mL</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcUPV()">Calculate Missing Value</button>
+                                    <div id="upv_res_box" class="result-box">
+                                        <div class="result-label">Result</div>
+                                        <div id="upv_res_ins" class="result-value result-text-styled">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 4: Conversions -->
+                    <div id="section-conversions" class="calc-section hidden-section">
+                        <div class="row g-4">
+                            <!-- ppm ⇄ Molarity -->
+                            <div class="col-md-6">
+                                <div class="calc-card">
+                                    <h4>ppm ⇄ Molarity</h4>
+                                    <div class="form-group">
+                                        <div class="mode-toggle mb-3">
+                                            <div class="mode-option active"
+                                                onclick="setConversionMode('ppm', 'p2m', this)">ppm to M</div>
+                                            <div class="mode-option" onclick="setConversionMode('ppm', 'm2p', this)">M
+                                                to ppm</div>
+                                        </div>
+                                        <input type="hidden" id="ppm_mode" value="p2m">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Formula Weight (FW)</label>
+                                        <input type="number" id="ppm_fw" class="calc-input" placeholder="e.g. 180.16">
+                                    </div>
+                                    <div id="ppm_val_cont" class="form-group">
+                                        <label class="form-label">Concentration (ppm)</label>
+                                        <input type="number" id="ppm_val" class="calc-input" placeholder="Value">
+                                    </div>
+                                    <div id="ppm_molar_cont" class="form-group hidden-section">
+                                        <label class="form-label">Molarity</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="ppm_molar_val" class="calc-input"
+                                                placeholder="Value">
+                                            <select id="ppm_molar_unit" class="calc-select">
+                                                <option value="1" selected>M</option>
+                                                <option value="0.001">mM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcPpmConverter()">Convert</button>
+                                    <div id="ppm_res_box" class="result-box">
+                                        <div class="result-label" id="ppm_res_label">Molarity</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- x Factor ⇄ Molarity -->
+                            <div class="col-md-6">
+                                <div class="calc-card">
+                                    <h4>x Factor ⇄ Molarity</h4>
+                                    <div class="form-group">
+                                        <div class="mode-toggle mb-3">
+                                            <div class="mode-option active"
+                                                onclick="setConversionMode('sx', 'x2m', this)">x to M</div>
+                                            <div class="mode-option" onclick="setConversionMode('sx', 'm2x', this)">M to
+                                                x</div>
+                                        </div>
+                                        <input type="hidden" id="sx_mode" value="x2m">
+                                    </div>
+                                    <div id="sx_factor_cont" class="form-group">
+                                        <label class="form-label">Strength factor (e.g. 5x)</label>
+                                        <input type="number" id="sx_factor" class="calc-input" placeholder="Value">
+                                    </div>
+                                    <div id="sx_molar_cont" class="form-group hidden-section">
+                                        <label class="form-label">Target Molarity</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="sx_molar_val" class="calc-input"
+                                                placeholder="Value">
+                                            <select id="sx_molar_unit" class="calc-select">
+                                                <option value="1" selected>M</option>
+                                                <option value="0.001">mM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">1x Molarity</label>
+                                        <div class="d-flex gap-2">
+                                            <input type="number" id="sx_1x_conc" class="calc-input"
+                                                placeholder="e.g. 0.05">
+                                            <select id="sx_1x_unit" class="calc-select">
+                                                <option value="1" selected>M</option>
+                                                <option value="0.001">mM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button class="calc-btn btn-pink-gradient"
+                                        onclick="if(window.requireAuth()) calcSxConverter()">Convert</button>
+                                    <div id="sx_res_box" class="result-box">
+                                        <div class="result-label" id="sx_res_label">Molarity</div>
+                                        <div class="result-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Molarity Instruction Box (Global) -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div id="molarity_instruction_box" class="result-box">
+                                <div class="result-label">Preparation Instructions</div>
+                                <div id="molarity_instruction_text" class="instruction-text-styled"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span>Donate</span>
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Query / Error / Suggestions</span>
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- User Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-header-margin">Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-pass-link">Forgot
+                        Password?</a></p>
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-header-margin">Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-header-margin">Reset Password</h2>
+            <p class="reset-pass-desc">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/custom.js"></script>
+    <script src="../../assets/js/user-auth.js"></script>
+
+    <script>
+        // Core Navigation Function
+        function showCalculator(id, el) {
+            document.querySelectorAll('.calc-section').forEach(s => s.style.display = 'none');
+            const targetSection = document.getElementById('section-' + id);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                localStorage.setItem('active_wetlab_calc', id);
+            }
+
+            document.querySelectorAll('.nav-box').forEach(b => b.classList.remove('active'));
+            if (el) {
+                el.classList.add('active');
+            } else {
+                const btn = document.querySelector(`.nav-box[onclick*="'${id}'"]`);
+                if (btn) btn.classList.add('active');
+            }
+        }
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            // User Profile Toggle
+            const userMenuToggle = document.getElementById('user-menu-toggle');
+            const userDropdown = document.getElementById('user-dropdown');
+            if (userMenuToggle && userDropdown) {
+                userMenuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', () => userDropdown.classList.remove('active'));
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const lastSection = localStorage.getItem('wl_calc_last_section') || 'moles-grams';
+            const calcId = params.get('calc') || params.get('id');
+            const lastCalc = localStorage.getItem('active_wetlab_calc');
+            const targetId = calcId || lastCalc || 'moles-grams';
+            showCalculator(targetId);
+            const toggle = document.getElementById('user-menu-toggle');
+            const dropdown = document.getElementById('user-dropdown');
+            if (toggle && dropdown) {
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', () => dropdown.classList.remove('active'));
+            }
+        });
+
+        // Unit Selection Helper
+        function setUnit(selectId, value, el) {
+            const select = document.getElementById(selectId);
+            if (select) {
+                select.value = value;
+                select.dispatchEvent(new Event('change'));
+            }
+            const container = el.parentElement;
+            container.querySelectorAll('.mode-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // Calculation Logic
+        function formatResult(val, type = 'default') {
+            if (val === 0) return "0";
+            if (!val || isNaN(val)) return "";
+            let precision = (type === 'vol') ? 2 : 4;
+            if (Math.abs(val) < 0.0001 || Math.abs(val) > 1000000) return val.toExponential(precision);
+            return parseFloat(val.toFixed(precision));
+        }
+
+        function getUnitText(id) {
+            const s = document.getElementById(id);
+            return s ? s.options[s.selectedIndex].text : "";
+        }
+
+        function showInstruction(text) {
+            const box = document.getElementById('molarity_instruction_box');
+            const content = document.getElementById('molarity_instruction_text');
+            content.innerHTML = text;
+            box.style.display = 'block';
+        }
+
+        // 0a. Moles from grams
+        function calcMolesFromMass() {
+            const mu = parseFloat(document.getElementById('m0_mass_unit').value);
+            const massG = parseFloat(document.getElementById('m0_mass').value) * mu;
+            const fw = parseFloat(document.getElementById('m0_fw').value);
+            if (isNaN(massG) || isNaN(fw)) return alert("Please fill all fields");
+            const moles = massG / fw;
+            const res = document.getElementById('m0_result');
+            res.style.display = 'block';
+            res.querySelector('.result-value').textContent = formatResult(moles) + " moles";
+        }
+
+        // 0b. Grams from moles
+        function calcMassFromMoles() {
+            const mu = parseFloat(document.getElementById('m1_moles_unit').value);
+            const moles = parseFloat(document.getElementById('m1_moles').value) * mu;
+            const fw = parseFloat(document.getElementById('m1_fw').value);
+            if (isNaN(moles) || isNaN(fw)) return alert("Please fill all fields");
+            const massG = moles * fw;
+            const res = document.getElementById('m1_result');
+            res.style.display = 'block';
+            res.querySelector('.result-value').textContent = formatResult(massG) + " g";
+        }
+
+        // 1. Molarity Calculations
+        function calcMass() {
+            const c = parseFloat(document.getElementById('c1_conc').value) * parseFloat(document.getElementById('c1_conc_unit').value);
+            const fw = parseFloat(document.getElementById('c1_fw').value);
+            const v = parseFloat(document.getElementById('c1_vol').value) * parseFloat(document.getElementById('c1_vol_unit').value);
+            if (isNaN(c) || isNaN(fw) || isNaN(v)) return alert("Please fill all fields");
+            const massG = c * v * fw;
+            const res = document.getElementById('c1_result');
+            res.style.display = 'block';
+            res.querySelector('.result-value').textContent = formatResult(massG) + " g";
+            showInstruction(`To prepare a <b>${document.getElementById('c1_conc').value} ${getUnitText('c1_conc_unit')}</b> solution, dissolve <b>${formatResult(massG)} g</b> of solute (FW: ${fw}) in a final volume of <b>${document.getElementById('c1_vol').value} ${getUnitText('c1_vol_unit')}</b>.`);
+        }
+
+        function calcVolume() {
+            const m = parseFloat(document.getElementById('c2_mass').value) * parseFloat(document.getElementById('c2_mass_unit').value);
+            const fw = parseFloat(document.getElementById('c2_fw').value);
+            const c = parseFloat(document.getElementById('c2_conc').value) * parseFloat(document.getElementById('c2_conc_unit').value);
+            if (isNaN(m) || isNaN(fw) || isNaN(c)) return alert("Please fill all fields");
+            const volL = m / (c * fw);
+            const res = document.getElementById('c2_result');
+            res.style.display = 'block';
+            res.querySelector('.result-value').textContent = formatResult(volL * 1000) + " mL";
+        }
+
+        function calcMolarity() {
+            const m = parseFloat(document.getElementById('c3_mass').value) * parseFloat(document.getElementById('c3_mass_unit').value);
+            const fw = parseFloat(document.getElementById('c3_fw').value);
+            const v = parseFloat(document.getElementById('c3_vol').value) * parseFloat(document.getElementById('c3_vol_unit').value);
+            if (isNaN(m) || isNaN(fw) || isNaN(v)) return alert("Please fill all fields");
+            const molarity = m / (v * fw);
+            const res = document.getElementById('c3_result');
+            res.style.display = 'block';
+            res.querySelector('.result-value').textContent = formatResult(molarity) + " M";
+        }
+
+        // 2. Dilution
+        function calcDilution() {
+            const c1 = parseFloat(document.getElementById('c4_c1').value) * parseFloat(document.getElementById('c4_c1_unit').value);
+            const c2 = parseFloat(document.getElementById('c4_c2').value) * parseFloat(document.getElementById('c4_c2_unit').value);
+            const v2 = parseFloat(document.getElementById('c4_v2').value) * parseFloat(document.getElementById('c4_v2_unit').value);
+            if (isNaN(c1) || isNaN(c2) || isNaN(v2)) return alert("Please fill all fields");
+            const v1 = (c2 * v2) / c1;
+            const res = document.getElementById('c4_result');
+            res.style.display = 'block';
+            res.querySelector('.result-value').textContent = formatResult(v1 * 1000) + " mL";
+        }
+
+        // 3. Unit Activity
+        function calcUPV() {
+            const a = parseFloat(document.getElementById('upv_a').value) * (parseFloat(document.getElementById('upv_a_unit_u').value) / parseFloat(document.getElementById('upv_a_unit_m').value));
+            const m = parseFloat(document.getElementById('upv_m').value) * parseFloat(document.getElementById('upv_m_unit').value);
+            const v = parseFloat(document.getElementById('upv_v').value) * parseFloat(document.getElementById('upv_v_unit').value);
+            const c = parseFloat(document.getElementById('upv_c').value) * (parseFloat(document.getElementById('upv_c_unit_u').value) / parseFloat(document.getElementById('upv_c_unit_v').value));
+
+            const resBox = document.getElementById('upv_res_box');
+            const resIns = document.getElementById('upv_res_ins');
+
+            if (isNaN(c)) {
+                const calculatedC = (a * m) / v;
+                document.getElementById('upv_c').value = formatResult(calculatedC / (parseFloat(document.getElementById('upv_c_unit_u').value) / parseFloat(document.getElementById('upv_c_unit_v').value)));
+                resIns.textContent = "Calculated Concentration: " + document.getElementById('upv_c').value;
+            } else if (isNaN(m)) {
+                const calculatedM = (c * v) / a;
+                document.getElementById('upv_m').value = formatResult(calculatedM / parseFloat(document.getElementById('upv_m_unit').value));
+                resIns.textContent = "Calculated Mass: " + document.getElementById('upv_m').value;
+            } else if (isNaN(v)) {
+                const calculatedV = (a * m) / c;
+                document.getElementById('upv_v').value = formatResult(calculatedV / parseFloat(document.getElementById('upv_v_unit').value));
+                resIns.textContent = "Calculated Volume: " + document.getElementById('upv_v').value;
+            }
+            resBox.style.display = 'block';
+        }
+
+        // 4. Conversions
+        function setConversionMode(type, mode, el) {
+            document.getElementById(type + '_mode').value = mode;
+            el.parentElement.querySelectorAll('.mode-option').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            const isP2M = (mode === 'p2m' || mode === 'x2m');
+            document.getElementById(type + (type === 'ppm' ? '_val_cont' : '_factor_cont')).style.display = isP2M ? 'block' : 'none';
+            document.getElementById(type + '_molar_cont').style.display = isP2M ? 'none' : 'block';
+            document.getElementById(type + '_res_label').textContent = isP2M ? 'Molarity' : (type === 'ppm' ? 'ppm' : 'Strength Factor');
+        }
+
+        function calcPpmConverter() {
+            const fw = parseFloat(document.getElementById('ppm_fw').value);
+            if (isNaN(fw)) return alert("Please enter Formula Weight");
+            const resVal = document.getElementById('ppm_res_box').querySelector('.result-value');
+            if (document.getElementById('ppm_mode').value === 'p2m') {
+                const ppm = parseFloat(document.getElementById('ppm_val').value);
+                resVal.textContent = formatResult(ppm / (1000 * fw)) + " M";
+            } else {
+                const m = parseFloat(document.getElementById('ppm_molar_val').value) * parseFloat(document.getElementById('ppm_molar_unit').value);
+                resVal.textContent = formatResult(m * fw * 1000) + " ppm";
+            }
+            document.getElementById('ppm_res_box').style.display = 'block';
+        }
+
+        function calcSxConverter() {
+            const c1x = parseFloat(document.getElementById('sx_1x_conc').value) * parseFloat(document.getElementById('sx_1x_unit').value);
+            if (isNaN(c1x)) return alert("Please enter 1x Concentration");
+            const resVal = document.getElementById('sx_res_box').querySelector('.result-value');
+            if (document.getElementById('sx_mode').value === 'x2m') {
+                const x = parseFloat(document.getElementById('sx_factor').value);
+                resVal.textContent = formatResult(x * c1x) + " M";
+            } else {
+                const m = parseFloat(document.getElementById('sx_molar_val').value) * parseFloat(document.getElementById('sx_molar_unit').value);
+                resVal.textContent = formatResult(m / c1x) + "x";
+            }
+            document.getElementById('sx_res_box').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

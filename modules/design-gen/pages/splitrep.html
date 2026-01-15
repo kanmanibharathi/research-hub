@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Population | Research Hub</title>
+    <meta name="description"
+        content="Randomly split a population of genotypes into multiple locations while balancing family distribution.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            /* Darker background from reference implied theme */
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        @supports (scrollbar-width: none) {
+            nav {
+                scrollbar-width: none;
+            }
+        }
+
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        nav a.active {
+            color: var(--text);
+            border-bottom: 2px solid var(--primary);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 5px;
+            color: var(--text-dim);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: absolute;
+            z-index: 20;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: var(--primary);
+            color: white;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Navigation Group Styles */
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            /* Pill shape */
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            color: var(--text);
+        }
+
+        .category-btn.active {
+            background: var(--gradient);
+            /* Active gradient */
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .submenu-container {
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-group {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .nav-group.active {
+            display: flex;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Dropdown Options Styling */
+        option {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        /* Footer Styles */
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .footer-btn i {
+            font-size: 1rem;
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .developer-info span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .developer-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+
+            .footer-center {
+                order: 3;
+            }
+        }
+
+        /* Refactored Styles */
+        .nav-container-main {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .category-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer Styles */
+        .btn-generate {
+            background: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-simulate {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #000;
+            border: none;
+        }
+
+        .btn-export {
+            background: #4b5563;
+            color: white;
+            border: none;
+        }
+
+        .btn-generate:hover,
+        .btn-simulate:hover,
+        .btn-export:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .mt-0 {
+            margin-top: 0 !important;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .w-100 {
+            width: 100% !important;
+        }
+
+        .mb-0 {
+            margin-bottom: 0 !important;
+        }
+
+        .text-right {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .btn-download-sm {
+            width: auto !important;
+            display: inline-flex !important;
+            padding: 0.6rem 1.2rem !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container relative">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="../doe.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1><i class="fas fa-divide"></i> Split Population</h1>
+                <p class="subtitle">Assign populations to multiple locations with family-balanced randomization</p>
+            </div>
+
+            <div class="user-profile-container">
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <button id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <aside class="card">
+                <div class="form-group">
+                    <label for="locations-input">Number of Locations (l)</label>
+                    <input type="number" id="locations-input" value="8" min="1" step="1" title="Number of locations">
+                </div>
+
+                <div class="form-group">
+                    <label for="data-input">Entry Data (CSV Format) <span class="tooltip"><i
+                                class="fas fa-info-circle"></i>
+                            <span class="tooltiptext">Paste data with 3 columns: ENTRY, NAME, FAMILY. <br>One entry per
+                                line.</span></span></label>
+                    <textarea id="data-input" rows="12" placeholder="101,SB-1,F-1
+102,SB-2,F-1
+103,SB-3,F-2
+..." title="Entry data CSV"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="seed-input">Seed (Optional)</label>
+                    <input type="number" id="seed-input" placeholder="Random Seed" title="Random seed">
+                </div>
+
+                <div class="form-row grid-buttons-3">
+                    <button class="btn btn-generate mt-0" id="split-btn">
+                        <i class="fas fa-random"></i> Split Pop
+                    </button>
+                    <button class="btn btn-simulate mt-0 d-none" id="sample-btn">
+                        <i class="fas fa-vial"></i> Load Data
+                    </button>
+                    <button class="btn btn-export mt-0 d-none" id="export-btn">
+                        <i class="fas fa-file-csv"></i> Export
+                    </button>
+                </div>
+            </aside>
+
+            <main class="results-section" id="results">
+                <div class="info-grid" id="summary-grid">
+                    <!-- Summary items will be injected here -->
+                </div>
+
+                <h3 class="section-title">Location Summary</h3>
+                <div class="table-container">
+                    <table id="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Total Entries</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Summary rows here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-title">Detailed Distribution</h3>
+                <div class="text-right">
+                    <button class="btn btn-secondary btn-download-sm" id="download-excel-btn">
+                        <i class="fas fa-file-excel"></i> Download Excel
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table id="results-table">
+                        <thead>
+                            <tr>
+                                <th>ENTRY</th>
+                                <th>NAME</th>
+                                <th>FAMILY</th>
+                                <th>LOCATION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Results rows here -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <form class="auth-form" id="login-form">
+                <input type="email" id="login-email" placeholder="Email Address" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Create Account</h2>
+            <form class="auth-form" id="signup-form">
+                <input type="text" id="signup-name" placeholder="Full Name" required>
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <p class="auth-modal-p">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/user-auth.js"></script>
+    <script src="../js/splitrep-app.js"></script>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat fa-beat-custom"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/js/custom.js"></script>
+</body>
+
+</html>

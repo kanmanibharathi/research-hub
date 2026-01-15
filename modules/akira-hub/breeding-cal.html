@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Breeding Calculations | AKIRA HUB</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Modern Design System */
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(217, 70, 239, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        .header-content {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .back-button-container,
+        .user-profile-container {
+            flex: 0 0 auto;
+            min-width: 100px;
+        }
+
+        .user-profile-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            max-width: 100%;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* Container & Grid */
+        .container-fluid {
+            max-width: 1400px;
+            padding: 0 2rem;
+        }
+
+        /* Sidebar Navigation */
+        .nav-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+            text-decoration: none !important;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-box i {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 166, 81, 0.1);
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .nav-box:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .nav-box.active {
+            background: rgba(0, 166, 81, 0.15);
+            border-color: var(--primary);
+        }
+
+        .nav-box.active i {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Calculator Cards */
+        .calc-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            height: 100%;
+            transition: transform 0.3s, border-color 0.3s;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .calc-card:hover {
+            border-color: var(--primary);
+        }
+
+        .calc-card h4 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .calc-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            height: 45px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .calc-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 166, 81, 0.1);
+        }
+
+        .calc-btn {
+            width: 100%;
+            background: var(--gradient);
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .calc-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .result-box {
+            background: rgba(0, 166, 81, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* Footer Styles */
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            position: relative;
+        }
+
+        .footer-btn i {
+            font-size: 1rem;
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .developer-info span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .developer-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+
+            .footer-center {
+                order: 3;
+            }
+        }
+
+        .donate-tooltip {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background: rgba(31, 39, 43, 0.98);
+            border: 1px solid #d63384;
+            border-radius: 15px;
+            padding: 20px;
+            color: #fff;
+            font-size: 12px;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .footer-btn.donate:hover .donate-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: 140%;
+        }
+
+        .donate-tooltip strong {
+            display: block;
+            color: #d63384;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(214, 51, 132, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .donate-tooltip p {
+            color: #eee;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .donate-tooltip em {
+            font-style: italic;
+            color: #00a651;
+            display: block;
+        }
+
+        /* User Profile & Dropdown */
+        .user-profile {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-profile #user-menu-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .user-profile #user-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary) !important;
+            border-color: var(--primary);
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #1f272b;
+            min-width: 160px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: block;
+            color: #ccc;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(0, 166, 81, 0.1);
+            color: var(--primary);
+        }
+
+        .auth-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-modal-content {
+            background: #1f272b;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .auth-form input:focus {
+            border-color: #00a651;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-form button {
+            background-color: #00a651;
+            color: white;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .auth-form button:hover {
+            background-color: #008c44;
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .auth-links a {
+            color: #00a651;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden-section {
+            display: none;
+        }
+
+        .auth-modal-title {
+            margin-bottom: 30px;
+        }
+
+        .forgot-password-link {
+            font-size: 13px;
+            color: #00a651;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .forgot-password-desc {
+            color: #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="akira-hub.html" class="back-btn">
+                    <i class="fas fa-chevron-left"></i> Back to Hub
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1>Breeding Calculations</h1>
+                <p class="subtitle">Statistical tools for plant and animal breeding programs.</p>
+            </div>
+
+            <div class="user-profile-container">
+                <div class="user-profile">
+                    <a href="javascript:void(0)" id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="sidebar-nav">
+                    <div class="nav-box active" onclick="switchSection('inbreeding', this)">
+                        <i class="fa-solid fa-sitemap"></i> <span>Coeff. of Inbreeding</span>
+                    </div>
+                    <div class="nav-box" onclick="switchSection('generation', this)">
+                        <i class="fa-solid fa-hourglass-half"></i> <span>Generation Interval</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <!-- Inbreeding -->
+                <div id="inbreeding" class="calc-section">
+                    <div class="calc-card">
+                        <h4>
+                            <i class="fa-solid fa-sitemap"></i> Coefficient of Inbreeding (F)
+                        </h4>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Number of nodes in loop (n)</label>
+                            <input type="number" id="nodes_n" class="calc-input" placeholder="e.g. 5">
+                        </div>
+                        <button class="calc-btn" onclick="if(window.requireAuth()) calcInbreeding()">Calculate
+                            F</button>
+                        <div id="inbreeding_result" class="result-box">
+                            <div class="result-label">Inbreeding Coefficient</div>
+                            <div id="inbreeding_res_text" class="result-value">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generation Interval -->
+                <div id="generation" class="calc-section hidden-section">
+                    <div class="calc-card">
+                        <h4>
+                            <i class="fa-solid fa-hourglass-half"></i> Generation Interval (L)
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Average Age of Sires (years)</label>
+                                <input type="number" id="age_sires" class="calc-input" placeholder="e.g. 3.5">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Average Age of Dams (years)</label>
+                                <input type="number" id="age_dams" class="calc-input" placeholder="e.g. 4.0">
+                            </div>
+                        </div>
+                        <button class="calc-btn" onclick="if(window.requireAuth()) calcGenInterval()">Calculate
+                            Interval</button>
+                        <div id="gen_result" class="result-box">
+                            <div class="result-label">Generation Interval (L)</div>
+                            <div id="gen_res_text" class="result-value">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/custom.js"></script>
+    <script src="../../assets/js/user-auth.js"></script>
+
+    <script>
+        function switchSection(id, el) {
+            document.querySelectorAll('.calc-section').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.nav-box').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            localStorage.setItem('breeding_calc_last_section', id);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastSection = localStorage.getItem('breeding_calc_last_section');
+            if (lastSection) {
+                const navBox = Array.from(document.querySelectorAll('.nav-box')).find(box =>
+                    box.getAttribute('onclick').includes(`'${lastSection}'`)
+                );
+                if (navBox) {
+                    switchSection(lastSection, navBox);
+                }
+            }
+        });
+
+        function calcInbreeding() {
+            const n = parseInt(document.getElementById('nodes_n').value);
+            if (isNaN(n) || n < 1) return alert("Please enter a valid number of nodes.");
+            const f = Math.pow(0.5, n);
+            const resBox = document.getElementById('inbreeding_result');
+            const resText = document.getElementById('inbreeding_res_text');
+            resText.innerHTML = "F = " + f.toFixed(4) + " (" + (f * 100).toFixed(2) + "%)";
+            resBox.style.display = 'block';
+        }
+
+        function calcGenInterval() {
+            const sires = parseFloat(document.getElementById('age_sires').value);
+            const dams = parseFloat(document.getElementById('age_dams').value);
+            if (isNaN(sires) || isNaN(dams)) return alert("Please enter valid ages.");
+            const l = (sires + dams) / 2;
+            const resBox = document.getElementById('gen_result');
+            const resText = document.getElementById('gen_res_text');
+            resText.innerHTML = l.toFixed(2) + " years";
+            resBox.style.display = 'block';
+        }
+
+        // Handle URL parameters for deep linking
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const calc = params.get('calc');
+            if (calc) {
+                const btn = document.querySelector(`.nav-box[onclick*="'${calc}'"]`);
+                if (btn) btn.click();
+            }
+        });
+    </script>
+
+    <!-- User Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-modal-title">Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-password-link">Forgot Password?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-modal-title">Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-modal-title">Reset Password</h2>
+            <p class="forgot-password-desc">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCBD Design | Research Hub</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <!-- html2canvas for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            /* Darker background from reference implied theme */
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.1) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(217, 119, 6, 0.1) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            /* Critical for grid items to shrink */
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 15px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .visual-container {
+            background: transparent;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        /* Field Map Styling */
+        .block-wrapper {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: transparent;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .block-title {
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: #000000;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .plot-unit {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Semi-transparent green background similar to reference */
+            background: rgba(46, 204, 113, 0.15);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: #000000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .plot-unit:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: white;
+            /* Switch to white on hover for better contrast against solid green */
+            z-index: 10;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ensure hover changes text colors too */
+        .plot-unit:hover .p-num,
+        .plot-unit:hover .t-id,
+        .plot-unit:hover .t-name {
+            color: white;
+        }
+
+        .p-num {
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            opacity: 0.8;
+            color: #2c3e50;
+            /* Dark slate for visibility */
+            font-weight: 600;
+        }
+
+        .t-id {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #000000;
+            margin-top: 4px;
+        }
+
+        .t-name {
+            font-size: 0.6rem;
+            color: #1a1a1a;
+            width: 100%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 4px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 5px;
+            color: var(--text-dim);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #334155;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            font-weight: 400;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Navigation Group Styles */
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            /* Pill shape */
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            color: var(--text);
+        }
+
+        .category-btn.active {
+            background: var(--gradient);
+            /* Active gradient */
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .submenu-container {
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-group {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .nav-group.active {
+            display: flex;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        #location-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .loc-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .loc-pill.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Dropdown Options Styling */
+        option {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        /* Top Parameters Grid Layout */
+        .main-grid aside.card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            align-items: start;
+        }
+
+        /* Responsive adjustments for the internal grid */
+        @media (max-width: 768px) {
+            .main-grid aside.card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .main-grid aside.card h2 {
+            grid-column: 1 / -1;
+        }
+
+        /* Treatment Names (Textarea) should span 2 columns */
+        .main-grid aside.card .form-group:has(#treatments-input) {
+            grid-column: span 2;
+            margin-bottom: 0;
+        }
+
+        /* Advanced section as a pseudo-group spanning if needed or inline */
+        /* To keep existing RCBD inputs but nice layout */
+
+
+
+        /* Buttons Container */
+        .button-group-vertical {
+            grid-column: span 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        /* Responsive: on small screens, stack everything */
+        @media (max-width: 768px) {
+            .main-grid aside.card .form-group:has(#treatments-input) {
+                grid-column: span 1;
+            }
+
+            .button-group-vertical {
+                grid-column: span 1;
+            }
+        }
+
+        /* Nav & Category Styles */
+        .nav-container-main {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .category-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        #layout-desc {
+            font-size: 0.7rem;
+            font-style: italic;
+            color: var(--text-dim);
+            margin-top: 5px;
+            line-height: 1.2;
+        }
+
+        .btn-no-margin {
+            margin-top: 0 !important;
+        }
+
+        .btn-download {
+            width: auto !important;
+            display: inline-flex !important;
+            padding: 0.6rem 1.2rem !important;
+        }
+
+        .text-right {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .text-right-sm {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .info-note {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .visual-capture {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-simulate {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #000;
+            border: none;
+        }
+
+        .btn-export {
+            background: #4b5563;
+            color: white;
+            border: none;
+        }
+
+        .btn-generate:hover,
+        .btn-simulate:hover,
+        .btn-export:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer Styles */
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .footer-btn i {
+            font-size: 1rem;
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .developer-info span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .developer-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+
+            .footer-center {
+                order: 3;
+            }
+        }
+
+        /* Merged Styles from RBD for Visual Consistency */
+        /* Field Map Styling - Glassmorphism */
+        .field-map {
+            display: block;
+            background: transparent;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            width: 100%;
+            max-width: 100%;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Modern Browsers (Firefox, Chrome 121+) */
+        @supports (scrollbar-width: thin) {
+            .field-map {
+                scrollbar-width: thin;
+                scrollbar-color: var(--primary) rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        /* Legacy Chrome, Safari, Edge */
+        .field-map::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .field-map::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .field-map::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 5px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        .field-map::-webkit-scrollbar-thumb:hover {
+            background-color: var(--secondary);
+        }
+
+        .map-grid-wrapper {
+            margin: 0 auto;
+            width: max-content;
+        }
+
+        .plot {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.2);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: #000000;
+        }
+
+        .plot:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+            z-index: 10;
+        }
+
+        .plot-num {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .plot-trt {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .plot-rep {
+            font-size: 0.6rem;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        /* Utility Classes */
+        .d-none {
+            display: none;
+        }
+
+        .design-stats-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .design-stats-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .label-dim-small {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .mt-5px {
+            margin-top: 5px;
+        }
+
+        .mb-2rem {
+            margin-bottom: 2rem;
+        }
+
+        .map-info-text {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .fa-beat-custom {
+            --fa-beat-scale: 1.1;
+            --fa-animation-duration: 1.5s;
+        }
+
+        .map-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .h2-styled {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .btn-grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .d-none {
+            display: none;
+        }
+
+        .fa-beat-custom {
+            --fa-beat-scale: 1.1;
+            --fa-animation-duration: 1.5s;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="../doe.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1><i class="fas fa-th-large"></i> RCBD Design Generator</h1>
+                <p class="subtitle">Randomized Complete Block Design for Experiments</p>
+            </div>
+
+            <div class="user-profile-container">
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <button id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <aside class="card">
+                <h2 class="h2-styled"><i class="fas fa-sliders-h"></i> Parameters</h2>
+
+                <!-- Treatment Count (New Position) -->
+                <div class="form-group">
+                    <label for="t-input">No of Treatments (t)</label>
+                    <input type="number" id="t-input" value="" min="2" step="1" title="Number of treatments">
+                </div>
+
+                <!-- Replications -->
+                <div class="form-group">
+                    <label for="reps-input">Blocks (r)</label>
+                    <input type="number" id="reps-input" value="" min="2" step="1" title="Number of Replicates">
+                </div>
+
+                <!-- Plot Movement -->
+                <div class="form-group">
+                    <label for="planter-input">Plot Movement</label>
+                    <select id="planter-input" title="Plot Movement Direction">
+                        <option value="serpentine">Serpentine (Snake)</option>
+                        <option value="cartesian">Cartesian (Row-by-Row)</option>
+                    </select>
+                    <div id="layout-desc">
+                        Serpentine – Plots arranged in a zig-zag order for continuous field movement.
+                    </div>
+                </div>
+
+                <!-- Start Plot Number -->
+                <div class="form-group">
+                    <label for="plot-start">Start Plot Number</label>
+                    <input type="number" id="plot-start" value="" step="1" title="Starting Plot Number">
+                </div>
+
+                <!-- Seed -->
+                <div class="form-group">
+                    <label for="seed-input">Seed (Randomness)</label>
+                    <input type="number" id="seed-input" placeholder="Randomly generated" title="Random Seed">
+                </div>
+
+                <!-- Locations Input (Swapped Position) -->
+                <div class="form-group">
+                    <label for="locations-input">Number of Locations</label>
+                    <input type="number" id="locations-input" value="1" min="1" title="Number of Locations">
+                </div>
+
+                <!-- Treatment Names - Spans 2 cols -->
+                <div class="form-group">
+                    <label for="treatments-input">Treatment List (Comma or Newline) - Optional</label>
+                    <textarea id="treatments-input" rows="3" placeholder="T1, T2, T3..."
+                        title="List of Treatments (Optional)"></textarea>
+                </div>
+
+                <!-- Buttons - Spans 1 col -->
+                <div class="button-group-vertical">
+                    <button class="btn btn-generate" id="generate-btn">
+                        <i class="fas fa-magic"></i> Generate
+                    </button>
+                    <div class="btn-grid-layout">
+                        <button class="btn btn-simulate d-none" id="simulate-btn">
+                            <i class="fas fa-sync-alt"></i> Simulate
+                        </button>
+                        <button class="btn btn-export d-none" id="export-btn">
+                            <i class="fas fa-file-csv"></i> Export
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="results-section" id="results">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Total Plots</div>
+                        <div class="info-value" id="stat-plots">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Treatments</div>
+                        <div class="info-value" id="stat-treats">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Blocks / Loc</div>
+                        <div class="info-value" id="stat-blocks">-</div>
+                    </div>
+                </div>
+
+                <div id="location-pills"></div>
+
+                <div class="design-stats design-stats-container mb-2rem">
+                    <!-- New location for dimensions input -->
+                    <div class="form-group design-stats-group">
+                        <label for="dimensions-input" class="label-dim-small">Field
+                            Dimensions (Cols x Rows)</label>
+                        <select id="dimensions-input" title="Select grid shape" class="mt-5px">
+                            <option value="t_cols">Treatments (Cols) x Replicates (Rows)</option>
+                            <option value="r_cols">Replicates (Cols) x Treatments (Rows)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="field-book">Field Book</div>
+                    <div class="tab" data-tab="field-map">Field Layout</div>
+                </div>
+
+                <div id="field-map" class="tab-content">
+                    <div class="text-right margin-bottom-large">
+                        <button class="btn btn-secondary btn-download" id="download-map-btn">
+                            <i class="fas fa-image"></i> Download Plot Design
+                        </button>
+                    </div>
+                    <div class="map-info-text">
+                        <i class="fas fa-info-circle"></i> Each row represents a Block. All treatments are present in
+                        each block exactly once.
+                    </div>
+                    <div class="field-map" id="map-container">
+                        <!-- Map grid injected here -->
+                    </div>
+                </div>
+
+                <div id="field-book" class="tab-content active">
+                    <div class="text-right-sm">
+                        <button class="btn btn-secondary btn-download" id="download-excel">
+                            <i class="fas fa-file-excel"></i> Download Excel
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="fb-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Location</th>
+                                    <th>Plot</th>
+                                    <th>Block</th>
+                                    <th>Treatment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-pw-link">Forgot Password?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <p class="auth-modal-p">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/user-auth.js"></script>
+    <!-- Restoring original RCBD script -->
+    <script src="../js/rcbd-app.js"></script>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat fa-beat-custom"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/js/custom.js"></script>
+</body>
+
+</html>

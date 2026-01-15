@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangular Lattice Design | Research Hub</title>
+    <meta name="description"
+        content="Generate randomized Rectangular Lattice designs for agricultural and breeding experiments where treatments equal s(s-1).">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <!-- html2canvas for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            /* Darker background from reference implied theme */
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        @supports (scrollbar-width: none) {
+            nav {
+                scrollbar-width: none;
+                /* Firefox */
+            }
+        }
+
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        nav a.active {
+            color: var(--text);
+            border-bottom: 2px solid var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.4rem;
+            border-radius: 15px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .field-map {
+            background: transparent;
+            padding: 2.5rem;
+            border-radius: 24px;
+            /* border: 1px solid var(--border); */
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .reps-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .replicate-group {
+            margin-bottom: 0;
+            /* Handled by container gap */
+            padding: 1.5rem;
+            background: transparent;
+            border-radius: 18px;
+            border: 1px dashed #cbd5e1;
+            width: fit-content;
+            /* Shrink to fit content */
+            max-width: 100%;
+        }
+
+        .replicate-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+            /* Dark text */
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .blocks-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .block-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .block-label {
+            font-size: 0.8rem;
+            color: #475569;
+            /* Dark Low Contrast */
+            min-width: 80px;
+            font-weight: 600;
+        }
+
+        .plots-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .plot-cell {
+            width: 70px;
+            height: 55px;
+            background: #e0f2fe;
+            /* Mild Blue */
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            /* Dark Blue Text */
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plot-cell:hover {
+            transform: scale(1.1);
+            background: #bae6fd;
+            z-index: 10;
+        }
+
+        .plot-num {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            margin-bottom: 2px;
+        }
+
+        .trt-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        .site-title {
+            color: #334155;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .validation-error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 5px;
+            color: var(--text-dim);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            position: absolute;
+            z-index: 20;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Navigation Group Styles */
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            /* Pill shape */
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            color: var(--text);
+        }
+
+        .category-btn.active {
+            background: var(--gradient);
+            /* Active gradient */
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .submenu-container {
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-group {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .nav-group.active {
+            display: flex;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Dropdown Options Styling */
+        option {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        /* Footer Styles */
+        .btn-generate {
+            background: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-simulate {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #000;
+            border: none;
+        }
+
+        .btn-export {
+            background: #4b5563;
+            color: white;
+            border: none;
+        }
+
+        .btn-generate:hover,
+        .btn-simulate:hover,
+        .btn-export:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .footer-btn i {
+            font-size: 1rem;
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .developer-info span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .developer-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+
+            .footer-center {
+                order: 3;
+            }
+        }
+
+        /* Refactored Styles */
+        .nav-container-main {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .category-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .readonly-input {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .text-right {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-download-sm {
+            width: auto !important;
+            display: inline-flex !important;
+            padding: 0.6rem 1.2rem !important;
+        }
+
+        .layout-controls {
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .layout-controls label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper select {
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .mt-3 {
+            margin-top: 1rem !important;
+        }
+
+        .w-100 {
+            width: 100% !important;
+        }
+
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .button-sub-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-row-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .form-col-1 {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .form-col-1-lg {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .form-col-4 {
+            flex: 4;
+            min-width: 300px;
+        }
+
+        .form-col-3 {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="../doe.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1><i class="fas fa-th-list"></i> Rectangular Lattice</h1>
+                <p class="subtitle">Efficient resolvable incomplete block designs where t = s(s-1)</p>
+            </div>
+
+            <div class="user-profile-container">
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <button id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <aside class="card">
+                <!-- Row 1: Parameters -->
+                <div class="form-row-flex">
+                    <div class="form-group form-col-1-lg">
+                        <label for="t-input">Number of Treatments (t) <span class="tooltip"><i
+                                    class="fas fa-info-circle"></i><span class="tooltiptext">Must satisfy t = s(s-1).
+                                    E.g.,
+                                    6, 12, 20, 30, 42, 56, 72, 90,
+                                    110...</span></span></label>
+                        <input type="number" id="t-input" value="20" min="6" step="1" title="Number of treatments">
+                        <div id="t-validation" class="validation-error">Invalid t. Must be s(s-1).</div>
+                    </div>
+
+                    <div class="form-group form-col-1">
+                        <label for="k-input">Block Size (k) <span class="tooltip"><i
+                                    class="fas fa-info-circle"></i><span class="tooltiptext">Must be s-1. Automatically
+                                    calculated.</span></span></label>
+                        <input type="number" id="k-input" value="4" readonly class="readonly-input" title="Block size">
+                    </div>
+
+                    <div class="form-group form-col-1">
+                        <label for="r-input">Replicates (r) <span class="tooltip"><i
+                                    class="fas fa-info-circle"></i><span class="tooltiptext">Number of full resolvable
+                                    blocks.</span></span></label>
+                        <input type="number" id="r-input" value="3" min="2" max="10" title="Number of replicates">
+                    </div>
+
+                    <div class="form-group form-col-1">
+                        <label for="loc-input">Number of Locations</label>
+                        <input type="number" id="loc-input" value="1" min="1" title="Number of locations">
+                    </div>
+
+                    <div class="form-group form-col-1-lg">
+                        <label for="plot-input">Start Plot Number</label>
+                        <input type="number" id="plot-input" value="101" title="Starting plot number">
+                    </div>
+
+                    <div class="form-group form-col-1-lg">
+                        <label for="seed-input">Seed (Optional)</label>
+                        <input type="number" id="seed-input" placeholder="Random" title="Random seed">
+                    </div>
+                </div>
+
+                <!-- Row 2: Treatments and Buttons -->
+                <div class="form-row-flex mt-3">
+                    <div class="form-group form-col-4">
+                        <label for="data-input">Treatment Names (One per line)</label>
+                        <textarea id="data-input" placeholder="Paste treatment names here..." title="Treatment list"
+                            class="treatment-textarea"></textarea>
+                    </div>
+
+                    <div class="form-group form-col-3">
+                        <button class="btn btn-generate w-100" id="generate-btn">
+                            <i class="fas fa-magic"></i> Generate
+                        </button>
+
+                        <div class="button-sub-row d-none" id="action-buttons-row">
+                            <button class="btn btn-simulate" id="simulate-btn">
+                                <i class="fas fa-sync-alt"></i> Simulate
+                            </button>
+                            <button class="btn btn-export" id="export-btn">
+                                <i class="fas fa-file-csv"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="results-section" id="results">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Blocks / Rep (s)</div>
+                        <div class="info-value" id="info-s">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Block Size (k)</div>
+                        <div class="info-value" id="info-k">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Efficiency (&lambda;)</div>
+                        <div class="info-value" id="info-lambda">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Total Units</div>
+                        <div class="info-value" id="info-total">-</div>
+                    </div>
+                </div>
+
+                <div class="layout-controls" id="location-controls">
+                    <label for="location-select">View
+                        Location:</label>
+                    <div class="select-wrapper">
+                        <select id="location-select">
+                            <!-- Options populated by JS -->
+                        </select>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+
+                    <label for="map-layout-select">Map
+                        Layout:</label>
+                    <div class="select-wrapper">
+                        <select id="map-layout-select">
+                            <option value="horizontal">Horizontal Panel</option>
+                            <option value="vertical">Vertical Panel</option>
+                        </select>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="field-map">Field Layout Map</div>
+                    <div class="tab" data-tab="field-book">Field Book</div>
+                </div>
+
+                <div id="field-map" class="tab-content active">
+                    <div class="text-right">
+                        <button class="btn btn-secondary btn-download-sm" id="download-map-btn">
+                            <i class="fas fa-image"></i> Download Map (PNG)
+                        </button>
+                    </div>
+                    <div class="field-map" id="map-container">
+                        <!-- Map content here -->
+                    </div>
+                </div>
+
+                <div id="field-book" class="tab-content">
+                    <div class="text-right mb-1">
+                        <button class="btn btn-secondary btn-download-sm" id="download-excel-btn">
+                            <i class="fas fa-file-excel"></i> Download Excel
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="field-book-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Location</th>
+                                    <th>Plot</th>
+                                    <th>Replicate</th>
+                                    <th>IBlock</th>
+                                    <th>Entry</th>
+                                    <th>Treatment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table rows here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <!-- Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <form class="auth-form" id="login-form">
+                <input type="email" id="login-email" placeholder="Email Address" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Create Account</h2>
+            <form class="auth-form" id="signup-form">
+                <input type="text" id="signup-name" placeholder="Full Name" required>
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <p class="auth-modal-p">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/user-auth.js"></script>
+    <script src="../js/rectangular-app.js"></script>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat fa-beat-custom"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/js/custom.js"></script>
+</body>
+
+</html>

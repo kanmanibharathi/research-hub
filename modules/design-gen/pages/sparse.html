@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparse & P-Rep Allocation | Research Hub</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/auth.css">
+    <!-- html2canvas for Export -->
+    <!-- html2canvas for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            /* Darker background from reference implied theme */
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(217, 70, 239, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        @supports (scrollbar-width: none) {
+            nav {
+                scrollbar-width: none;
+                /* Firefox */
+            }
+        }
+
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Form Grid Utilities */
+        .grid-buttons-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .relative-pos {
+            position: relative;
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .section-header {
+            margin-bottom: 1rem;
+        }
+    </style>
+    nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+    padding-bottom: 5px;
+    }
+
+    nav a:hover {
+    color: var(--text);
+    }
+
+    nav a.active {
+    color: var(--text);
+    border-bottom: 2px solid var(--primary);
+    }
+
+    header {
+    text-align: center;
+    margin-bottom: 3rem;
+    }
+
+    h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    }
+
+    .main-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    }
+
+    @media (max-width: 1100px) {
+    .main-grid {
+    grid-template-columns: 1fr;
+    }
+    }
+
+    .card {
+    background: var(--card-bg);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    }
+
+    .form-section h3 {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    }
+
+    .form-group {
+    margin-bottom: 1.2rem;
+    }
+
+    label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    }
+
+    input,
+    select,
+    textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
+    outline: none;
+    }
+
+    .btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    background: var(--gradient);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    }
+
+    .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 0.5rem;
+    }
+
+    .results-section {
+    display: none;
+    }
+
+    .allocation-table-container {
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    }
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    th,
+    td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    }
+
+    th {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-dim);
+    }
+
+    .location-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    }
+
+    .loc-tab {
+    padding: 0.6rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    }
+
+    .loc-tab.active {
+    background: var(--primary);
+    color: white;
+    }
+
+    .field-map-view {
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    }
+
+    .matrix-grid {
+    display: grid;
+    gap: 4px;
+    margin: 0 auto;
+    }
+
+    .cell {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    }
+
+    .cell.check {
+    background: var(--accent);
+    color: #064e3b;
+    }
+
+    .cell.line {
+    background: rgba(99, 102, 241, 0.3);
+    border: 1px solid var(--primary);
+    }
+
+    .cell.filler {
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 0.3;
+    }
+
+    .info-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    }
+
+    .summary-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 16px;
+    border-bottom: 3px solid var(--secondary);
+    }
+
+    .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    margin-left: 5px;
+    color: var(--text-dim);
+    }
+
+    .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background: #1e293b;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 20;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -110px;
+    opacity: 0;
+    font-size: 0.75rem;
+    border: 1px solid var(--border);
+    }
+
+    .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    }
+
+    /* Navigation Group Styles */
+    .category-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    /* Pill shape */
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    }
+
+    .category-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    color: var(--text);
+    }
+
+    .category-btn.active {
+    background: var(--gradient);
+    /* Active gradient */
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .submenu-container {
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .nav-group {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    animation: fadeIn 0.4s ease;
+    }
+
+    .nav-group.active {
+    display: flex;
+    }
+
+    .nav-link {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+    position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+    color: var(--text);
+    }
+
+    .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+    }
+
+    /* Dropdown Options Styling */
+    option {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px;
+    }
+
+    /* Footer Styles */
+    .main-footer {
+    background: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    margin-top: 4rem;
+    }
+
+    .footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    }
+
+    .footer-left {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+    justify-content: flex-start;
+    }
+
+    .footer-center {
+    flex: 1;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    }
+
+    .footer-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    }
+
+    .footer-btn {
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    }
+
+    .footer-btn i {
+    font-size: 1rem;
+    }
+
+    .footer-btn.donate {
+    border-color: rgba(231, 76, 60, 0.3);
+    }
+
+    .footer-btn.donate i {
+    color: #e74c3c;
+    }
+
+    .footer-btn.donate:hover {
+    background: rgba(231, 76, 60, 0.1);
+    border-color: #e74c3c;
+    transform: translateY(-2px);
+    }
+
+    .footer-btn.query {
+    border-color: rgba(52, 152, 219, 0.3);
+    }
+
+    .footer-btn.query i {
+    color: #3498db;
+    }
+
+    .footer-btn.query:hover {
+    background: rgba(52, 152, 219, 0.1);
+    border-color: #3498db;
+    transform: translateY(-2px);
+    }
+
+    .developer-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    }
+
+    .developer-info span {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    }
+
+    .developer-info strong {
+    color: var(--text);
+    font-weight: 600;
+    }
+
+    .dev-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+    }
+
+    @media (max-width: 992px) {
+    .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    }
+
+    .footer-left,
+    .footer-right {
+    justify-content: center;
+    flex: none;
+    }
+
+    .footer-center {
+    order: 3;
+    }
+    }
+
+    /* Refactored Styles */
+    .nav-container-main {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    }
+
+    .category-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    }
+
+    .text-dim {
+    color: var(--text-dim);
+    }
+
+    .stat-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    }
+
+    .stat-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    }
+
+    .allocation-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    }
+
+    .allocation-body {
+    max-height: 250px;
+    overflow-y: auto;
+    }
+
+    .map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    }
+
+    .active-loc-title {
+    font-weight: 700;
+    color: var(--secondary);
+    }
+
+    .btn-download-sm {
+    width: auto !important;
+    padding: 0.5rem 1rem !important;
+    }
+
+    .map-wrapper {
+    overflow-x: auto;
+    }
+
+    /* Footer Styles */
+    .btn-generate {
+    background: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+    color: white;
+    border: none;
+    }
+
+    .btn-simulate {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: #000;
+    border: none;
+    }
+
+    .btn-export {
+    background: #4b5563;
+    color: white;
+    border: none;
+    }
+
+    .btn-generate:hover,
+    .btn-simulate:hover,
+    .btn-export:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .margin-top-1 {
+    margin-top: 1rem;
+    }
+
+    .d-none {
+    display: none !important;
+    }
+
+    .back-btn {
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-3px);
+    color: var(--primary);
+    border-color: var(--primary);
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="container relative-pos">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="../doe.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1><i class="fas fa-layer-group"></i> Sparse / P-Rep Allocation</h1>
+                <p class="subtitle">Optimized multi-location treatment distribution</p>
+            </div>
+
+            <div class="user-profile-container">
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <button id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <aside class="card">
+                <div class="form-section">
+                    <h3><i class="fas fa-cog"></i> Design Type</h3>
+                    <div class="form-group">
+                        <label for="design-type">Design Variant</label>
+                        <select id="design-type" title="Select design variant">
+                            <option value="sparse">Sparse Allocation (Un-replicated)</option>
+                            <option value="prep">P-Rep (Partially Replicated)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Allocation Params</h3>
+                    <div class="form-group">
+                        <label for="lines-input">Total Lines (Genotypes)</label>
+                        <input type="number" id="lines-input" value="120" title="Number of lines">
+                    </div>
+                    <div class="form-group">
+                        <label for="locations-input">Number of Locations (L)</label>
+                        <input type="number" id="locations-input" value="4" title="Number of locations">
+                    </div>
+                    <div class="form-group">
+                        <label for="copies-input" id="copies-label">Copies per Entry (Locations)</label>
+                        <input type="number" id="copies-input" value="3" title="Copies per entry">
+                    </div>
+                </div>
+
+                <div class="form-section" id="checks-section">
+                    <h3><i class="fas fa-vial"></i> Checks setup</h3>
+                    <div class="form-group">
+                        <label for="checks-count">Number of Checks</label>
+                        <input type="number" id="checks-count" value="4" title="Number of checks">
+                    </div>
+                    <div class="form-group">
+                        <label for="checks-reps">Reps per Check (at each LOC)</label>
+                        <input type="number" id="checks-reps" value="2" title="Replications per check">
+                    </div>
+                </div>
+
+                <div class="form-row grid-buttons-3">
+                    <button class="btn btn-generate" id="generate-btn">
+                        <i class="fas fa-magic"></i> Generate
+                    </button>
+                    <button class="btn btn-simulate d-none" id="simulate-btn">
+                        <i class="fas fa-sync-alt"></i> Simulate
+                    </button>
+                    <button class="btn btn-export" id="export-btn">
+                        <i class="fas fa-file-csv"></i> Export
+                    </button>
+                </div>
+            </aside>
+
+            <main class="results-section" id="results">
+                <div class="info-card-grid">
+                    <div class="summary-box">
+                        <div class="stat-label">Plots per Location</div>
+                        <div class="stat-value" id="stat-plots">-</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="stat-label">Total Units</div>
+                        <div class="stat-value" id="stat-total">-</div>
+                    </div>
+                    <div class="summary-box">
+                        <div class="stat-label">Avg. Allocation</div>
+                        <div class="stat-value" id="stat-avg">-</div>
+                    </div>
+                </div>
+
+                <div class="allocation-table-container">
+                    <div class="allocation-header">
+                        <i class="fas fa-table"></i> Line Allocation Across Locations
+                    </div>
+                    <div class="allocation-body">
+                        <table id="allocation-table">
+                            <thead>
+                                <tr id="alloc-header">
+                                    <th>Line</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3 class="section-header"><i class="fas fa-map"></i> Layout Randomization</h3>
+                <div class="location-tabs" id="loc-tabs-container">
+                    <!-- Location tabs injected here -->
+                </div>
+
+                <div class="field-map-view" id="field-map-container">
+                    <div class="map-header">
+                        <div class="active-loc-title" id="active-loc-title">Location 1</div>
+                        <button class="btn btn-secondary btn-download-sm" id="download-loc-btn">
+                            <i class="fas fa-image"></i> Download PNG
+                        </button>
+                    </div>
+                    <div class="map-wrapper" id="map-wrapper">
+                        <div class="matrix-grid" id="loc-matrix"></div>
+                    </div>
+                </div>
+
+                <div class="margin-top-1">
+                    <button class="btn btn-secondary" id="export-full-csv">
+                        <i class="fas fa-file-export"></i> Download Consolidated Field Book (All Locations)
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <form class="auth-form" id="login-form">
+                <input type="email" id="login-email" placeholder="Email Address" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Create Account</h2>
+            <form class="auth-form" id="signup-form">
+                <input type="text" id="signup-name" placeholder="Full Name" required>
+                <input type="email" id="signup-email" placeholder="Email Address" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <p class="auth-modal-p">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/user-auth.js"></script>
+    <script src="../js/sparse-app.js"></script>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat fa-beat-custom"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/js/custom.js"></script>
+</body>
+
+</html>

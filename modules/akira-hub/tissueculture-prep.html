@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Tissue Culture Preparations - One Research Hub</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+            --pink-gradient: linear-gradient(135deg, #d63384, #e91e63);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(217, 70, 239, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Site Wrapper */
+        .site-wrapper {
+            padding: 0 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Standardized Header */
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        .header-content {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .back-button-container,
+        .user-profile-container {
+            flex: 0 0 auto;
+            min-width: 100px;
+        }
+
+        .user-profile-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            padding-bottom: 4rem;
+            flex: 1;
+        }
+
+        .sidebar-nav {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .nav-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+            text-decoration: none !important;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-box i {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 166, 81, 0.1);
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-box span {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .nav-box:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .nav-box.active {
+            background: rgba(0, 166, 81, 0.15);
+            border-color: var(--primary);
+        }
+
+        .nav-box.active i {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Calculator Cards */
+        .calc-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            height: 100%;
+            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .calc-card:hover {
+            border-color: var(--primary);
+        }
+
+        .calc-card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .calc-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            height: 45px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .calc-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 166, 81, 0.1);
+        }
+
+        .calc-select {
+            background: #333333;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .calc-select option {
+            background: #333333;
+            color: #fff;
+        }
+
+        .calc-btn {
+            width: 100%;
+            background: var(--gradient);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 166, 81, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .result-box {
+            background: rgba(0, 166, 81, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .result-value {
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 500;
+            line-height: 1.7;
+        }
+
+        .step-heading {
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .instruction-title {
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+            display: block;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-option {
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            transition: all 0.3s ease;
+            -webkit-user-select: none;
+            user-select: none;
+            margin-bottom: 0;
+        }
+
+        .mode-option.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 166, 81, 0.2);
+        }
+
+        /* PGR Radio Grid */
+        .pgr-radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .pgr-selection-container select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: #fff;
+            padding: 10px;
+            width: 100%;
+            height: 45px;
+        }
+
+        /* Standardized Footer */
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        /* User Auth Modals */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-modal-content {
+            background: #1f272b;
+            padding: 40px;
+            border: 1px solid var(--border);
+            width: 95%;
+            max-width: 420px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            color: var(--text-dim);
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .auth-modal h2 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .auth-form input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 166, 81, 0.1);
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 166, 81, 0.3);
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .auth-links p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .auth-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Tooltips */
+        .info-icon-container {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            cursor: help;
+        }
+
+        .info-icon-container i {
+            font-size: 0.9rem;
+            color: var(--primary);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .info-icon-container:hover i {
+            opacity: 1;
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            width: 250px;
+            background: rgba(0, 0, 0, 0.9);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            font-weight: normal;
+        }
+
+        .info-icon-container:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .donate-tooltip {
+            visibility: hidden;
+            width: 300px;
+            background: #1f272b;
+            color: #fff;
+            text-align: left;
+            border-radius: 15px;
+            padding: 20px;
+            position: absolute;
+            z-index: 100;
+            bottom: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            pointer-events: none;
+        }
+
+        .donate-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #1f272b transparent transparent transparent;
+        }
+
+        .footer-btn.donate:hover .donate-tooltip {
+            visibility: visible;
+            opacity: 1;
+            bottom: 130%;
+        }
+
+        .donate-tooltip strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .donate-tooltip p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #eee;
+            margin-bottom: 15px;
+        }
+
+        .donate-tooltip em {
+            color: var(--primary);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .donate-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .donate-stats span {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* User Profile & Dropdown */
+        .user-profile {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-profile #user-menu-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .user-profile #user-menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary) !important;
+            border-color: var(--primary);
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: #1f272b;
+            min-width: 160px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: block;
+            color: #ccc;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(0, 166, 81, 0.1);
+            color: var(--primary);
+        }
+
+        @media (max-width: 992px) {
+            .header-main {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .sidebar-nav {
+                position: relative;
+                top: 0;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 2rem;
+            }
+
+            .nav-box {
+                margin-bottom: 0;
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+        }
+
+        .grid-fill-80 {
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        }
+
+        .icon-primary-20 {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .step-border-bottom {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+        }
+
+        .select-height-45 {
+            height: 45px;
+        }
+
+        .warning-box {
+            background: rgba(214, 51, 132, 0.1);
+            border-color: rgba(214, 51, 132, 0.3);
+            color: #ff6b6b;
+            display: none;
+        }
+
+        .margin-top-0 {
+            margin-top: 0;
+        }
+
+        .forgot-link {
+            font-size: 13px;
+            color: #00a651;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .pgr-radio-label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .pgr-radio-input {
+            accent-color: var(--primary);
+            margin-right: 8px;
+        }
+
+        .conv-radio-label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 0.8rem;
+        }
+
+        .conv-radio-input {
+            accent-color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .hidden-section {
+            display: none;
+        }
+
+        .auth-header-margin {
+            margin-bottom: 30px;
+        }
+
+        .auth-desc-text {
+            color: #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="site-wrapper">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="akira-hub.html" class="back-btn" title="Back to Hub">
+                    <i class="fas fa-arrow-left"></i> Back to Hub
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1>Tissue Culture Calculators</h1>
+                <p class="subtitle">Precision preparation tools for plant tissue culture.</p>
+            </div>
+
+            <div class="user-profile-container">
+                <div class="user-profile">
+                    <a href="javascript:void(0)" id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <div class="row">
+                <!-- Sidebar Navigation -->
+                <div class="col-lg-3">
+                    <div class="sidebar-nav">
+                        <div class="nav-box active" onclick="showCalculator('converter', this)">
+                            <i class="fa-solid fa-right-left"></i>
+                            <span>Concentration Converter</span>
+                        </div>
+                        <div class="nav-box" onclick="showCalculator('pgr-calc', this)">
+                            <i class="fa-solid fa-leaf"></i>
+                            <span>PGR Preparation</span>
+                        </div>
+                        <div class="nav-box" onclick="showCalculator('ster-calc', this)">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Sterilization Calc</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Calculator Content -->
+                <div class="col-lg-9">
+                    <!-- Converter Section -->
+                    <div id="section-converter" class="calc-section">
+                        <div class="calc-card">
+                            <h3>PGR Concentration Converter (µM ⇄ mg/L)</h3>
+                            <div class="form-group">
+                                <label class="form-label">Select PGR</label>
+                                <div id="conv-pgr-group" class="pgr-radio-grid grid-fill-80">
+                                </div>
+                            </div>
+                            <div class="row mt-4 align-items-center">
+                                <div class="col-md-5">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">Concentration (µM)</label>
+                                        <input type="number" id="conv-um" class="calc-input" placeholder="Enter µM"
+                                            step="0.01" title="Concentration in µM">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center mt-4">
+                                    <i class="fa fa-exchange icon-primary-20"></i>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">Concentration (mg/L)</label>
+                                        <input type="number" id="conv-mgl" class="calc-input" placeholder="Enter mg/L"
+                                            step="0.01" title="Concentration in mg/L">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PGR Prep Section -->
+                    <div id="section-pgr-calc" class="calc-section hidden-section">
+                        <div class="calc-card">
+                            <h3>PGR Preparation Calculator</h3>
+                            <div class="form-group">
+                                <label class="form-label">Calculation Mode</label>
+                                <div class="mode-toggle" id="mode-toggle">
+                                    <div class="mode-option active" data-value="mass">Mass based (mg/L)</div>
+                                    <div class="mode-option" data-value="molar">Molar based (µM / mM)</div>
+                                </div>
+                                <input type="hidden" id="mode" value="mass">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plant Growth Regulator (PGR)</label>
+                                <div id="pgr-radio-group" class="pgr-radio-grid"></div>
+                            </div>
+
+                            <div id="pgr-full-container" class="pgr-selection-container mt-4">
+                                <!-- Dynamic categories added by JS -->
+                            </div>
+
+                            <div class="row mt-4 align-items-end">
+                                <div class="col-12">
+                                    <h4 class="step-heading step-border-bottom">Stock
+                                        Solution</h4>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-0">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Stock concentration</label>
+                                            <div id="pgr-stock-unit-toggle" class="mode-toggle">
+                                                <div class="mode-option active" data-unit="mgml">mg/mL</div>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="stockConc" class="calc-input" value="1" step="0.01"
+                                            title="Stock Concentration">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">Stock volume (mL)</label>
+                                        <input type="number" id="stockVol" class="calc-input" value="100"
+                                            title="Stock Volume">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4 align-items-end">
+                                <div class="col-12">
+                                    <h4 class="step-heading step-border-bottom">Final
+                                        Medium</h4>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-0">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Desired concentration</label>
+                                            <div id="pgr-final-unit-toggle" class="mode-toggle">
+                                                <div class="mode-option active" data-unit="mgL">mg/L</div>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="finalConc" class="calc-input" value="1" step="0.01"
+                                            title="Desired Concentration">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group mb-0">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Medium volume</label>
+                                            <div id="pgr-media-unit-toggle" class="mode-toggle">
+                                                <div class="mode-option" data-unit="mL">mL</div>
+                                                <div class="mode-option active" data-unit="L">L</div>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="mediaVol" class="calc-input" value="1" step="0.1"
+                                            title="Medium Volume">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="calc-btn" onclick="if(window.requireAuth()) calculate()">Calculate Volume to
+                                Add</button>
+                            <div id="result" class="result-box">
+                                <span class="instruction-title">Preparation Instructions</span>
+                                <div id="result-text" class="result-value"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sterilization Section -->
+                    <div id="section-ster-calc" class="calc-section hidden-section">
+                        <div class="calc-card">
+                            <h3>Sterilization Solution Calculator</h3>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Sterilant Type</label>
+                                        <select id="sterilant" class="calc-select w-100 select-height-45"
+                                            title="Select Sterilant">
+                                            <option value="">-- Select Sterilant --</option>
+                                            <option value="naocl">Sodium Hypochlorite (NaOCl)</option>
+                                            <option value="caocl2">Ca(OCl)2 (Calcium Hypochlorite)</option>
+                                            <option value="hgcl2">HgCl2 (Mercuric Chloride)</option>
+                                            <option value="h2o2">H2O2 (Hydrogen Peroxide)</option>
+                                            <option value="ethanol">Ethanol (70%)</option>
+                                            <option value="agno3">AgNO3 (Silver Nitrate)</option>
+                                            <option value="bromine">Bromine Water</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Calculation Mode</label>
+                                        <div class="mode-toggle" id="ster-mode-toggle">
+                                            <div class="mode-option active" data-value="percentage">Percentage (%)</div>
+                                            <div class="mode-option" data-value="molarity">Molarity (M)</div>
+                                        </div>
+                                        <input type="hidden" id="ster-mode" value="percentage">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="liquid-stock-group" class="hidden-section">
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Stock Concentration (%)</label>
+                                            <input type="number" id="s1_stock_conc" class="calc-input" value="5"
+                                                title="Stock Concentration">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4 align-items-end">
+                                <div class="col-md-5">
+                                    <div class="form-group mb-0">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0" id="ster-desired-label">Desired Conc.
+                                                (%)</label>
+                                            <div id="ster-molar-unit-toggle-group" class="mode-toggle hidden-section">
+                                                <div class="mode-option" data-unit="M">M</div>
+                                                <div class="mode-option active" data-unit="mM">mM</div>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="s1_desired_conc" class="calc-input" value="1"
+                                            title="Desired Concentration">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-0">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label mb-0">Final Volume</label>
+                                            <div id="ster-vol-unit-toggle" class="mode-toggle">
+                                                <div class="mode-option active" data-unit="mL">mL</div>
+                                                <div class="mode-option" data-unit="L">L</div>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="s1_final_vol" class="calc-input" value="100"
+                                            title="Final Volume">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="calc-btn margin-top-0"
+                                        onclick="if(window.requireAuth()) calculateSterilization()">Calculate</button>
+                                </div>
+                            </div>
+
+                            <div id="ster-warning" class="result-box warning-box">
+                                <i class="fas fa-exclamation-triangle"></i> <span id="ster-warning-text"></span>
+                            </div>
+                            <div id="ster-result" class="result-box">
+                                <span class="instruction-title">Preparation Instructions</span>
+                                <div id="ster-result-text" class="result-value"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span>Donate</span>
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Query / Error / Suggestions</span>
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- User Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-header-margin">Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-link">Forgot
+                        Password?</a></p>
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-header-margin">Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="auth-header-margin">Reset Password</h2>
+            <p class="auth-desc-text">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/custom.js"></script>
+    <script src="../../assets/js/user-auth.js"></script>
+
+    <script>
+        const pgrData = {
+            "IAA": 175.18, "NAA": 186.21, "IBA": 203.24, "2,4-D": 221.04, "BAP": 225.25, "GA3": 346.38, "TDZ": 220.25, "ABA": 264.32,
+            "Methyl jasmonate": 224.31, "Jasmonic acid": 210.23, "Salicylic acid": 138.12, "Acetylsalicylic acid": 180.16,
+            "Ethephon": 144.49, "Hydrogen peroxide": 34.01, "Sodium nitroprusside": 297.95, "Silver nitrate": 169.87,
+            "Brassinosteroids": 480.68, "Chitosan": null, "Yeast extract": null
+        };
+
+        const elicitorCategories = [
+            { title: "Common Elicitors", items: ["Methyl jasmonate", "Salicylic acid", "Chitosan", "Yeast extract", "Silver nitrate", "Hydrogen peroxide"] },
+            { title: "Biotic (Microbial)", items: ["Yeast extract", "Fungal cell extract", "Bacterial extract", "Chitosan"] },
+            { title: "Abiotic", items: ["MeJA", "JA", "SA", "ABA", "SNP", "Brassinosteroids"] }
+        ];
+
+        function showCalculator(id, el) {
+            document.querySelectorAll('.calc-section').forEach(s => s.style.display = 'none');
+            const targetSection = document.getElementById('section-' + id);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                localStorage.setItem('tc_calc_last_section', id);
+            }
+            document.querySelectorAll('.nav-box').forEach(b => b.classList.remove('active'));
+            if (el) {
+                el.classList.add('active');
+            } else {
+                const boxes = document.querySelectorAll('.nav-box');
+                boxes.forEach(box => {
+                    if (box.getAttribute('onclick').includes(`'${id}'`)) box.classList.add('active');
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initPGRs();
+            initToggles();
+            initSterilization();
+            initConverter();
+
+            const lastSection = localStorage.getItem('tc_calc_last_section') || 'converter';
+            showCalculator(lastSection);
+
+            // User Profile Toggle
+            const userMenuToggle = document.getElementById('user-menu-toggle');
+            const userDropdown = document.getElementById('user-dropdown');
+            if (userMenuToggle && userDropdown) {
+                userMenuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', () => userDropdown.classList.remove('active'));
+            }
+
+            initPGRs();
+        });
+
+        function initPGRs() {
+            const pgrGrid = document.getElementById('pgr-radio-group');
+            if (!pgrGrid) return;
+            const mainPGRs = ["2,4-D", "ABA", "BAP", "GA3", "IAA", "IBA", "NAA", "TDZ"];
+            mainPGRs.forEach(pgr => {
+                const label = document.createElement('label');
+                label.className = "pgr-radio-label";
+                label.innerHTML = `<input type="radio" name="pgr-selection" value="${pgr}" ${pgr === 'BAP' ? 'checked' : ''} class="pgr-radio-input"> ${pgr}`;
+                pgrGrid.appendChild(label);
+            });
+
+            const pgrFullContainer = document.getElementById('pgr-full-container');
+            if (!pgrFullContainer) return;
+            elicitorCategories.forEach(cat => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "form-group mt-3";
+                const head = document.createElement('label');
+                head.className = "form-label";
+                head.textContent = cat.title;
+                const select = document.createElement('select');
+                select.className = "calc-select w-100 elicitor-dropdown";
+                select.className = "calc-select w-100 elicitor-dropdown";
+                select.innerHTML = `<option value="">-- Select Option --</option>`;
+                cat.items.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p; opt.textContent = p;
+                    select.appendChild(opt);
+                });
+                select.addEventListener('change', function () {
+                    if (this.value) {
+                        document.querySelectorAll('input[name="pgr-selection"]').forEach(rb => rb.checked = false);
+                        document.querySelectorAll('.elicitor-dropdown').forEach(sel => { if (sel !== this) sel.value = ""; });
+                    }
+                });
+                wrapper.appendChild(head);
+                wrapper.appendChild(select);
+                pgrFullContainer.appendChild(wrapper);
+            });
+        }
+
+        function initToggles() {
+            document.body.addEventListener('click', function (e) {
+                const option = e.target.closest('.mode-option');
+                if (!option) return;
+                const toggle = option.closest('.mode-toggle');
+                if (!toggle) return;
+
+                toggle.querySelectorAll('.mode-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+
+                const val = option.dataset.value;
+                if (toggle.id === 'mode-toggle') {
+                    document.getElementById('mode').value = val;
+                    updatePGRUnitToggles(val);
+                }
+                if (toggle.id === 'ster-mode-toggle') {
+                    document.getElementById('ster-mode').value = val;
+                    updateSterUI();
+                }
+            });
+        }
+
+        function updatePGRUnitToggles(mode) {
+            const stockToggle = document.getElementById('pgr-stock-unit-toggle');
+            const finalToggle = document.getElementById('pgr-final-unit-toggle');
+            if (mode === 'mass') {
+                stockToggle.innerHTML = `<div class="mode-option active" data-unit="mgml">mg/mL</div>`;
+                finalToggle.innerHTML = `<div class="mode-option active" data-unit="mgL">mg/L</div>`;
+            } else {
+                stockToggle.innerHTML = `<div class="mode-option active" data-unit="mM">mM</div><div class="mode-option" data-unit="M">M</div>`;
+                finalToggle.innerHTML = `<div class="mode-option active" data-unit="uM">µM</div><div class="mode-option" data-unit="mM">mM</div>`;
+            }
+        }
+
+        function initConverter() {
+            const convGrid = document.getElementById('conv-pgr-group');
+            if (!convGrid) return;
+            const validPgrs = Object.keys(pgrData).filter(k => pgrData[k] !== null).sort();
+            validPgrs.forEach(pgr => {
+                const label = document.createElement('label');
+                label.className = "conv-radio-label";
+                label.innerHTML = `<input type="radio" name="conv-pgr-selection" value="${pgr}" ${pgr === 'BAP' ? 'checked' : ''} class="conv-radio-input"> ${pgr}`;
+                convGrid.appendChild(label);
+            });
+
+            const umIn = document.getElementById('conv-um');
+            const mglIn = document.getElementById('conv-mgl');
+
+            const handleConv = (isUm) => {
+                const checkedRb = document.querySelector('input[name="conv-pgr-selection"]:checked');
+                if (!checkedRb) return;
+                const selectedPgr = checkedRb.value;
+                const mw = pgrData[selectedPgr];
+                if (isUm) {
+                    const val = parseFloat(umIn.value);
+                    if (!isNaN(val)) mglIn.value = ((val * mw) / 1000).toFixed(4);
+                    else mglIn.value = "";
+                } else {
+                    const val = parseFloat(mglIn.value);
+                    if (!isNaN(val)) umIn.value = ((val * 1000) / mw).toFixed(4);
+                    else umIn.value = "";
+                }
+            };
+
+            umIn.addEventListener('input', () => handleConv(true));
+            mglIn.addEventListener('input', () => handleConv(false));
+            document.body.addEventListener('change', function (e) {
+                if (e.target.name === 'conv-pgr-selection') handleConv(true);
+            });
+        }
+
+        function calculate() {
+            let pgr = "";
+            const rb = document.querySelector('input[name="pgr-selection"]:checked');
+            if (rb) pgr = rb.value;
+            else {
+                const sel = Array.from(document.querySelectorAll('.elicitor-dropdown')).find(s => s.value !== "");
+                if (sel) pgr = sel.value;
+            }
+
+            if (!pgr) return alert("Select a PGR");
+            const mw = pgrData[pgr];
+            const mode = document.getElementById('mode').value;
+            if (mode === 'molar' && !mw) return alert("Molar mode not available for complex extracts.");
+
+            const sConc = parseFloat(document.getElementById('stockConc').value);
+            const sVol = parseFloat(document.getElementById('stockVol').value);
+            const activeStockUnit = document.querySelector('#pgr-stock-unit-toggle .active');
+            const sUnit = activeStockUnit ? activeStockUnit.dataset.unit : 'mgml';
+
+            const fConc = parseFloat(document.getElementById('finalConc').value);
+            const activeFinalUnit = document.querySelector('#pgr-final-unit-toggle .active');
+            const fUnit = activeFinalUnit ? activeFinalUnit.dataset.unit : 'mgL';
+
+            let mVol = parseFloat(document.getElementById('mediaVol').value);
+            const activeMediaUnit = document.querySelector('#pgr-media-unit-toggle .active');
+            const mUnit = activeMediaUnit ? activeMediaUnit.dataset.unit : 'L';
+
+            const originalMVol = mVol;
+            const originalMUnit = mUnit;
+
+            if (mUnit === "mL") mVol /= 1000;
+
+            if (isNaN(sConc) || isNaN(fConc) || isNaN(mVol)) return alert("Fill all fields");
+
+            let stock_mM;
+            if (sUnit === "mgml") stock_mM = (sConc * 1000) / mw;
+            else if (sUnit === "mM") stock_mM = sConc;
+            else stock_mM = sConc * 1000;
+
+            let final_mM;
+            if (fUnit === "mgL") final_mM = fConc / mw;
+            else if (fUnit === "uM") final_mM = fConc / 1000;
+            else final_mM = fConc;
+
+            const volToAdd_L = (final_mM * mVol) / stock_mM;
+            const resVal = volToAdd_L * 1000 >= 1 ? (volToAdd_L * 1000).toFixed(2) + " mL" : (volToAdd_L * 1000000).toFixed(2) + " µL";
+
+            const resDiv = document.getElementById('result');
+            const resTxt = document.getElementById('result-text');
+            resDiv.style.display = "block";
+            resTxt.innerHTML = `
+                <span class="step-heading">Step 1: Preparation</span>
+                Add <b>${resVal}</b> of the stock solution to <b>${originalMVol} ${originalMUnit}</b> of media to achieve a final concentration of <b>${fConc} ${fUnit}</b>.
+            `;
+        }
+
+        const sterData = {
+            "naocl": { mw: 74.44, rec: "0.5–1.5%", time: "5–15 min", type: "liquid" },
+            "caocl2": { mw: 142.98, rec: "2–5%", type: "solid" },
+            "hgcl2": { mw: 271.50, rec: "0.05–0.1%", type: "solid" },
+            "h2o2": { mw: 34.01, rec: "3–6%", type: "liquid" },
+            "ethanol": { mw: 46.07, rec: "70%", type: "liquid" },
+            "agno3": { mw: 169.87, rec: "0.1–0.5%", type: "solid" }
+        };
+
+        function updateSterUI() {
+            const key = document.getElementById('sterilant').value;
+            const ster = sterData[key];
+            const mode = document.getElementById('ster-mode').value;
+
+            document.getElementById('liquid-stock-group').style.display = (ster && ster.type === 'liquid' && mode === 'percentage') ? 'block' : 'none';
+            document.getElementById('ster-molar-unit-toggle-group').style.display = (mode === 'molarity') ? 'flex' : 'none';
+            document.getElementById('ster-desired-label').textContent = mode === 'percentage' ? "Desired Conc. (%)" : "Desired Molarity";
+
+            const warn = document.getElementById('ster-warning');
+            if (key === 'hgcl2') { warn.style.display = "block"; document.getElementById('ster-warning-text').textContent = "Extremely Toxic! Handle in hood."; }
+            else if (warn) warn.style.display = "none";
+        }
+
+        function calculateSterilization() {
+            const key = document.getElementById('sterilant').value;
+            const ster = sterData[key];
+            if (!key) return alert("Select sterilant");
+
+            const mode = document.getElementById('ster-mode').value;
+            const dVal = parseFloat(document.getElementById('s1_desired_conc').value);
+            const activeUnit = document.querySelector('#ster-molar-unit-toggle-group .active');
+            const dUnit = mode === 'molarity' ? (activeUnit ? activeUnit.dataset.unit : 'mM') : "%";
+
+            let fVol = parseFloat(document.getElementById('s1_final_vol').value);
+            const activeVolUnit = document.querySelector('#ster-vol-unit-toggle .active');
+            const fUnit = activeVolUnit ? activeVolUnit.dataset.unit : 'mL';
+            if (fUnit === "L") fVol *= 1000;
+
+            let instr = "";
+            if (mode === 'percentage') {
+                if (ster.type === 'liquid') {
+                    const stock = parseFloat(document.getElementById('s1_stock_conc').value);
+                    const v1 = (dVal * fVol) / stock;
+                    instr = `Mix <b>${v1.toFixed(2)} mL</b> of stock with <b>${(fVol - v1).toFixed(2)} mL</b> water.`;
+                } else {
+                    const g = (dVal * fVol) / 100;
+                    instr = `Dissolve <b>${g.toFixed(3)} g</b> powder in <b>${fVol} mL</b> total volume.`;
+                }
+            } else {
+                const mol = dUnit === 'mM' ? dVal / 1000 : dVal;
+                const g = mol * ster.mw * (fVol / 1000);
+                instr = `Dissolve <b>${g.toFixed(4)} g</b> in <b>${fVol} mL</b> total volume.`;
+            }
+
+            const res = document.getElementById('ster-result');
+            res.style.display = "block";
+            document.getElementById('ster-result-text').innerHTML = `${instr}<br><small>Rec: ${ster.rec}</small>`;
+        }
+
+        const sterTypeSelect = document.getElementById('sterilant');
+        if (sterTypeSelect) sterTypeSelect.addEventListener('change', updateSterUI);
+
+        function initSterilization() { }
+    </script>
+</body>
+
+</html>

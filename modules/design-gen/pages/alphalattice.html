@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Lattice Design Generator | Research Hub</title>
+    <meta name="description"
+        content="Generate randomized Alpha Lattice designs for researchers and agricultural experiments.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <!-- html2canvas for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #00a651;
+            --secondary: #008c44;
+            --accent: #2ecc71;
+            --bg: #1f2122;
+            /* Darker background from reference implied theme */
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #cccccc;
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(217, 70, 239, 0.15) 0, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 15px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .field-map {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .replicate-box {
+            background: transparent;
+            /* Transparent for export */
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .replicate-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .blocks-grid {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .block-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .block-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            /* Gray text for B-1, B-2... */
+            width: 60px;
+            font-weight: 600;
+        }
+
+        .plot {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            /* White background for contrast */
+            color: #000000;
+            /* Black text */
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plot:hover {
+            transform: scale(1.1);
+            background: #f0f0f0;
+            z-index: 10;
+        }
+
+        /* Layout Specific Styles */
+        /* Vertical Reps -> Blocks are Columns (Side-by-side blocks, Vertical plots) */
+        .field-map.vertical-layout {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .field-map.vertical-layout .replicate-box {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .field-map.vertical-layout .blocks-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Prevent wrapping for scroll */
+            gap: 1.5rem;
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            /* Scrollbar space */
+        }
+
+        .field-map.vertical-layout .block-row {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .field-map.vertical-layout .block-label {
+            width: auto;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        /* Horizontal Reps -> Blocks are Rows (Stacked blocks, Horizontal plots) */
+        .field-map.horizontal-layout {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .field-map.horizontal-layout .replicate-box {
+            min-width: 300px;
+        }
+
+        .field-map.horizontal-layout .blocks-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .field-map.horizontal-layout .block-row {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .plot::after {
+            content: attr(data-trt);
+            position: absolute;
+            bottom: -20px;
+            font-size: 0.6rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .plot:hover::after {
+            opacity: 1;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.2rem;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Nav & Category Styles */
+        .nav-container-main {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .category-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        @supports (scrollbar-width: none) {
+            nav {
+                scrollbar-width: none;
+            }
+        }
+
+        .card-title {
+            margin-bottom: 1.5rem;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .btn-download-container {
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .btn-download {
+            width: auto !important;
+            display: inline-flex !important;
+            padding: 0.6rem 1.2rem !important;
+        }
+
+        .trt-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Tooltip style */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 5px;
+            color: var(--text-dim);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #334155;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            font-weight: 400;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Navigation Group Styles */
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            /* Pill shape */
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            color: var(--text);
+        }
+
+        .category-btn.active {
+            background: var(--gradient);
+            /* Active gradient */
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .submenu-container {
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-group {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .nav-group.active {
+            display: flex;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Dropdown Options Styling */
+        option {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        /* Footer Styles */
+        .btn-generate {
+            background: linear-gradient(135deg, #00a651 0%, #00d466 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-simulate {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #000;
+            border: none;
+        }
+
+        .btn-export {
+            background: #4b5563;
+            color: white;
+            border: none;
+        }
+
+        .btn-generate:hover,
+        .btn-simulate:hover,
+        .btn-export:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .button-sub-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .footer-center {
+            flex: 1;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .footer-btn {
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .footer-btn i {
+            font-size: 1rem;
+        }
+
+        .footer-btn.donate {
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .footer-btn.donate i {
+            color: #e74c3c;
+        }
+
+        .footer-btn.donate:hover {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: #e74c3c;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.query {
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .footer-btn.query i {
+            color: #3498db;
+        }
+
+        .footer-btn.query:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .developer-info span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .developer-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .dev-img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 166, 81, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: center;
+                flex: none;
+            }
+
+            .footer-center {
+                order: 3;
+            }
+        }
+
+        /* Form Layout Grid */
+        .form-row {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-row-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .form-row-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .form-row-split {
+            grid-template-columns: 3fr 1fr;
+            align-items: stretch;
+        }
+
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            justify-content: flex-start;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+            /* Override default for grid items */
+        }
+
+        /* Make textarea fill height in split row */
+        .trt-names-container {
+            height: 100%;
+        }
+
+        .trt-names-container textarea {
+            height: 100%;
+            min-height: 150px;
+        }
+
+        @media (max-width: 900px) {
+
+            .form-row-4,
+            .form-row-3,
+            .form-row-split {
+                grid-template-columns: 1fr;
+            }
+
+            .button-stack {
+                margin-top: 1rem;
+            }
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .mt-0 {
+            margin-top: 0 !important;
+        }
+
+        .w-100 {
+            width: 100% !important;
+        }
+
+        .mb-0 {
+            margin-bottom: 0 !important;
+        }
+
+        .layout-controls {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .layout-controls label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper select {
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            pointer-events: none;
+            font-size: 0.8rem;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mb-1 {
+            margin-bottom: 1rem !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container relative">
+        <header class="header-main">
+            <div class="back-button-container">
+                <a href="../doe.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+
+            <div class="header-content">
+                <h1><i class="fas fa-th"></i> Alpha Lattice Design</h1>
+                <p class="subtitle">Premium experimental design generator for advanced agricultural research</p>
+            </div>
+
+            <div class="user-profile-container">
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <button id="user-menu-toggle" title="User Menu">
+                        <i class="fa fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <a href="javascript:void(0)" id="show-login">Login</a>
+                        <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <aside class="card w-100">
+                <h2 class="card-title"><i class="fas fa-sliders-h"></i> Parameters</h2>
+
+                <div class="form-row form-row-4">
+                    <div class="form-group">
+                        <label for="t-input">Total Treatments (t) <span class="tooltip"><i
+                                    class="fas fa-info-circle"></i><span class="tooltiptext">Number of varieties or
+                                    treatments to evaluate. Must be a multiple of
+                                    block size.</span></span></label>
+                        <input type="number" id="t-input" value="15" min="4" step="1"
+                            title="Total number of treatments">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="k-input">Plots per IBlock (k) <span class="tooltip"><i
+                                    class="fas fa-info-circle"></i><span class="tooltiptext">Number of units per
+                                    incomplete block. Must divide treatments
+                                    evenly.</span></span></label>
+                        <input type="number" id="k-input" value="3" min="2" step="1" title="Block size">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="r-input">Replicates (r) <span class="tooltip"><i
+                                    class="fas fa-info-circle"></i><span class="tooltiptext">Number of full blocks or
+                                    resolvable
+                                    replicates.</span></span></label>
+                        <input type="number" id="r-input" value="3" min="2" max="10" step="1"
+                            title="Number of replicates">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="l-input">Locations (l)</label>
+                        <input type="number" id="l-input" value="1" min="1" max="5" step="1"
+                            title="Number of locations">
+                    </div>
+                </div>
+
+                <div class="form-row form-row-3">
+                    <div class="form-group">
+                        <label for="layout-input">Plot Order Layout</label>
+                        <select id="layout-input" title="Plot order layout direction">
+                            <option value="serpentine">Serpentine</option>
+                            <option value="cartesian">Cartesian</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="plot-input">Start Plot Number</label>
+                        <input type="number" id="plot-input" value="101" step="1" title="Starting plot number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seed-input">Seed (Randomness control)</label>
+                        <input type="number" id="seed-input" placeholder="Randomly generated" title="Random seed">
+                    </div>
+                </div>
+
+                <div class="form-row form-row-split">
+                    <div class="form-group trt-names-container">
+                        <label for="trt-names">Treatment Names (One per line)</label>
+                        <textarea id="trt-names" placeholder="e.g. Variety A&#10;Variety B" rows="5"
+                            class="trt-textarea" title="List of treatment names"></textarea>
+                    </div>
+
+                    <div class="button-stack">
+                        <button class="btn btn-generate" id="generate-btn">
+                            <i class="fas fa-magic"></i> Generate
+                        </button>
+                        <div class="button-sub-row d-none">
+                            <button class="btn btn-simulate" id="simulate-btn">
+                                <i class="fas fa-sync-alt"></i> Simulate
+                            </button>
+                            <button class="btn btn-export" id="export-btn">
+                                <i class="fas fa-file-csv"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="results-section" id="results">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Blocks per Rep (s)</div>
+                        <div class="info-value" id="info-s">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Efficiency Factor</div>
+                        <div class="info-value" id="info-eff">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Total Units</div>
+                        <div class="info-value" id="info-total">-</div>
+                    </div>
+                </div>
+
+                <div class="layout-controls">
+                    <label for="map-loc-select">View
+                        Location:</label>
+                    <div class="select-wrapper">
+                        <select id="map-loc-select">
+                            <option value="all">All Locations</option>
+                        </select>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+
+                    <label for="rep-layout-select">Map
+                        Layout:</label>
+                    <div class="select-wrapper">
+                        <select id="rep-layout-select">
+                            <option value="vertical">Vertical Panel</option>
+                            <option value="horizontal">Horizontal Panel</option>
+                        </select>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="field-book">Field Book</div>
+                    <div class="tab" data-tab="field-map">Field Layout Map</div>
+                </div>
+
+                <div id="field-book" class="tab-content active">
+                    <div class="text-right mb-1">
+                        <button class="btn btn-sm btn-secondary" id="download-excel-btn">
+                            <i class="fas fa-file-excel"></i> Download Excel
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="field-book-table">
+                            <thead>
+                                <tr>
+                                    <th>Plot</th>
+                                    <th>Location</th>
+                                    <th>Replicate</th>
+                                    <th>Block</th>
+                                    <th>Treatment ID</th>
+                                    <th>Treatment Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="field-map" class="tab-content">
+                    <div class="btn-download-container">
+                        <button class="btn btn-secondary btn-download" id="download-map-btn">
+                            <i class="fas fa-image"></i> Download PNG
+                        </button>
+                    </div>
+                    <div class="field-map" id="map-container">
+                        <!-- Map grids injected here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-pw-link">Forgot Password?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <p class="auth-modal-p">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/user-auth.js"></script>
+    <script src="../js/alphalattice-app.js"></script>
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <a href="https://rzp.io/rzp/USqljYfi" target="_blank" rel="noopener" class="footer-btn donate">
+                    <i class="fas fa-heartbeat fa-beat fa-beat-custom"></i> Donate
+                    <div class="donate-tooltip">
+                        <strong>Learn First. Pay Only If You Can.</strong>
+                        <p>These statistical tools are provided free of cost to support students, researchers, and
+                            early-career scientists.</p>
+                        <p>Comparable analytical software and consultation services often cost thousands of rupees or
+                            dollars, placing them out of reach for many. We believe that access to reliable scientific
+                            tools should never be a barrier to learning or research.</p>
+                        <em>Maintaining secure servers, computing resources, and continuous development involves real
+                            operational costs. If this platform has helped your work, please consider a small voluntary
+                            donation to help keep these tools free, accessible, and improving for everyone.</em>
+                    </div>
+                </a>
+                <a href="javascript:void(0)" onclick="openQueryModal()" class="footer-btn query">
+                    <i class="fas fa-comment-dots"></i> Query / Error / Suggestions
+                </a>
+            </div>
+            <div class="footer-center">
+                <p>COPYRIGHT © 2024 ONE RESEARCH HUB. ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="footer-right">
+                <div class="developer-info">
+                    <span>Developed by <strong>Dr. Kanmani Bharathi</strong></span>
+                    <img src="../../../assets/images/teams/bharathi.jpg" alt="Dr. Kanmani Bharathi" class="dev-img">
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/js/custom.js"></script>
+</body>
+
+</html>

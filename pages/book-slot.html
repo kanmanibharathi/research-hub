@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Book a research consultation slot with One Research Hub.">
+    <meta name="author" content="Research Hub">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <title>Research Hub - Book Your Slot</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-edu-meeting.css">
+    <link rel="stylesheet" href="../assets/css/owl.css">
+    <link rel="stylesheet" href="../assets/css/lightbox.css">
+
+    <style>
+        .booking-section {
+            padding-top: 150px;
+            padding-bottom: 20px;
+            background-image: url(../assets/images/meetings-bg.jpg);
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .booking-form-container {
+            background-color: rgba(250, 250, 250, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section-title {
+            color: #d63384;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(214, 51, 132, 0.3);
+            padding-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .booking-form input,
+        .booking-form select,
+        .booking-form textarea {
+            width: 100%;
+            height: 45px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .booking-form textarea {
+            height: 120px;
+            padding: 15px;
+        }
+
+        .booking-form label {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .booking-form select option {
+            background-color: #1f272b;
+            color: #fff;
+        }
+
+        .submit-btn {
+            background-color: #d63384;
+            color: #fff;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        .submit-btn:hover {
+            background-color: #00a651;
+            transform: translateY(-2px);
+        }
+
+        #success-message {
+            display: none;
+            text-align: center;
+            background-color: rgba(0, 166, 81, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #00a651;
+            margin-top: 20px;
+        }
+
+        #success-message h4 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        #success-message p {
+            color: #eee;
+            margin-bottom: 0;
+        }
+
+        .service-title {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .service-subtitle {
+            color: #fff;
+            font-style: italic;
+        }
+
+        .booking-form .country-code-select {
+            width: 90px;
+            flex: 0 0 90px;
+            padding: 0 5px;
+        }
+
+        .booking-form input.phone-input {
+            width: auto;
+            flex: 1;
+        }
+
+        .timezone-info {
+            color: #00a651;
+            font-size: 11px;
+            margin-top: -15px;
+            font-weight: 600;
+            text-shadow: none;
+        }
+
+        .footer-social-container {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link-white {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .booking-section .footer {
+            padding-top: 30px !important;
+            padding-bottom: 20px !important;
+        }
+
+        .youtube-link {
+            color: #FF0000 !important;
+            font-weight: bold;
+        }
+
+        .forgot-password-link {
+            font-size: 13px;
+            color: #00a651;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .reset-instructions {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="../index.html" class="logo">
+                            <img src="../assets/images/logo.png" alt="Research Hub Logo">
+                            <div class="logo-text">
+                                <span class="title">Research Hub</span>
+                                <span class="tagline">Where Research Meets Expertise</span>
+                            </div>
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="../events/events.html">Events</a></li>
+                            <li><a href="book-slot.html" class="active">Book Now</a></li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)">Pages</a>
+                                <ul class="sub-menu">
+                                    <li><a href="../events/events.html">Events</a></li>
+                                    <li><a href="../products/products.html">Products</a></li>
+                                    <li><a href="../courses/courses.html">Courses</a></li>
+                                    <li><a href="team.html">Meet Our Team</a></li>
+                                    <li><a href="https://www.youtube.com/@Research-Hub" target="_blank" rel="noopener"
+                                            class="youtube-nav-item">YouTube</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-sub">
+                                <a href="javascript:void(0)">Tools</a>
+                                <ul class="sub-menu">
+                                    <li><a href="../modules/akira-hub/akira-hub.html">Wet-Lab Hub</a></li>
+                                    <li><a href="../data-anal/frontend/data-analyzer.html">HARVEST</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="../index.html#contact">Contact Us</a></li>
+                            <li class="user-profile">
+                                <a href="javascript:void(0)" id="user-menu-toggle" title="User Profile">
+                                    <i class="fa fa-user"></i>
+                                </a>
+                                <div class="user-dropdown" id="user-dropdown">
+                                    <a href="javascript:void(0)" id="show-login">Login</a>
+                                    <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger' href="javascript:void(0)">
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <section class="booking-section header-text">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="booking-form-container">
+                        <div class="section-heading text-center">
+                            <h2 class="service-title">Book Your Slot</h2>
+                            <p class="service-subtitle">Empowering your research journey with expert
+                                guidance.</p>
+                        </div>
+
+                        <form class="booking-form" id="consultationForm">
+                            <!-- Section 1: Basic Details -->
+                            <h3 class="form-section-title">Basic Details</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Full Name</label>
+                                    <input type="text" name="full_name" required placeholder="Enter your full name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Email Address</label>
+                                    <input type="email" name="email" required placeholder="Enter your email address">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Mobile / WhatsApp Number</label>
+                                    <div class="d-flex gap-2">
+                                        <select name="country_code" id="country_code" class="country-code-select"
+                                            required title="Select Country Code">
+                                            <option value="+91" data-tz="Asia/Kolkata" selected>🇮🇳 +91 (India) (IST)
+                                            </option>
+                                            <option value="+1" data-tz="America/New_York">🇺🇸 +1 (USA/Canada)</option>
+                                            <option value="+44" data-tz="Europe/London">🇬🇧 +44 (UK)</option>
+                                            <option value="+61" data-tz="Australia/Sydney">🇦🇺 +61 (Australia)</option>
+                                            <option value="+81" data-tz="Asia/Tokyo">🇯🇵 +81 (Japan)</option>
+                                            <option value="+49" data-tz="Europe/Berlin">🇩🇪 +49 (Germany)</option>
+                                            <option value="+33" data-tz="Europe/Paris">🇫🇷 +33 (France)</option>
+                                            <option value="+86" data-tz="Asia/Shanghai">🇨🇳 +86 (China)</option>
+                                            <option value="+971" data-tz="Asia/Dubai">🇦🇪 +971 (UAE)</option>
+                                            <option value="+966" data-tz="Asia/Riyadh">🇸🇦 +966 (Saudi Arabia)</option>
+                                            <option value="+65" data-tz="Asia/Singapore">🇸🇬 +65 (Singapore)</option>
+                                            <option value="+60" data-tz="Asia/Kuala_Lumpur">🇲🇾 +60 (Malaysia)</option>
+                                            <option value="+234" data-tz="Africa/Lagos">🇳🇬 +234 (Nigeria)</option>
+                                            <option value="+254" data-tz="Africa/Nairobi">🇰🇪 +254 (Kenya)</option>
+                                            <option value="+27" data-tz="Africa/Johannesburg">🇿🇦 +27 (South Africa)
+                                            </option>
+                                            <option value="+880" data-tz="Asia/Dhaka">🇧🇩 +880 (Bangladesh)</option>
+                                            <option value="+92" data-tz="Asia/Karachi">🇵🇰 +92 (Pakistan)</option>
+                                            <option value="+94" data-tz="Asia/Colombo">🇱🇰 +94 (Sri Lanka)</option>
+                                            <option value="+7" data-tz="Europe/Moscow">🇷🇺 +7 (Russia)</option>
+                                            <option value="+55" data-tz="America/Sao_Paulo">🇧🇷 +55 (Brazil)</option>
+                                            <option value="+93">🇦🇫 +93 (Afghanistan)</option>
+                                            <option value="+355">🇦🇱 +355 (Albania)</option>
+                                            <option value="+213">🇩🇿 +213 (Algeria)</option>
+                                            <option value="+376">🇦🇩 +376 (Andorra)</option>
+                                            <option value="+244">🇦🇴 +244 (Angola)</option>
+                                            <option value="+54">🇦🇷 +54 (Argentina)</option>
+                                            <option value="+374">🇦🇲 +374 (Armenia)</option>
+                                            <option value="+43">🇦🇹 +43 (Austria)</option>
+                                            <option value="+994">🇦🇿 +994 (Azerbaijan)</option>
+                                            <option value="+973">🇧🇭 +973 (Bahrain)</option>
+                                            <option value="+32">🇧🇪 +32 (Belgium)</option>
+                                            <option value="+501">🇧🇿 +501 (Belize)</option>
+                                            <option value="+229">🇧🇯 +229 (Benin)</option>
+                                            <option value="+975">🇧🇹 +975 (Bhutan)</option>
+                                            <option value="+591">🇧🇴 +591 (Bolivia)</option>
+                                            <option value="+387">🇧🇦 +387 (Bosnia)</option>
+                                            <option value="+267">🇧🇼 +267 (Botswana)</option>
+                                            <option value="+359">🇧🇬 +359 (Bulgaria)</option>
+                                            <option value="+226">🇧🇫 +226 (Burkina Faso)</option>
+                                            <option value="+257">🇧🇮 +257 (Burundi)</option>
+                                            <option value="+855">🇰🇭 +855 (Cambodia)</option>
+                                            <option value="+237">🇨🇲 +237 (Cameroon)</option>
+                                            <option value="+56">🇨� +56 (Chile)</option>
+                                            <option value="+57">🇨🇴 +57 (Colombia)</option>
+                                            <option value="+269">🇰🇲 +269 (Comoros)</option>
+                                            <option value="+506">🇨🇷 +506 (Costa Rica)</option>
+                                            <option value="+385">🇭🇷 +385 (Croatia)</option>
+                                            <option value="+53">🇨�🇺 +53 (Cuba)</option>
+                                            <option value="+357">��🇾 +357 (Cyprus)</option>
+                                            <option value="+420">🇨🇿 +420 (Czechia)</option>
+                                            <option value="+45">🇩🇰 +45 (Denmark)</option>
+                                            <option value="+251">🇪🇹 +251 (Ethiopia)</option>
+                                            <option value="+20">🇪🇬 +20 (Egypt)</option>
+                                            <option value="+358">🇫🇮 +358 (Finland)</option>
+                                            <option value="+233">🇬🇭 +233 (Ghana)</option>
+                                            <option value="+30">🇬🇷 +30 (Greece)</option>
+                                            <option value="+852">🇭🇰 +852 (Hong Kong)</option>
+                                            <option value="+36">🇭🇺 +36 (Hungary)</option>
+                                            <option value="+62">🇮🇩 +62 (Indonesia)</option>
+                                            <option value="+98">🇮🇷 +98 (Iran)</option>
+                                            <option value="+964">🇮🇶 +964 (Iraq)</option>
+                                            <option value="+353">🇮🇪 +353 (Ireland)</option>
+                                            <option value="+972">🇮🇱 +972 (Israel)</option>
+                                            <option value="+39">🇮🇹 +39 (Italy)</option>
+                                            <option value="+962">🇯🇴 +962 (Jordan)</option>
+                                            <option value="+965">🇰🇼 +965 (Kuwait)</option>
+                                            <option value="+961">🇱🇧 +961 (Lebanon)</option>
+                                            <option value="+218">🇱🇾 +218 (Libya)</option>
+                                            <option value="+352">🇱🇺 +352 (Luxembourg)</option>
+                                            <option value="+212">🇲🇦 +212 (Morocco)</option>
+                                            <option value="+52">🇲🇽 +52 (Mexico)</option>
+                                            <option value="+258">🇲🇿 +258 (Mozambique)</option>
+                                            <option value="+977">🇳🇵 +977 (Nepal)</option>
+                                            <option value="+31">🇳🇱 +31 (Netherlands)</option>
+                                            <option value="+64">🇳🇿 +64 (New Zealand)</option>
+                                            <option value="+47">🇳🇴 +47 (Norway)</option>
+                                            <option value="+968">🇴🇲 +968 (Oman)</option>
+                                            <option value="+51">🇵🇪 +51 (Peru)</option>
+                                            <option value="+63">🇵🇭 +63 (Philippines)</option>
+                                            <option value="+48">🇵🇱 +48 (Poland)</option>
+                                            <option value="+351">🇵🇹 +351 (Portugal)</option>
+                                            <option value="+974">🇶🇦 +974 (Qatar)</option>
+                                            <option value="+40">🇷🇴 +40 (Romania)</option>
+                                            <option value="+381">🇷🇸 +381 (Serbia)</option>
+                                            <option value="+421">🇸🇰 +421 (Slovakia)</option>
+                                            <option value="+34">🇪🇸 +34 (Spain)</option>
+                                            <option value="+249">🇸🇩 +249 (Sudan)</option>
+                                            <option value="+46">🇸🇪 +46 (Sweden)</option>
+                                            <option value="+41">🇨🇭 +41 (Switzerland)</option>
+                                            <option value="+66">🇹🇭 +66 (Thailand)</option>
+                                            <option value="+90">🇹🇷 +90 (Turkey)</option>
+                                            <option value="+380">🇺🇦 +380 (Ukraine)</option>
+                                            <option value="+598">🇺🇾 +598 (Uruguay)</option>
+                                            <option value="+998">🇺🇿 +998 (Uzbekistan)</option>
+                                            <option value="+58">🇻🇪 +58 (Venezuela)</option>
+                                            <option value="+84">🇻🇳 +84 (Vietnam)</option>
+                                            <option value="+260">🇿🇲 +260 (Zambia)</option>
+                                            <option value="+263">🇿🇼 +263 (Zimbabwe)</option>
+                                        </select>
+                                        <input type="tel" name="phone" required placeholder="Enter number"
+                                            class="phone-input" title="Enter Phone Number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Country</label>
+                                    <input type="text" name="country" required placeholder="Enter your country">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Institution</label>
+                                    <input type="text" name="institution" required
+                                        placeholder="Enter your institution name">
+                                </div>
+                            </div>
+
+                            <!-- Section 2: Academic / Professional Profile -->
+                            <h3 class="form-section-title">Academic / Professional Profile</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Current Status</label>
+                                    <select name="status" required title="Select Status">
+                                        <option value="" disabled selected>Select your status</option>
+                                        <option value="Undergraduate">Undergraduate Student</option>
+                                        <option value="Postgraduate">Postgraduate Student</option>
+                                        <option value="PhD">PhD Scholar</option>
+                                        <option value="Postdoc">Postdoctoral Researcher</option>
+                                        <option value="Faculty">Faculty / Professional</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Field / Discipline</label>
+                                    <input type="text" name="discipline" required
+                                        placeholder="e.g., Biotechnology, Engineering, etc.">
+                                </div>
+                            </div>
+
+                            <!-- Section 3: Service Required -->
+                            <h3 class="form-section-title">Service Required</h3>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label>Service Description</label>
+                                    <input type="text" name="service" required
+                                        placeholder="Describe the service you are looking for">
+                                </div>
+                            </div>
+
+                            <!-- Section 4: Project Details -->
+                            <h3 class="form-section-title">Project Details</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Project Title / Topic</label>
+                                    <input type="text" name="project_title" placeholder="Enter your project title">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Current Stage</label>
+                                    <select name="current_stage" title="Select Current Stage">
+                                        <option value="" disabled selected>Select current stage</option>
+                                        <option value="Idea">Idea stage</option>
+                                        <option value="Data Collection">Data collection</option>
+                                        <option value="Data Analysis">Data analysis</option>
+                                        <option value="Writing">Writing stage</option>
+                                        <option value="Revision/Submission">Revision / Submission stage</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="deadline">Expected Deadline</label>
+                                    <input type="date" name="deadline" id="deadline" title="Expected Deadline">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Target Journal / University (if any)</label>
+                                    <input type="text" name="target" placeholder="Enter target journal or university">
+                                </div>
+                            </div>
+
+                            <!-- Consultation Preference -->
+                            <h3 class="form-section-title">Consultation Preference</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Preferred Mode</label>
+                                    <select name="mode" required title="Select Preferred Mode">
+                                        <option value="" disabled selected>Select preferred mode</option>
+                                        <option value="Online">Online (Google Meet / Zoom)</option>
+                                        <option value="WhatsApp">WhatsApp Call</option>
+                                        <option value="Email">Email Guidance</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Preferred Time Slot</label>
+                                    <input type="datetime-local" name="timeslot" id="timeslot-input" required
+                                        title="Select Date and Time">
+                                    <p id="timezone-info" class="timezone-info">
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Additional Information -->
+                            <h3 class="form-section-title">Additional Information</h3>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label>Briefly describe your problem or expectation</label>
+                                    <textarea name="additional_info" placeholder="Type your message here..."></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="submit-btn" id="submitBtn">👉 Book Consultation / Submit
+                                Request</button>
+                        </form>
+
+                        <div id="success-message">
+                            <h4><i class="fa fa-check-circle"></i> Submission Successful!</h4>
+                            <p>Thank you for contacting Research Hub. Our team will review your request and contact you
+                                within 24 hours for a personalized consultation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer mt-4">
+            <p>Copyright © 2024 One Research Hub. All Rights Reserved.</p>
+            <div class="footer-social footer-social-container">
+                <a href="https://www.facebook.com/researchhub.one/" target="_blank" rel="noopener"
+                    class="social-link-white" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/research_hub.one/" target="_blank" rel="noopener"
+                    class="social-link-white" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com/researchhub_one/" target="_blank" rel="noopener" class="social-link-white"
+                    title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/in/research-hub-231190304/" target="_blank" rel="noopener"
+                    class="social-link-white" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://www.youtube.com/@Research-Hub" target="_blank" rel="noopener" class="social-link-white"
+                    title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://whatsapp.com/channel/0029Va5Bt5oBfxo8vScNwJ0h" target="_blank" rel="noopener"
+                    class="social-link-white" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../assets/js/isotope.min.js"></script>
+    <script src="../assets/js/owl-carousel.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+    <script src="../assets/js/tabs.js"></script>
+    <script src="../assets/js/video.js"></script>
+    <script src="../assets/js/slick-slider.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script src="../assets/js/user-auth.js"></script>
+
+    <!-- User Auth Modals -->
+    <div class="auth-modal" id="login-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+                <p><a href="javascript:void(0)" id="show-forgot" class="forgot-password-link">Forgot Password?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Sign Up</h2>
+            <form class="auth-form">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="auth-links">
+                <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="forgot-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <p class="reset-instructions">Enter your email and we'll send you
+                instructions to reset your password.</p>
+            <form class="auth-form">
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <div class="auth-links">
+                <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/booking-handler.js"></script>
+</body>
+
+</html>
