@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="TemplateMo">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+  <title>Education Event HTML5 Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/templatemo-edu-meeting.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+  <link rel="stylesheet" href="assets/css/lightbox.css">
+  <style>
+    .reviews-scroll-container {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+
+    .reviews-track {
+      display: flex;
+      gap: 30px;
+      width: max-content;
+      cursor: grab;
+      cursor: grab;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .reviews-track.grabbing {
+      cursor: grabbing;
+    }
+
+    .review-item {
+      flex: 0 0 380px;
+      height: 100%;
+    }
+
+    @media (max-width: 767px) {
+      .review-item {
+        flex: 0 0 300px;
+      }
+    }
+
+    /* HyperOS Style Sidebar Trigger */
+    /* HyperOS Style Sidebar Trigger */
+    .hyperos-trigger {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.5);
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      cursor: pointer;
+      cursor: pointer;
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      z-index: 999;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hyperos-trigger i {
+      font-size: 10px;
+      color: #333;
+      margin-left: 2px;
+      animation: bounceLeft 2s infinite;
+    }
+
+    @keyframes bounceLeft {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      50% {
+        transform: translateX(-2px);
+      }
+    }
+
+    .hyperos-trigger:hover {
+      width: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Sidebar Container - Transparent to hold floating circles */
+    .hyperos-bar {
+      position: fixed;
+      top: 50%;
+      right: -100px;
+      /* Hidden off screen */
+      transform: translateY(-50%);
+      width: 100px;
+      height: auto;
+      background: transparent;
+      z-index: 2000;
+      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      padding-right: 20px;
+      /* Space from edge */
+    }
+
+    .hyperos-bar.active {
+      right: 0;
+    }
+
+    /* Circular Icons */
+    .hyperos-circle-btn {
+      width: 45px;
+      height: 45px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-size: 18px;
+      box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none !important;
+      position: relative;
+    }
+
+    .hyperos-circle-btn:hover {
+      transform: scale(1.1);
+      color: #00a651;
+    }
+
+    /* Tooltip text */
+    .hyperos-circle-btn .tooltip-text {
+      position: absolute;
+      right: 55px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .hyperos-circle-btn:hover .tooltip-text {
+      opacity: 1;
+      visibility: visible;
+      right: 75px;
+    }
+
+    .center-btn-container {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .custom-down-content {
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .icon-margin {
+      margin-bottom: 15px;
+    }
+
+    .service-icon-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .border-green {
+      border: 2px solid #00a651;
+    }
+
+    .border-pink {
+      border: 2px solid #d63384;
+    }
+
+    .no-margin-left {
+      margin-left: 0;
+    }
+
+    .calc-trigger-container {
+      text-align: right;
+      margin-top: -20px;
+      margin-bottom: 10px;
+      padding-right: 15px;
+    }
+
+    .calc-trigger-btn {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 36px;
+      text-align: center;
+      border: 2px solid #00a651;
+      border-radius: 50%;
+      color: #00a651;
+      transition: all 0.3s;
+    }
+
+    .footer-social-flex {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .social-icon-shadow {
+      font-size: 18px;
+      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .color-fb {
+      color: #1877F2;
+    }
+
+    .color-insta {
+      color: #E4405F;
+    }
+
+    .color-x {
+      color: #000;
+    }
+
+    .color-in {
+      color: #0077B5;
+    }
+
+    .color-yt {
+      color: #FF0000;
+    }
+
+    .color-wa {
+      color: #25D366;
+    }
+
+    .forgot-link {
+      font-size: 13px;
+      color: #00a651;
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* New Service Classes */
+    .service-main-icon {
+      font-size: 32px;
+    }
+
+    .td-none {
+      text-decoration: none;
+    }
+
+    .akira-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      background: white;
+      border: 2px solid #d63384;
+    }
+
+    .akira-icon {
+      font-size: 24px;
+      color: #d63384;
+    }
+
+    .harvest-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      background: white;
+      border: 2px solid #00a651;
+    }
+
+    .harvest-icon {
+      font-size: 24px;
+      color: #00a651;
+    }
+
+    .inherit-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Contact Section Classes */
+    .contact-icon {
+      font-size: 24px;
+      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0, 0, 0, 0.3);
+      margin-right: 15px;
+    }
+
+    .text-blue {
+      color: #007bff;
+    }
+
+    .text-green-wa {
+      color: #25d366;
+    }
+
+    .text-red {
+      color: #ea4335;
+    }
+
+    .text-blue-map {
+      color: #4285f4;
+    }
+
+    .text-green-globe {
+      color: #00a651;
+    }
+
+    .social-links-container {
+      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .social-icon-lg {
+      font-size: 20px;
+      text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 2px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .youtube-nav-item {
+      color: #FF0000 !important;
+      font-weight: bold;
+    }
+
+    .reset-text {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .text-white {
+      color: #fff;
+    }
+
+    .calc-trigger-icon {
+      font-size: 18px;
+    }
+  </style>
+  <!--
+
+TemplateMo 569 Edu Meeting
+
+https://templatemo.com/tm-569-edu-meeting
+
+-->
+</head>
+
+<body>
+
+
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="index.html" class="logo">
+              <img src="assets/images/logo.png" alt="Research Hub Logo">
+              <div class="logo-text">
+                <span class="title">Research Hub</span>
+                <span class="tagline">Where Research Meets Expertise</span>
+              </div>
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+              <li><a href="events/events.html">Events</a></li>
+              <li><a href="pages/book-slot.html">Book Now</a></li>
+              <li class="has-sub">
+                <a href="javascript:void(0)">Pages</a>
+                <ul class="sub-menu">
+                  <li><a href="events/events.html">Events</a></li>
+                  <li><a href="products/products.html">Products</a></li>
+                  <li><a href="courses/courses.html">Courses</a></li>
+                  <li><a href="pages/team.html">Meet Our Team</a></li>
+                  <li><a href="https://www.youtube.com/@Research-Hub" target="_blank" rel="noopener"
+                      class="youtube-nav-item">YouTube</a></li>
+                </ul>
+              </li>
+              <li class="has-sub">
+                <a href="javascript:void(0)">Tools</a>
+                <ul class="sub-menu">
+                  <li><a href="modules/akira-hub/akira-hub.html">Wet-Lab Hub</a></li>
+                  <li><a href="data-anal/frontend/data-analyzer.html">HARVEST</a></li>
+                </ul>
+              </li>
+              <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
+              <li class="user-profile">
+                <a href="javascript:void(0)" id="user-menu-toggle" title="User Profile">
+                  <i class="fa fa-user"></i>
+                </a>
+                <div class="user-dropdown" id="user-dropdown">
+                  <a href="javascript:void(0)" id="show-login">Login</a>
+                  <a href="javascript:void(0)" id="show-signup">Sign Up</a>
+                </div>
+              </li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <!-- ***** Main Banner Area Start ***** -->
+  <section class="section main-banner" id="top" data-section="section1">
+    <video autoplay muted loop id="bg-video">
+      <source src="assets/images/course-video.mp4" type="video/mp4" />
+    </video>
+
+    <div class="video-overlay header-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="caption">
+              <h6>Hello Curious Minds</h6>
+              <h2>About Our Approach</h2>
+              <p>At Research Hub, we believe in empowering scholars, students, and professionals with the skills,
+                knowledge, and confidence to excel in their research journey.<br><br>Instead of simply completing your
+                project, we guide you step-by-step, ensuring that you learn, understand, and can independently apply
+                each concept and technique. Our aim is to make you the expert of your own work.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- HyperOS Trigger -->
+      <div class="hyperos-trigger" onclick="toggleHyperOS()">
+        <i class="fa fa-chevron-left"></i>
+      </div>
+    </div>
+  </section>
+  <!-- ***** Main Banner Area End ***** -->
+
+  <section class="services">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="owl-service-item owl-carousel">
+
+            <div class="item item-pink">
+              <div class="icon">
+                <i class="fa fa-pencil service-main-icon"></i>
+              </div>
+              <div class="down-content">
+                <h4>Learn by Doing</h4>
+                <p>We provide hands-on training, demonstrations, and personalized sessions so you understand the how and
+                  why behind every step.</p>
+              </div>
+            </div>
+
+            <div class="item item-dark-green">
+              <div class="icon">
+                <i class="fa fa-graduation-cap service-main-icon"></i>
+              </div>
+              <div class="down-content">
+                <h4>End-to-End Guidance</h4>
+                <p>From literature review and methodology design to data analysis, interpretation, and publication, we
+                  guide you throughout your journey.</p>
+              </div>
+            </div>
+
+            <div class="item item-bright-green">
+              <div class="icon">
+                <i class="fa fa-users service-main-icon"></i>
+              </div>
+              <div class="down-content">
+                <h4>Tailored Mentorship</h4>
+                <p>Every project and learner is unique; our guidance is fully customized to your subject, needs, and
+                  academic level.</p>
+              </div>
+            </div>
+
+          </div>
+          <div class="main-button-yellow center-btn-container">
+            <a href="pages/book-slot.html">Book Your Slot</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="upcoming-meetings" id="meetings">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>Services</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/atoz.jpg" alt="A-Z Research Guidance" class="service-icon-img border-green">
+                  </div>
+                  <h4>Complete Research Support</h4>
+                  <p class="no-margin-left">A–Z Research Guidance</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/plag.png" alt="Plagiarism Check & Cleanup"
+                      class="service-icon-img border-pink">
+                  </div>
+                  <h4>Plagiarism Check & Cleanup</h4>
+                  <p class="no-margin-left">Plagiarism Checking | Removal</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/illus.png" alt="Scientific Illustrations"
+                      class="service-icon-img border-green">
+                  </div>
+                  <h4>Scientific Illustrations</h4>
+                  <p class="no-margin-left">Graphical Illustration</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/desig.webp" alt="Creative Design" class="service-icon-img border-pink">
+                  </div>
+                  <h4>Creative Design</h4>
+                  <p class="no-margin-left">Graphical Design</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/lay.png" alt="Image Editing & Layout" class="service-icon-img border-green">
+                  </div>
+                  <h4>Image Editing & Layout</h4>
+                  <p class="no-margin-left">Photo Editing and Arrangement</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/precen.jpg" alt="Professional Presentations"
+                      class="service-icon-img border-pink">
+                  </div>
+                  <h4>Professional Presentations</h4>
+                  <p class="no-margin-left">PowerPoint Presentation</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/Data.webp" alt="Data Analysis & Charts"
+                      class="service-icon-img border-green">
+                  </div>
+                  <h4>Data Analysis & Charts</h4>
+                  <p class="no-margin-left">Data Analysis and Visualization</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/writi.png" alt="Academic Writing" class="service-icon-img border-pink">
+                  </div>
+                  <h4>Academic Writing</h4>
+                  <p class="no-margin-left">Thesis | Article | Dissertation Writing</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/Prop.png" alt="Project Proposal Drafting"
+                      class="service-icon-img border-green">
+                  </div>
+                  <h4>Project Proposal Drafting</h4>
+                  <p class="no-margin-left">Project Proposal</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/formatting.png" alt="Journal-Ready Formatting"
+                      class="service-icon-img border-pink">
+                  </div>
+                  <h4>Journal-Ready Formatting</h4>
+                  <p class="no-margin-left">Manuscript Formatting</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/stat.png" alt="Statistical data interpretation"
+                      class="service-icon-img border-green">
+                  </div>
+                  <h4>Statistical data interpretation</h4>
+                  <p class="no-margin-left">Statistical Analysis</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/biol.png" alt="Biological data analysis"
+                      class="service-icon-img border-pink">
+                  </div>
+                  <h4>Biological data analysis</h4>
+                  <p class="no-margin-left">Bioinformatics</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <img src="assets/images/comp.webp" alt="Computational research analysis"
+                      class="service-icon-img border-green">
+                  </div>
+                  <h4>Computational research analysis</h4>
+                  <p class="no-margin-left">In-Silico Analysis</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <a href="modules/akira-hub/akira-hub.html" class="td-none" title="AKIRA HUB">
+                      <div class="akira-circle">
+                        <i class="fa fa-calculator akira-icon"></i>
+                      </div>
+                    </a>
+                  </div>
+                  <h4><a href="modules/akira-hub/akira-hub.html" class="inherit-link">AKIRA
+                      HUB</a></h4>
+                  <p class="no-margin-left">Online Scientific Tools</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="meeting-item">
+                <div class="down-content custom-down-content">
+                  <div class="icon-container icon-margin">
+                    <a href="data-anal/frontend/data-analyzer.html" class="td-none" title="HARVEST">
+                      <div class="harvest-circle">
+                        <i class="fa fa-microchip harvest-icon"></i>
+                      </div>
+                    </a>
+                  </div>
+                  <h4><a href="data-anal/frontend/data-analyzer.html" class="inherit-link">HARVEST</a></h4>
+                  <p class="no-margin-left">Holistic Research Analytics Hub</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="calculator-icon-container calc-trigger-container">
+            <a href="modules/akira-hub/akira-hub.html" class="calc-trigger-btn" title="Calculator Tools"
+              onmouseover="this.style.backgroundColor='#00a651'; this.style.color='#fff';"
+              onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00a651';">
+              <i class="fa fa-calculator calc-trigger-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="our-clients" id="clients">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>Our clients got Published at</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="owl-clients-item owl-carousel">
+            <div class="item"><img src="assets/images/publi/ACS.png" alt="ACS"></div>
+            <div class="item"><img src="assets/images/publi/CUP.png" alt="CUP"></div>
+            <div class="item"><img src="assets/images/publi/Emerald.png" alt="Emerald"></div>
+            <div class="item"><img src="assets/images/publi/Frontiers.png" alt="Frontiers"></div>
+            <div class="item"><img src="assets/images/publi/IEEE.png" alt="IEEE"></div>
+            <div class="item"><img src="assets/images/publi/MDPI.png" alt="MDPI"></div>
+            <div class="item"><img src="assets/images/publi/OUP.png" alt="OUP"></div>
+            <div class="item"><img src="assets/images/publi/PUP.png" alt="PUP"></div>
+            <div class="item"><img src="assets/images/publi/RSC.png" alt="RSC"></div>
+            <div class="item"><img src="assets/images/publi/Sage.png" alt="Sage"></div>
+            <div class="item"><img src="assets/images/publi/elsevier.png" alt="Elsevier"></div>
+            <div class="item"><img src="assets/images/publi/hindawi.png" alt="Hindawi"></div>
+            <div class="item"><img src="assets/images/publi/plos-one.png" alt="PLOS ONE"></div>
+            <div class="item"><img src="assets/images/publi/springer.png" alt="Springer"></div>
+            <div class="item"><img src="assets/images/publi/taylor_and_francis.png" alt="Taylor & Francis"></div>
+            <div class="item"><img src="assets/images/publi/wiley.png" alt="Wiley"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="our-courses" id="courses">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>Our Popular Courses</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="coming-soon-container">
+            <div class="loader"></div>
+            <h3>Coming Soon</h3>
+            <p>We are preparing high-quality research courses for you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="our-facts" id="reviews">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <h2>What Our Clients Say</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="reviews-scroll-container">
+            <div class="reviews-track" id="reviews-track">
+              <!-- Item 1 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-01.png" alt="Sarah Johnson" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Sarah Johnson</h6>
+                    <span>Medical Researcher</span>
+                  </div>
+                </div>
+                <p>"The research support was exceptional. They helped me clean up plagiarism and format my manuscript
+                  perfectly for publication in a high-impact journal."</p>
+              </div>
+              <!-- Item 2 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-02.png" alt="Dr. Robert Smith" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Dr. Robert Smith</h6>
+                    <span>Assistant Professor</span>
+                  </div>
+                </div>
+                <p>"Excellent data analysis services. The statistical interpretation and bioinformatics support were
+                  crucial for my latest project's success."</p>
+              </div>
+              <!-- Item 3 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-03.png" alt="Maria Garcia" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Maria Garcia</h6>
+                    <span>PhD Candidate</span>
+                  </div>
+                </div>
+                <p>"Their professional presentations and graphical illustrations really helped my thesis defense. I
+                  highly recommend their creative designs!"</p>
+              </div>
+              <!-- Item 4 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-04.png" alt="Dr. James Wilson" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Dr. James Wilson</h6>
+                    <span>Biotechnology Expert</span>
+                  </div>
+                </div>
+                <p>"As a senior researcher, I value precision. Research Hub delivered top-notch results on complex
+                  molecular simulations that exceeded my expectations."</p>
+              </div>
+              <!-- Item 5 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-05.png" alt="Dr. Anya Sharma" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>Dr. Anya Sharma</h6>
+                    <span>Clinical Pathologist</span>
+                  </div>
+                </div>
+                <p>"Their hands-on training sessions are a game-changer. I didn't just get my data analyzed; I actually
+                  learned how to perform the tests myself."</p>
+              </div>
+              <!-- Item 6 -->
+              <div class="review-item">
+                <div class="user-info">
+                  <div class="user-img">
+                    <img src="assets/images/reviews/client-06.png" alt="David Miller" draggable="false">
+                  </div>
+                  <div class="user-details">
+                    <h6>David Miller</h6>
+                    <span>Environmental Scientist</span>
+                  </div>
+                </div>
+                <p>"From proposal drafting to final manuscript layout, the end-to-end guidance was seamless. My article
+                  was accepted with minimal revisions."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-us" id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="row">
+            <div class="col-lg-12">
+              <form id="contact" action="" method="post">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2>Let's get in touch</h2>
+                  </div>
+                  <div class="col-lg-4">
+                    <fieldset>
+                      <input name="name" type="text" id="name" placeholder="YOURNAME...*" required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-4">
+                    <fieldset>
+                      <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="YOUR EMAIL..."
+                        required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-4">
+                    <fieldset>
+                      <input name="subject" type="text" id="subject" placeholder="SUBJECT...*" required="">
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-12">
+                    <fieldset>
+                      <textarea name="message" type="text" class="form-control" id="message"
+                        placeholder="YOUR MESSAGE..." required=""></textarea>
+                    </fieldset>
+                  </div>
+                  <div class="col-lg-12">
+                    <fieldset>
+                      <button type="submit" id="form-submit" class="button">SEND MESSAGE NOW</button>
+                    </fieldset>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="right-info">
+            <ul>
+              <li class="flex-align-center">
+                <i class="fa fa-phone contact-icon text-blue"></i>
+                <span>+91 8220217467</span>
+              </li>
+              <li class="flex-align-center">
+                <i class="fa-brands fa-whatsapp contact-icon text-green-wa"></i>
+                <span><a href="https://wa.me/918220217467" target="_blank" rel="noopener" class="text-white">+91
+                    8220217467</a></span>
+              </li>
+              <li class="flex-align-center">
+                <i class="fa fa-envelope contact-icon text-red"></i>
+                <span>researchhub.one@gmail.com</span>
+              </li>
+              <li class="flex-align-center">
+                <i class="fa fa-map-marker contact-icon text-blue-map"></i>
+                <span>Arni, Tamil Nadu, India.</span>
+              </li>
+              <li class="flex-align-center">
+                <i class="fa fa-globe contact-icon text-green-globe"></i>
+                <span><a href="https://www.oneresearchhub.in/" target="_blank" rel="noopener"
+                    class="text-white">www.oneresearchhub.in</a></span>
+              </li>
+              <li>
+                <h6>Social Media</h6>
+                <div class="social-links social-links-container">
+                  <a href="https://www.facebook.com/researchhub.one/" target="_blank" rel="noopener"
+                    class="social-icon-lg color-fb" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                  <a href="https://www.instagram.com/research_hub.one/" target="_blank" rel="noopener"
+                    class="social-icon-lg color-insta" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                  <a href="https://x.com/researchhub_one/" target="_blank" rel="noopener"
+                    class="social-icon-lg color-x flex-align-center" title="Twitter">
+                    <i class="fa-brands fa-x-twitter"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/in/research-hub-231190304/" target="_blank" rel="noopener"
+                    class="social-icon-lg color-in" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                  <a href="https://www.youtube.com/@Research-Hub" target="_blank" rel="noopener"
+                    class="social-icon-lg color-yt" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                  <a href="https://whatsapp.com/channel/0029Va5Bt5oBfxo8vScNwJ0h" target="_blank" rel="noopener"
+                    class="social-icon-lg color-wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Copyright © 2024 One Research Hub. All Rights Reserved.</p>
+      <div class="footer-social footer-social-flex">
+        <a href="https://www.facebook.com/researchhub.one/" target="_blank" rel="noopener"
+          class="social-icon-shadow color-fb" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.instagram.com/research_hub.one/" target="_blank" rel="noopener"
+          class="social-icon-shadow color-insta" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/researchhub_one/" target="_blank" rel="noopener"
+          class="social-icon-shadow color-x flex-align-center" title="Twitter">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/research-hub-231190304/" target="_blank" rel="noopener"
+          class="social-icon-shadow color-in" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://www.youtube.com/@Research-Hub" target="_blank" rel="noopener"
+          class="social-icon-shadow color-yt" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://whatsapp.com/channel/0029Va5Bt5oBfxo8vScNwJ0h" target="_blank" rel="noopener"
+          class="social-icon-shadow color-wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="assets/js/isotope.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/lightbox.js"></script>
+  <script src="assets/js/tabs.js"></script>
+  <script src="assets/js/video.js"></script>
+  <script src="assets/js/slick-slider.js"></script>
+  <script src="assets/js/contact-handler.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script src="assets/js/user-auth.js"></script>
+
+  <!-- User Auth Modals -->
+  <div class="auth-modal" id="login-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Login</h2>
+      <form class="auth-form">
+        <input type="email" placeholder="Email Address" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <div class="auth-links">
+        <p>Don't have an account? <a href="javascript:void(0)" id="switch-to-signup">Sign Up</a></p>
+        <p><a href="javascript:void(0)" id="show-forgot" class="forgot-link">Forgot Password?</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="signup-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Sign Up</h2>
+      <form class="auth-form">
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="password" placeholder="Password" required>
+        <input type="password" placeholder="Confirm Password" required>
+        <button type="submit">Create Account</button>
+      </form>
+      <div class="auth-links">
+        <p>Already have an account? <a href="javascript:void(0)" id="switch-to-login">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="forgot-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Reset Password</h2>
+      <p class="reset-text">Enter your email and we'll send you instructions to
+        reset your password.</p>
+      <form class="auth-form">
+        <input type="email" placeholder="Email Address" required>
+        <button type="submit">Send Reset Link</button>
+      </form>
+      <div class="auth-links">
+        <p>Back to <a href="javascript:void(0)" class="switch-to-login">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    //according to loftblog tut
+    $('.nav li:first').addClass('active');
+
+    var showSection = function showSection(section, isAnimate) {
+      var
+        direction = section.replace(/#/, ''),
+        reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+        reqSectionPos = reqSection.offset().top - 40;
+
+      if (isAnimate) {
+        $('body, html').animate({
+          scrollTop: reqSectionPos
+        },
+          800);
+      } else {
+        $('body, html').scrollTop(reqSectionPos);
+      }
+
+    };
+
+    var checkSection = function checkSection() {
+      $('.section').each(function () {
+        var
+          $this = $(this),
+          topEdge = $this.offset().top - 40,
+          bottomEdge = topEdge + $this.height(),
+          wScroll = $(window).scrollTop();
+        if (topEdge < wScroll && bottomEdge > wScroll) {
+          var
+            currentId = $this.data('section'),
+            reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+          reqLink.closest('li').addClass('active').
+            siblings().removeClass('active');
+        }
+      });
+    };
+
+    $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function (e) {
+      e.preventDefault();
+      showSection($(this).attr('href'), true);
+    });
+
+    $(window).scroll(function () {
+      checkSection();
+    });
+
+    // Infinite Auto-Scroll for Reviews
+    const track = document.getElementById('reviews-track');
+    if (track) {
+      const items = Array.from(track.children);
+      // Clone items for infinite effect
+      items.forEach(item => {
+        const clone = item.cloneNode(true);
+        track.appendChild(clone);
+      });
+
+      let speed = 1.2; // Pixels per frame
+      let offset = 0;
+      let isPaused = false;
+      let isDragging = false;
+      let startX, scrollLeft;
+
+      function step() {
+        if (!isPaused && !isDragging) {
+          offset -= speed;
+          // Check if we've scrolled past the first set of items
+          const itemWidth = items[0].offsetWidth + 30; // item + gap
+          const totalWidth = itemWidth * items.length;
+
+          if (Math.abs(offset) >= totalWidth) {
+            offset = 0;
+          }
+          track.style.transform = `translateX(${offset}px)`;
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+
+      // Interaction listeners
+      track.parentElement.addEventListener('mouseenter', () => isPaused = true);
+      track.parentElement.addEventListener('mouseleave', () => {
+        if (!isDragging) isPaused = false;
+      });
+
+      // Touch/Mobile pause
+      track.parentElement.addEventListener('touchstart', () => isPaused = true);
+      track.parentElement.addEventListener('touchend', () => {
+        if (!isDragging) isPaused = false;
+      });
+
+      // Mouse Wheel Support
+      track.parentElement.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        offset -= e.deltaY * 2;
+        // Boundary check for manual scroll
+        const itemWidth = items[0].offsetWidth + 30;
+        const totalWidth = itemWidth * items.length;
+        if (offset > 0) offset = -totalWidth;
+        if (Math.abs(offset) >= totalWidth) offset = 0;
+        track.style.transform = `translateX(${offset}px)`;
+      });
+
+      // Drag Functionality
+      track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        isPaused = true;
+        track.classList.add('grabbing');
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = offset;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          isPaused = false;
+          track.classList.remove('grabbing');
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        offset = scrollLeft + walk;
+
+        // Infinite boundary check for drag
+        const itemWidth = items[0].offsetWidth + 30;
+        const totalWidth = itemWidth * items.length;
+        if (offset > 0) offset = -totalWidth;
+        if (Math.abs(offset) >= totalWidth) offset = 0;
+
+        track.style.transform = `translateX(${offset}px)`;
+      });
+    }
+  </script>
+  <!-- HyperOS Sidebar -->
+  <div class="hyperos-bar" id="hyperOSBar">
+
+
+    <!-- Link 1 -->
+    <a href="modules/akira-hub/akira-hub.html" class="hyperos-circle-btn" title="Go to Research Calculator">
+      <i class="fa-solid fa-flask-vial"></i>
+      <span class="tooltip-text">Research Calculator</span>
+    </a>
+
+    <!-- HARVEST Link -->
+    <a href="data-anal/frontend/data-analyzer.html" class="hyperos-circle-btn" title="Go to HARVEST Data Analyzer">
+      <i class="fa-solid fa-microchip"></i>
+      <span class="tooltip-text">HARVEST</span>
+    </a>
+
+
+  </div>
+
+  <script>
+    function toggleHyperOS() {
+      const bar = document.getElementById('hyperOSBar');
+      bar.classList.toggle('active');
+    }
+
+    // Close on click outside
+    document.addEventListener('click', function (event) {
+      const bar = document.getElementById('hyperOSBar');
+      const trigger = document.querySelector('.hyperos-trigger');
+      if (bar && trigger && !bar.contains(event.target) && !trigger.contains(event.target) && bar.classList.contains('active')) {
+        bar.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+
+</html>
